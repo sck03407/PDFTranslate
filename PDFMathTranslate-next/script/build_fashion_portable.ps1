@@ -1,6 +1,6 @@
 param(
     [string]$OutputDir = (Join-Path (Resolve-Path (Join-Path $PSScriptRoot "..")) "dist\pdftranslate-portable"),
-    [string]$PythonVersion = "3.12.9",
+    [string]$PythonVersion = "3.13.3",
     [ValidateSet("local-stable", "github-latest", "github-ref")]
     [string]$BabelDOCSource = "local-stable",
     [string]$BabelDOCGitRef = "",
@@ -57,6 +57,49 @@ function Write-Utf8NoBomFile {
     [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
 }
 
+function Resolve-BuildPythonInterpreter {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Version
+    )
+
+    function Test-PythonVersionMatch {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$ExecutablePath,
+            [Parameter(Mandatory = $true)]
+            [string]$ExpectedVersion
+        )
+
+        $resolvedVersion = (& $ExecutablePath -c "import platform; print(platform.python_version())" 2>$null)
+        return $LASTEXITCODE -eq 0 -and $resolvedVersion.Trim() -eq $ExpectedVersion
+    }
+
+    $launcher = Get-Command py -ErrorAction SilentlyContinue
+    if ($null -ne $launcher) {
+        $candidate = (& $launcher.Source "-$Version" -c "import sys; print(sys.executable)" 2>$null)
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($candidate) -and (Test-PythonVersionMatch -ExecutablePath $candidate.Trim() -ExpectedVersion $Version)) {
+            return $candidate.Trim()
+        }
+
+        $majorMinor = ($Version -split '\.')[0..1] -join '.'
+        $candidate = (& $launcher.Source "-$majorMinor" -c "import sys; print(sys.executable)" 2>$null)
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($candidate) -and (Test-PythonVersionMatch -ExecutablePath $candidate.Trim() -ExpectedVersion $Version)) {
+            return $candidate.Trim()
+        }
+    }
+
+    $pythonCmd = Get-Command python -ErrorAction SilentlyContinue
+    if ($null -ne $pythonCmd) {
+        $resolvedExe = (& $pythonCmd.Source -c "import sys; print(sys.executable)" 2>$null)
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($resolvedExe) -and (Test-PythonVersionMatch -ExecutablePath $resolvedExe.Trim() -ExpectedVersion $Version)) {
+            return $resolvedExe.Trim()
+        }
+    }
+
+    throw "Python $Version was not found. Install Python $Version or make it available through the Python launcher before building the portable package."
+}
+
 function Get-BabelDOCInstallTarget {
     param(
         [Parameter(Mandatory = $true)]
@@ -95,10 +138,12 @@ $BabelDOCInstallTarget = Get-BabelDOCInstallTarget `
     -StableRef $StableBabelDOCRef `
     -GitRef $BabelDOCGitRef `
     -LocalPath $LocalBabelDOCPath
+$BuildPythonInterpreter = Resolve-BuildPythonInterpreter -Version $PythonVersion
 
 Write-Host "==> Repo root: $RepoRoot"
 Write-Host "==> BabelDOC source mode: $BabelDOCSource"
 Write-Host "==> BabelDOC install target: $BabelDOCInstallTarget"
+Write-Host "==> Build Python interpreter: $BuildPythonInterpreter"
 Write-Host "==> Output dir: $OutputDir"
 
 Remove-DirectoryIfExists -Path $OutputDir
@@ -113,7 +158,7 @@ if (Test-Path -LiteralPath $PortableZip) {
 New-Item -ItemType Directory -Path $RuntimeDir, $ConfigDir, $DataDir, $AssetsDir | Out-Null
 
 Write-Host "==> Creating build venv"
-python -m venv $BuildEnv
+& $BuildPythonInterpreter -m venv $BuildEnv
 $BuildPython = Join-Path $BuildEnv "Scripts\python.exe"
 
 & $BuildPython -m pip install --upgrade pip setuptools wheel

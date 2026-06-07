@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+FROM python:3.13.3-slim-bookworm
 
 WORKDIR /app
 
@@ -17,8 +17,9 @@ ARG BABELDOC_STABLE_REF=v0.6.3
 # ADD "https://github.com/timelic/source-han-serif/releases/download/main/SourceHanSerifKR-Regular.ttf" /app/
 
 RUN apt-get update && \
-     apt-get install --no-install-recommends -y libgl1 libglib2.0-0 libxext6 libsm6 libxrender1 build-essential && \
-     rm -rf /var/lib/apt/lists/*
+     apt-get install --no-install-recommends -y git libgl1 libglib2.0-0 libxext6 libsm6 libxrender1 build-essential && \
+     rm -rf /var/lib/apt/lists/* && \
+     python -m pip install --no-cache-dir --upgrade pip uv
 
 COPY pyproject.toml .
 RUN uv pip install --system --no-cache -r pyproject.toml && babeldoc --version

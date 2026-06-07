@@ -51,7 +51,7 @@ We recommend using the Tool feature of [uv](https://github.com/astral-sh/uv) to 
 2. Use the following command to install BabelDOC:
 
 ```bash
-uv tool install --python 3.12 BabelDOC
+uv tool install --python 3.13.3 BabelDOC
 
 babeldoc --help
 ```
