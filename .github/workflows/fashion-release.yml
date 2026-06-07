@@ -39,11 +39,12 @@ permissions:
 
 env:
   PORTABLE_PYTHON_VERSION: "3.12.9"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   build-portable:
     name: Build Windows portable package
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     outputs:
       artifact_name: ${{ steps.meta.outputs.artifact_name }}
       portable_zip_name: ${{ steps.meta.outputs.portable_zip_name }}
@@ -95,7 +96,7 @@ jobs:
           Move-Item -LiteralPath ".\dist\pdf2zh-fashion-portable.zip" -Destination ".\dist\${{ steps.meta.outputs.portable_zip_name }}" -Force
 
       - name: Upload portable artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.meta.outputs.artifact_name }}
           path: |
@@ -111,10 +112,10 @@ jobs:
     if: github.event.inputs.publish_release_asset == 'true'
     steps:
       - name: Download portable artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{ needs.build-portable.outputs.artifact_name }}
-          path: ./dist
+          path: ./downloaded-artifact
 
       - name: Create or update release
         env:
@@ -122,12 +123,21 @@ jobs:
         run: |
           TAG="${{ needs.build-portable.outputs.release_label }}"
           TITLE="Fashion portable release ${TAG}"
+          ASSET_PATH="./downloaded-artifact/${{ needs.build-portable.outputs.portable_zip_name }}"
+          if [ ! -f "$ASSET_PATH" ]; then
+            ASSET_PATH="$(find ./downloaded-artifact -type f -name '${{ needs.build-portable.outputs.portable_zip_name }}' | head -n 1)"
+          fi
+          if [ -z "$ASSET_PATH" ] || [ ! -f "$ASSET_PATH" ]; then
+            echo "Portable zip not found after artifact download." >&2
+            find ./downloaded-artifact -maxdepth 3 -type f | sort || true
+            exit 1
+          fi
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release $TAG already exists."
           else
             gh release create "$TAG" --title "$TITLE" --notes "Automated fashion portable build."
           fi
-          gh release upload "$TAG" "./dist/${{ needs.build-portable.outputs.portable_zip_name }}" --clobber
+          gh release upload "$TAG" "$ASSET_PATH" --clobber
 
   build-docker:
     name: Build and optionally push Docker image
@@ -161,7 +171,7 @@ jobs:
 
       - name: Log in to GHCR
         if: github.event.inputs.publish_ghcr == 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -176,7 +186,7 @@ jobs:
           echo "image_name=$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: Build and optionally push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./PDFMathTranslate-next
           file: ./PDFMathTranslate-next/Dockerfile

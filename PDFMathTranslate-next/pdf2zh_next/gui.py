@@ -398,7 +398,7 @@ def get_page_choices():
 config_manager = ConfigManager()
 try:
     # Load configuration from files and environment variables
-    settings = config_manager.initialize_cli_config()
+    settings = config_manager.load_cli_config_for_gui()
     # Check if sensitive inputs should be disabled in GUI
     disable_sensitive_input = settings.gui_settings.disable_gui_sensitive_input
 except Exception as e:

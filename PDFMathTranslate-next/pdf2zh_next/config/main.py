@@ -540,8 +540,12 @@ class ConfigManager:
 
     def initialize_config(self) -> SettingsModel:
         """Initialize configuration from all sources"""
-        # Parse CLI arguments (highest priority)
-        self._settings = self.initialize_cli_config().to_settings_model()
+        cli_settings = self.load_cli_config_for_gui()
+        if cli_settings.basic.gui:
+            self._settings = cli_settings.to_settings_model_for_gui()
+        else:
+            cli_settings.validate_settings()
+            self._settings = cli_settings.to_settings_model()
         log.debug(f"Initialized settings: {self._settings.model_dump_json()}")
 
         return self._settings
@@ -557,6 +561,16 @@ class ConfigManager:
     def initialize_cli_config(self) -> CLIEnvSettingsModel:
         parser, _ = build_args_parser()
         args = parser.parse_args()
+        return self._load_cli_settings_from_parsed_args(args, validate=True)
+
+    def load_cli_config_for_gui(self) -> CLIEnvSettingsModel:
+        parser, _ = build_args_parser()
+        args = parser.parse_args()
+        return self._load_cli_settings_from_parsed_args(args, validate=False)
+
+    def _load_cli_settings_from_parsed_args(
+        self, args, *, validate: bool
+    ) -> CLIEnvSettingsModel:
         cli_args: dict[str, Any] = {
             k.replace("-", "_"): v
             for k, v in vars(args).items()
@@ -625,7 +639,8 @@ class ConfigManager:
             if (user_config_path or default_config_path) is not None
             else None
         )
-        cli_settings.validate_settings()
+        if validate:
+            cli_settings.validate_settings()
         return cli_settings
 
     def write_user_default_config_file(self, settings: CLIEnvSettingsModel):

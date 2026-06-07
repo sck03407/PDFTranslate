@@ -21,7 +21,7 @@ RUN apt-get update && \
      rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml .
-RUN uv pip install --system --no-cache -r pyproject.toml && babeldoc --version && babeldoc --warmup
+RUN uv pip install --system --no-cache -r pyproject.toml && babeldoc --version
 
 COPY . .
 
@@ -37,9 +37,8 @@ RUN set -eux; \
         exit 1 ;; \
     esac; \
     echo "Installing BabelDOC from $BABELDOC_INSTALL_TARGET"; \
-    uv pip install --system --no-cache --compile-bytecode "$BABELDOC_INSTALL_TARGET" "pymupdf<1.25.3"; \
+    uv pip install --system --no-cache --compile-bytecode "$BABELDOC_INSTALL_TARGET"; \
     uv pip install --system --no-cache .; \
-    babeldoc --version; \
-    babeldoc --warmup
+    babeldoc --version
 RUN pdf2zh --version
 CMD ["pdf2zh", "--gui"]

@@ -90,31 +90,38 @@ CLIEnvSettingsModel = create_model(
 
 
 def to_settings_model(self) -> SettingsModel:
+    return _to_settings_model(self, warn_on_default_engine=True)
+
+
+def _to_settings_model(
+    cli_settings: CLIEnvSettingsModel, *, warn_on_default_engine: bool
+) -> SettingsModel:
     for metadata in TRANSLATION_ENGINE_METADATA:
-        if getattr(self, metadata.cli_flag_name):
+        if getattr(cli_settings, metadata.cli_flag_name):
             if metadata.cli_detail_field_name:
                 translate_engine_settings = metadata.setting_model_type(
-                    **getattr(self, metadata.cli_detail_field_name).model_dump()
+                    **getattr(cli_settings, metadata.cli_detail_field_name).model_dump()
                 )
             else:
                 translate_engine_settings = metadata.setting_model_type()
             break
     else:
-        logger.warning("No translation engine selected, using Google")
+        if warn_on_default_engine:
+            logger.warning("No translation engine selected, using Google")
         translate_engine_settings = _DEFAULT_TRANSLATION_ENGINE()
 
     # Term extraction engine (optional)
     term_extraction_engine_settings = None
     for metadata in TERM_EXTRACTION_ENGINE_METADATA:
         term_flag_name = f"term_{metadata.cli_flag_name}"
-        if getattr(self, term_flag_name, False):
+        if getattr(cli_settings, term_flag_name, False):
             term_detail_field_name = (
                 f"term_{metadata.cli_detail_field_name}"
                 if metadata.cli_detail_field_name
                 else None
             )
             if term_detail_field_name:
-                term_detail_model = getattr(self, term_detail_field_name)
+                term_detail_model = getattr(cli_settings, term_detail_field_name)
                 # Convert term settings back to base engine settings
                 term_extraction_engine_settings = term_detail_model.to_base_settings()
             else:
@@ -125,10 +132,14 @@ def to_settings_model(self) -> SettingsModel:
             break
 
     return SettingsModel(
-        **self.model_dump(exclude=__exclude_fields),
+        **cli_settings.model_dump(exclude=__exclude_fields),
         translate_engine_settings=translate_engine_settings,
         term_extraction_engine_settings=term_extraction_engine_settings,
     )
+
+
+def to_settings_model_for_gui(self) -> SettingsModel:
+    return _to_settings_model(self, warn_on_default_engine=False)
 
 
 def validate_settings(self) -> None:
@@ -140,5 +151,6 @@ def clone(self):
 
 
 CLIEnvSettingsModel.to_settings_model = to_settings_model
+CLIEnvSettingsModel.to_settings_model_for_gui = to_settings_model_for_gui
 CLIEnvSettingsModel.validate_settings = validate_settings
 CLIEnvSettingsModel.clone = clone

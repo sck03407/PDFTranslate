@@ -306,6 +306,34 @@ class TestConfigManager:
         assert cm.settings.report_interval == 0.5  # Should use env var
         assert cm.settings is not None
 
+    def test_load_cli_config_for_gui_skips_translation_validation(self):
+        """GUI config loading should not require a valid ready-to-run translator."""
+        cm = ConfigManager()
+        args = Namespace(
+            gui=True,
+            openai=True,
+        )
+
+        with patch("argparse.ArgumentParser.parse_args", return_value=args):
+            settings = cm.load_cli_config_for_gui()
+
+        assert settings.basic.gui is True
+        assert settings.openai is True
+
+    def test_initialize_config_uses_gui_safe_conversion(self):
+        """GUI initialization should keep loading even without translator secrets."""
+        cm = ConfigManager()
+        args = Namespace(
+            gui=True,
+            openai=True,
+        )
+
+        with patch("argparse.ArgumentParser.parse_args", return_value=args):
+            config = cm.initialize_config()
+
+        assert config.basic.gui is True
+        assert config.translate_engine_settings.translate_engine_type == "OpenAI"
+
     @pytest.fixture
     def sample_toml_content(self) -> str:
         """Sample TOML configuration content"""

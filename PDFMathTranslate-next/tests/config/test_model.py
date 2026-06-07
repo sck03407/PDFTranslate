@@ -80,6 +80,22 @@ class TestGUISettings:
         assert settings.gui_settings.brand_name == DEFAULT_GUI_BRAND_NAME
         assert settings.gui_settings.brand_url == ""
 
+    def test_gui_conversion_skips_default_engine_warning(self, caplog):
+        caplog.set_level("WARNING")
+
+        settings = CLIEnvSettingsModel().to_settings_model_for_gui()
+
+        assert settings.translate_engine_settings.translate_engine_type == "Google"
+        assert "No translation engine selected, using Google" not in caplog.text
+
+    def test_standard_conversion_keeps_default_engine_warning(self, caplog):
+        caplog.set_level("WARNING")
+
+        settings = CLIEnvSettingsModel().to_settings_model()
+
+        assert settings.translate_engine_settings.translate_engine_type == "Google"
+        assert "No translation engine selected, using Google" in caplog.text
+
     def test_custom_values(self, tmp_path):
         """Test setting custom values"""
         settings = TranslationSettings(
