@@ -1,0 +1,133 @@
+source,target,tgt_lng
+bill of materials,物料清单,zh
+material code,物料编码,zh
+item code,项目编码,zh
+component,部件,zh
+component description,部件描述,zh
+fabrication,面料规格,zh
+fabric content,面料成分,zh
+fiber content,纤维成分,zh
+shell,面层,zh
+body fabric,大身面料,zh
+sleeve fabric,袖子面料,zh
+pocketing,袋布,zh
+pocket bag,袋布,zh
+waistband curtain,腰里,zh
+fusing,粘合衬,zh
+fusible,可粘合,zh
+non fusible,不可粘合,zh
+heat seal,热封,zh
+heat transfer,热转印,zh
+screen print,丝网印花,zh
+placement print,定位印花,zh
+allover print,满印,zh
+embroidered patch,绣花章,zh
+woven label,织唛,zh
+printed label,印唛,zh
+care content label,洗水成分唛,zh
+joker label,副唛,zh
+price ticket,价签,zh
+polybag,胶袋,zh
+poly bag,胶袋,zh
+master carton,外箱,zh
+inner carton,内箱,zh
+carton mark,箱唛,zh
+carton dimension,箱规,zh
+carton measurement,外箱尺寸,zh
+pack ratio,装箱配比,zh
+size breakdown,尺码配比,zh
+assortment,配码,zh
+solid pack,单一码装箱,zh
+assorted pack,混码装箱,zh
+hanger,衣架,zh
+size sticker,尺码贴,zh
+barcode sticker,条码贴,zh
+hangtag string,吊牌绳,zh
+swift tack,胶针,zh
+plastic clip,塑料夹,zh
+safety pin,安全别针,zh
+spare button,备用扣,zh
+spare snap,备用按扣,zh
+spare fabric,备用布,zh
+measurement spec,测量规格,zh
+grading rule,放码规则,zh
+grade rule,放码规则,zh
+sample size,样板尺码,zh
+base size,基础尺码,zh
+size spec,尺寸规格,zh
+construction detail,工艺细节,zh
+sewing instruction,车缝说明,zh
+folding instruction,折叠说明,zh
+packing instruction,包装说明,zh
+label placement,唛标位置,zh
+artwork placement,图案位置,zh
+placement guide,定位指引,zh
+reference sample,参考样,zh
+seal sample,封样,zh
+gold seal sample,金样,zh
+counterpart sample,对照样,zh
+pre production approval,产前确认,zh
+bulk approval,大货确认,zh
+lab dip,色卡样,zh
+strike off,印花色样,zh
+handloom,手织样,zh
+yarn dyed,色织,zh
+piece dyed,匹染,zh
+garment washed,成衣洗,zh
+vintage wash,复古洗,zh
+stone wash,石洗,zh
+acid wash,酸洗,zh
+silicone wash,硅油洗,zh
+sand wash,砂洗,zh
+softener wash,柔软洗,zh
+bio polish,生物抛光,zh
+brushing,拉毛,zh
+sueding,磨毛,zh
+peaching,桃皮处理,zh
+coating,涂层,zh
+water repellent,防泼水,zh
+durable water repellent,持久防泼水,zh
+dwr,持久防泼水,zh
+breathable,透气,zh
+windproof,防风,zh
+waterproof,防水,zh
+seam sealed,压胶,zh
+taped seam,贴条缝,zh
+bonded,复合,zh
+lamination,贴膜,zh
+padding weight,填充克重,zh
+fill power,蓬松度,zh
+down proof,防钻绒,zh
+anti pilling,抗起球,zh
+anti static,防静电,zh
+anti bacterial,抗菌,zh
+moisture wicking,吸湿排汗,zh
+quick dry,速干,zh
+uv protection,防紫外线,zh
+upf,紫外线防护系数,zh
+stretch,弹力,zh
+four way stretch,四面弹,zh
+two way stretch,两面弹,zh
+recovery,回弹,zh
+compressive,压缩性,zh
+brushed back,内磨毛,zh
+bonded fleece,复合抓绒,zh
+microfleece,摇粒绒,zh
+polar fleece,双面绒,zh
+mock layer,假两件层次,zh
+layered look,层次感效果,zh
+garment accessory,成衣辅件,zh
+main fabric,主面料,zh
+secondary fabric,次要面料,zh
+trim card,辅料卡,zh
+fabric swatch,面料小样,zh
+color chip,色卡,zh
+thread code,线色编码,zh
+thread color,线色,zh
+needle size,机针号,zh
+machine type,机种,zh
+operation sequence,工序顺序,zh
+operation bulletin,工序表,zh
+smv,标准工时,zh
+sam,动作分析表,zh
+needle policy,断针管理制度,zh

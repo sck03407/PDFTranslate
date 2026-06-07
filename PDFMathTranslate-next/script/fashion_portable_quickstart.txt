@@ -1,0 +1,37 @@
+PDFTranslate Portable Quick Start
+===========================================
+
+Recommended startup
+-------------------
+Double-click Start-Fashion.bat.
+It opens the GUI in the original custom workflow and preloads the fashion
+glossary resources for apparel documents.
+You can choose Ollama, OpenAI-compatible, SiliconFlow, SiliconFlowFree, and
+other built-in services directly from the Service dropdown.
+You can also choose CustomOpenAICompatible to add your own third-party
+OpenAI-compatible endpoint, model, and API key.
+
+What each script does
+---------------------
+Start-Fashion.bat
+  Recommended launcher.
+  It starts the GUI with no-watermark defaults, built-in fashion glossary
+  support, and the portable config folder under config\\config.v3.toml.
+  If port 7860 is already occupied, the launcher now automatically falls back
+  to the next available local port.
+
+BABELDOC-BUILD-INFO.txt
+  Records which BabelDOC source and version were packaged into this folder.
+
+Custom terminology
+------------------
+config\\fashion-customer-glossary-template.csv is preloaded by default.
+You can edit it directly in the GUI from the Customer Glossary Template table,
+or edit the CSV file in place to add your customer, brand, fabric composition,
+BOM, and wash-care specific terms.
+
+Offline assets
+--------------
+The portable package now restores the required offline BabelDOC assets during
+build, so you should not see a loose offline_assets_*.zip file in the final
+desktop folder.

@@ -1,0 +1,190 @@
+name: Fashion Portable And Docker Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Optional release tag or label used in artifact names"
+        required: false
+        default: ""
+        type: string
+      babeldoc_source:
+        description: "Which BabelDOC source to build from"
+        required: true
+        default: "local-stable"
+        type: choice
+        options:
+          - local-stable
+          - github-latest
+          - github-ref
+      babeldoc_git_ref:
+        description: "Required only when babeldoc_source is github-ref"
+        required: false
+        default: ""
+        type: string
+      publish_release_asset:
+        description: "Upload the portable zip to a GitHub release"
+        required: true
+        default: true
+        type: boolean
+      publish_ghcr:
+        description: "Push the Docker image to GHCR"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  PORTABLE_PYTHON_VERSION: "3.12.9"
+
+jobs:
+  build-portable:
+    name: Build Windows portable package
+    runs-on: windows-latest
+    outputs:
+      artifact_name: ${{ steps.meta.outputs.artifact_name }}
+      portable_zip_name: ${{ steps.meta.outputs.portable_zip_name }}
+      babeldoc_version: ${{ steps.babeldoc-version.outputs.version }}
+      release_label: ${{ steps.meta.outputs.release_label }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build package metadata
+        id: meta
+        shell: pwsh
+        run: |
+          if ("${{ github.event.inputs.release_tag }}") {
+            $label = "${{ github.event.inputs.release_tag }}"
+          } else {
+            $label = "manual-${{ github.run_number }}"
+          }
+          $artifactName = "fashion-portable-$label"
+          $zipName = "pdftranslate-fashion-$label.zip"
+          "release_label=$label" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "artifact_name=$artifactName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "portable_zip_name=$zipName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Build fashion portable package
+        shell: pwsh
+        working-directory: ./PDFMathTranslate-next
+        run: |
+          powershell -ExecutionPolicy Bypass -File .\script\build_fashion_portable.ps1 `
+            -OutputDir "$PWD\dist\pdf2zh-fashion-portable" `
+            -PythonVersion "${{ env.PORTABLE_PYTHON_VERSION }}" `
+            -BabelDOCSource "${{ github.event.inputs.babeldoc_source }}" `
+            -BabelDOCGitRef "${{ github.event.inputs.babeldoc_git_ref }}"
+
+      - name: Detect BabelDOC version
+        id: babeldoc-version
+        shell: pwsh
+        working-directory: ./PDFMathTranslate-next
+        run: |
+          $infoFile = ".\dist\pdf2zh-fashion-portable\BABELDOC-BUILD-INFO.txt"
+          $versionLine = Select-String -Path $infoFile -Pattern "^BabelDOC version: "
+          $version = $versionLine.Line.Split(":")[1].Trim()
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Rename portable zip for artifact publishing
+        shell: pwsh
+        working-directory: ./PDFMathTranslate-next
+        run: |
+          Move-Item -LiteralPath ".\dist\pdf2zh-fashion-portable.zip" -Destination ".\dist\${{ steps.meta.outputs.portable_zip_name }}" -Force
+
+      - name: Upload portable artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.meta.outputs.artifact_name }}
+          path: |
+            ./PDFMathTranslate-next/dist/pdf2zh-fashion-portable
+            ./PDFMathTranslate-next/dist/${{ steps.meta.outputs.portable_zip_name }}
+          if-no-files-found: error
+          compression-level: 1
+
+  publish-portable-release:
+    name: Publish portable zip to GitHub release
+    runs-on: ubuntu-latest
+    needs: build-portable
+    if: github.event.inputs.publish_release_asset == 'true'
+    steps:
+      - name: Download portable artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: ${{ needs.build-portable.outputs.artifact_name }}
+          path: ./dist
+
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ needs.build-portable.outputs.release_label }}"
+          TITLE="Fashion portable release ${TAG}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
+          else
+            gh release create "$TAG" --title "$TITLE" --notes "Automated fashion portable build."
+          fi
+          gh release upload "$TAG" "./dist/${{ needs.build-portable.outputs.portable_zip_name }}" --clobber
+
+  build-docker:
+    name: Build and optionally push Docker image
+    runs-on: ubuntu-latest
+    needs: build-portable
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compute Docker build args
+        id: docker-args
+        shell: bash
+        run: |
+          case "${{ github.event.inputs.babeldoc_source }}" in
+            local-stable)
+              echo "source=stable" >> "$GITHUB_OUTPUT"
+              ;;
+            github-latest)
+              echo "source=latest" >> "$GITHUB_OUTPUT"
+              ;;
+            github-ref)
+              echo "source=ref" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unsupported babeldoc_source" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Log in to GHCR
+        if: github.event.inputs.publish_ghcr == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image tags
+        id: tags
+        shell: bash
+        run: |
+          VERSION_TAG="${{ needs.build-portable.outputs.release_label }}-babeldoc-v${{ needs.build-portable.outputs.babeldoc_version }}"
+          echo "version_tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
+          echo "image_name=$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Build and optionally push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./PDFMathTranslate-next
+          file: ./PDFMathTranslate-next/Dockerfile
+          push: ${{ github.event.inputs.publish_ghcr == 'true' }}
+          tags: |
+            ${{ steps.tags.outputs.image_name }}:${{ steps.tags.outputs.version_tag }}
+            ${{ steps.tags.outputs.image_name }}:latest
+          build-args: |
+            BABELDOC_SOURCE=${{ steps.docker-args.outputs.source }}
+            BABELDOC_GIT_REF=${{ github.event.inputs.babeldoc_git_ref }}
+            BABELDOC_STABLE_REF=v0.6.3

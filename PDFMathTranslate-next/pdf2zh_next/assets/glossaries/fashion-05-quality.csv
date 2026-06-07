@@ -1,0 +1,51 @@
+source,target,tgt_lng
+approved sample,确认样,zh
+proto sample,初样,zh
+fit sample,试身样,zh
+counter sample,对等样,zh
+pp sample,产前样,zh
+pre-production sample,产前样,zh
+size set sample,尺码套样,zh
+sales sample,销售样,zh
+shipment sample,船样,zh
+bulk production,大货生产,zh
+bulk fabric,大货面料,zh
+bulk trim,大货辅料,zh
+pilot run,试产,zh
+defect,疵点,zh
+critical defect,严重疵点,zh
+major defect,重疵,zh
+minor defect,轻疵,zh
+stain,污渍,zh
+oil stain,油渍,zh
+dirt mark,脏污,zh
+shade band,色差带,zh
+shade variation,色差,zh
+color fastness,色牢度,zh
+crocking,摩擦色牢度,zh
+pilling,起球,zh
+snagging,勾丝,zh
+shrinkage,缩水率,zh
+dimensional stability,尺寸稳定性,zh
+twisting,扭曲,zh
+skewing,扭斜,zh
+torque,扭转,zh
+gsm,克重,zh
+fabric weight,克重,zh
+bowing,弓纬,zh
+hole,破洞,zh
+misprint,印花不良,zh
+print registration,对花位,zh
+color matching,对色,zh
+measurement check,尺寸复核,zh
+visual inspection,外观检查,zh
+aql,AQL抽检标准,zh
+quality control,质量控制,zh
+quality assurance,质量保证,zh
+inspection report,检验报告,zh
+pass,合格,zh
+fail,不合格,zh
+rework,返工,zh
+repairable,可修复,zh
+non repairable,不可修复,zh
+needle detector test,验针测试,zh

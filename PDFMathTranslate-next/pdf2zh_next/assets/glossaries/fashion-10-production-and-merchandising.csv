@@ -1,0 +1,26 @@
+source,target,tgt_lng
+lead time,交期,zh
+production lead time,生产周期,zh
+sample lead time,样品周期,zh
+bulk production,大货生产,zh
+bulk order,大货订单,zh
+pre-production sample,产前样,zh
+pp sample,产前样,zh
+size set sample,齐码样,zh
+fit sample,试身样,zh
+salesman sample,销售样,zh
+counter sample,对等样,zh
+shipment sample,船样,zh
+top of production sample,头件样,zh
+lab dip,色样,zh
+strike off,印花打样,zh
+approval sample,确认样,zh
+approved for bulk,可投大货,zh
+revise and resubmit,修改后重提,zh
+final inspection,尾期验货,zh
+aql,抽检允收标准,zh
+packing list,装箱单,zh
+carton marking,外箱唛头,zh
+assortment ratio,配码比例,zh
+ex factory date,离厂日期,zh
+on board date,装船日期,zh

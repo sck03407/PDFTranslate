@@ -1,0 +1,129 @@
+source,target,tgt_lng
+care instruction,护理说明,zh
+wash care,洗护说明,zh
+cold gentle machine wash,冷和缓机洗,zh
+gentle cycle,轻柔洗程序,zh
+delicate cycle,轻柔程序,zh
+wash dark colors separately,深色分开洗涤,zh
+wash before wear,穿着前先洗涤,zh
+wash before use,使用前先洗涤,zh
+close all fasteners before washing,洗前扣好所有扣件,zh
+do not use softener,不可使用柔顺剂,zh
+do not dry in direct sunlight,不可阳光直晒,zh
+cool tumble dry,低温滚筒烘干,zh
+remove immediately,立即取出,zh
+low iron if needed,如需可低温熨烫,zh
+do not iron print,不可熨烫印花部位,zh
+do not iron decoration,不可熨烫装饰部位,zh
+iron inside out,反面熨烫,zh
+professional dry clean,专业干洗,zh
+petroleum solvent only,仅限石油溶剂干洗,zh
+do not spot clean,不可局部去渍,zh
+spot clean only,仅可局部清洁,zh
+warning keep away from fire,警告：远离火源,zh
+flammability,易燃性,zh
+flammability test,燃烧测试,zh
+snug fit,贴身版型,zh
+not flame resistant,非阻燃,zh
+colorfastness to washing,耐洗色牢度,zh
+colorfastness to rubbing,耐摩擦色牢度,zh
+colorfastness to perspiration,耐汗渍色牢度,zh
+colorfastness to saliva,耐唾液色牢度,zh
+colorfastness to water,耐水色牢度,zh
+colorfastness to light,耐光色牢度,zh
+tensile strength,拉伸强力,zh
+tear strength,撕破强力,zh
+bursting strength,胀破强力,zh
+seam strength,接缝强力,zh
+seam slippage test,滑缝测试,zh
+spirality,扭度,zh
+spirality test,扭度测试,zh
+after wash measurement,洗后尺寸,zh
+before wash measurement,洗前尺寸,zh
+growth,伸长率,zh
+appearance after wash,洗后外观,zh
+twist after wash,洗后扭曲,zh
+skew after wash,洗后扭斜,zh
+spiral seam,缝骨扭斜,zh
+needle cut,针割,zh
+fabric fault,布面疵点,zh
+weaving defect,织造疵点,zh
+knitting defect,针织疵点,zh
+yarn contamination,异纤,zh
+slub yarn,竹节纱,zh
+nep,棉结,zh
+crease mark,折痕,zh
+press mark,压痕,zh
+shading,阴阳色,zh
+panel shading,片差色差,zh
+garment shading,件差色差,zh
+matching shade,配色一致性,zh
+lab test,实验室测试,zh
+third party inspection,第三方检验,zh
+inline inspection,中期检验,zh
+final random inspection,最终随机检验,zh
+fri,最终随机检验,zh
+100 inspection,全检,zh
+needle inspection,验针检查,zh
+metal detection,金属检测,zh
+carton drop test,纸箱跌落测试,zh
+packaging check,包装检查,zh
+label check,唛标检查,zh
+carton audit,装箱审核,zh
+pre shipment inspection,出货前检验,zh
+psi,出货前检验,zh
+shipment release,出货放行,zh
+hold shipment,暂停出货,zh
+re inspection,复检,zh
+defect photo,问题照片,zh
+quality issue,质量问题,zh
+root cause,根因,zh
+corrective action,纠正措施,zh
+preventive action,预防措施,zh
+capa,纠正预防措施,zh
+inspection level,抽检水平,zh
+acceptance quality limit,允收品质水准,zh
+needle record,断针记录,zh
+repaired piece,修补件,zh
+repair tag,返修标识,zh
+rejected piece,不合格件,zh
+quarantine area,隔离区,zh
+pass sticker,合格贴,zh
+failed sticker,不合格贴,zh
+measurement deviation,尺寸偏差,zh
+spec tolerance,规格公差,zh
+shade approval,对色确认,zh
+wash test,洗水测试,zh
+rubbing test,摩擦测试,zh
+peel strength,剥离强度,zh
+bond strength,粘合强度,zh
+print adhesion,印花附着力,zh
+coating adhesion,涂层附着力,zh
+seam puckering test,缝位起皱测试,zh
+button pull test,纽扣拉力测试,zh
+snap pull test,按扣拉力测试,zh
+zipper test,拉链测试,zh
+needle penetration,针刺穿透,zh
+chemical residue,化学残留,zh
+azo free,无偶氮,zh
+formaldehyde free,无甲醛,zh
+nickel free,无镍,zh
+reach compliant,符合 REACH,zh
+cpsia compliant,符合 CPSIA,zh
+oekotex,OEKO-TEX 认证,zh
+prop 65 compliant,符合加州 65 法案,zh
+wash durability,耐洗性,zh
+appearance retention,外观保持性,zh
+seam grin,缝位开口,zh
+needle line,针路痕,zh
+color migration,颜色迁移,zh
+crocking wet,湿摩擦色牢度,zh
+crocking dry,干摩擦色牢度,zh
+dimensional change,尺寸变化率,zh
+stiff hand feel,手感偏硬,zh
+harsh hand feel,手感粗硬,zh
+odor,异味,zh
+mildew,霉斑,zh
+rust stain,锈渍,zh
+water stain,水渍,zh
+glue mark,胶印,zh

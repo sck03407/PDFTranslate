@@ -1,0 +1,31 @@
+# Fashion online high-quality preset
+# Replace the base URL, API key, and model with your preferred paid OpenAI-compatible service before production use.
+
+[translation]
+lang_in = "en"
+lang_out = "zh"
+# A starter customer glossary template is layered on top of the built-in
+# fashion pack by default. Edit the CSV in place to add your own terms.
+glossaries = "./fashion-customer-glossary-template.csv"
+qps = 8
+pool_max_workers = 16
+term_qps = 8
+term_pool_max_workers = 16
+no_auto_extract_glossary = false
+save_auto_extracted_glossary = true
+disable_builtin_fashion_glossary = false
+disable_builtin_fashion_prompt = false
+
+[pdf]
+watermark_output_mode = "no_watermark"
+translate_table_text = true
+
+openaicompatible = true
+
+[openaicompatible_detail]
+openai_compatible_base_url = "https://your-openai-compatible-endpoint/v1"
+openai_compatible_model = "gpt-4o-mini"
+openai_compatible_api_key = "replace-with-your-api-key"
+openai_compatible_send_temperature = false
+openai_compatible_send_reasoning_effort = false
+openai_compatible_enable_json_mode = false

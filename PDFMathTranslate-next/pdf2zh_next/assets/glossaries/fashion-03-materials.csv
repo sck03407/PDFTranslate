@@ -1,0 +1,62 @@
+source,target,tgt_lng
+shell fabric,面料,zh
+self fabric,本布,zh
+contrast fabric,配布,zh
+lining,里布,zh
+interlining,衬布,zh
+fusible interlining,粘合衬,zh
+non-fusible interlining,非粘合衬,zh
+rib,罗纹,zh
+jersey,平纹针织布,zh
+interlock,双面布,zh
+pique,珠地布,zh
+french terry,毛圈布,zh
+terry,毛圈布,zh
+fleece,抓绒,zh
+sherpa,羊羔绒,zh
+mesh,网布,zh
+woven,梭织布,zh
+knit,针织布,zh
+twill,斜纹布,zh
+satin,缎布,zh
+canvas,帆布,zh
+poplin,府绸,zh
+oxford,牛津布,zh
+chambray,色织青年布,zh
+denim,牛仔布,zh
+corduroy,灯芯绒,zh
+ripstop,防撕裂布,zh
+cotton,棉,zh
+organic cotton,有机棉,zh
+recycled cotton,再生棉,zh
+polyester,涤纶,zh
+recycled polyester,再生涤纶,zh
+nylon,尼龙,zh
+polyamide,锦纶,zh
+rayon,人造丝,zh
+viscose,粘胶,zh
+modal,莫代尔,zh
+lyocell,莱赛尔,zh
+acetate,醋酯纤维,zh
+acrylic,腈纶,zh
+wool,羊毛,zh
+merino wool,美丽诺羊毛,zh
+cashmere,羊绒,zh
+alpaca,羊驼毛,zh
+mohair,马海毛,zh
+linen,亚麻,zh
+hemp,麻,zh
+silk,丝绸,zh
+spandex,氨纶,zh
+elastane,氨纶,zh
+down,羽绒,zh
+feather,羽毛,zh
+leather,皮革,zh
+faux leather,人造革,zh
+faux fur,人造毛皮,zh
+nonwoven,无纺布,zh
+laminated fabric,复合面料,zh
+padding,填充物,zh
+quilted,绗缝,zh
+tpu membrane,TPU膜,zh
+pu coating,PU涂层,zh

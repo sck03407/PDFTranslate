@@ -1,0 +1,49 @@
+# Root repository caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local virtual environments
+.venv/
+venv/
+env/
+
+# Root temporary files
+*.log
+*.tmp
+*.temp
+
+# Application-layer generated artifacts
+PDFMathTranslate-next/.doctemp/
+PDFMathTranslate-next/.pytest_cache/
+PDFMathTranslate-next/.verify_env/
+PDFMathTranslate-next/.build_fashion_env/
+PDFMathTranslate-next/dist/
+PDFMathTranslate-next/pdf2zh_files/
+PDFMathTranslate-next/gradio_files/
+PDFMathTranslate-next/tmp/
+PDFMathTranslate-next/.gradio/
+PDFMathTranslate-next/.build_fashion_python.zip
+
+# BabelDOC local caches
+BabelDOC/.venv/
+BabelDOC/.ruff_cache/
+BabelDOC/.pytest_cache/
+BabelDOC/dist/
+BabelDOC/build/
+
+# Embedded git repositories must be removed or archived before root git init
+PDFMathTranslate-next/.git/
+BabelDOC/.git/

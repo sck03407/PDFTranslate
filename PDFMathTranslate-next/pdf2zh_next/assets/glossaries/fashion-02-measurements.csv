@@ -1,0 +1,56 @@
+source,target,tgt_lng
+spec sheet,尺寸表,zh
+tech pack,工艺单,zh
+fit comment,版型评语,zh
+point of measurement,测量点,zh
+pom,测量点,zh
+measurement tolerance,尺寸公差,zh
+plus minus tolerance,正负公差,zh
+body length,衣长,zh
+center back length,后中衣长,zh
+center front length,前中衣长,zh
+high point shoulder,肩颈点,zh
+hps,肩颈点,zh
+hps to hem,肩颈点到下摆,zh
+snp to hem,肩颈点到下摆,zh
+shoulder width,肩宽,zh
+across shoulder,肩宽,zh
+across chest,胸宽,zh
+across back,后背宽,zh
+chest,胸围,zh
+1/2 chest,半胸围,zh
+bust,胸围,zh
+waist,腰围,zh
+1/2 waist,半腰围,zh
+hip,臀围,zh
+1/2 hip,半臀围,zh
+bottom sweep,下摆围,zh
+sleeve length,袖长,zh
+short sleeve length,短袖长,zh
+long sleeve length,长袖长,zh
+bicep,袖肥,zh
+bicep width,袖肥,zh
+cuff opening,袖口围,zh
+armhole straight,直量袖窿,zh
+front rise,前裆长,zh
+back rise,后裆长,zh
+rise,裆长,zh
+inseam,内长,zh
+outseam,外长,zh
+thigh,大腿围,zh
+knee,膝围,zh
+leg opening,脚口围,zh
+bottom opening,脚口围,zh
+front neck drop,前领深,zh
+back neck drop,后领深,zh
+neck width,领宽,zh
+hood opening,帽口围,zh
+hood depth,帽深,zh
+waist relaxed,松量腰围,zh
+waist stretched,拉量腰围,zh
+cf neck drop,前中领深,zh
+cb length,后中长,zh
+pit to pit,胸宽,zh
+spi,每英寸针数,zh
+bom,物料清单,zh
+w/b,腰头,zh
