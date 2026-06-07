@@ -66,6 +66,8 @@ This repository includes a fashion-document customization that keeps the existin
 - A bundled fashion translation system prompt is automatically included for LLM-capable workflows unless you disable it.
 - `SiliconFlowFree` remains available in the GUI as a free online relay option, alongside the paid `SiliconFlow` API workflow.
 - The original custom workflow is kept as the only GUI workflow mode. You can switch services directly in `Service`, including Ollama and other built-in local / online connectors already provided by the upstream project.
+- The GUI now includes a `Clean pdf2zh_files` action, and startup can automatically remove session folders older than a configurable number of days.
+- Windows local runs and Docker container runs now share the same output-history cleanup strategy through the same settings and environment variables.
 - Portable builds now tolerate `UTF-8 BOM` in `config.v3.toml`.
 - If local port `7860` is already occupied, the GUI now automatically falls forward to the next available local port.
 
@@ -103,6 +105,26 @@ For container builds, this branch also includes:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\script\build_fashion_docker.ps1
+```
+
+To persist translation outputs on the host, you can mount `pdf2zh_files` directly:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+If you want the container to automatically clean old session folders on startup, add:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  -e PDF2ZH_AUTO_CLEANUP_OUTPUT_HISTORY=true `
+  -e PDF2ZH_OUTPUT_HISTORY_RETENTION_DAYS=7 `
+  pdfmathtranslate-fashion:local
 ```
 
 And a root-level GitHub Actions manual workflow at `../.github/workflows/fashion-release.yml` that can build a Windows portable zip and publish a GHCR Docker image from either the local-stable BabelDOC line or the latest `funstory-ai/BabelDOC` source.

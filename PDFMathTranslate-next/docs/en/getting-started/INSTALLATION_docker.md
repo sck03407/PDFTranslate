@@ -24,6 +24,26 @@ This creates a local image tag named `pdfmathtranslate-fashion:local` by default
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
+To persist the `pdf2zh_files` output directory on the host:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+To enable the same automatic cleanup policy used by Windows/local runs:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  -e PDF2ZH_AUTO_CLEANUP_OUTPUT_HISTORY=true `
+  -e PDF2ZH_OUTPUT_HISTORY_RETENTION_DAYS=7 `
+  pdfmathtranslate-fashion:local
+```
+
 > [!NOTE]
 >
 > - If you later publish your own image to GHCR, replace the image name above with your own `ghcr.io/<owner>/<repo>:tag`.

@@ -79,6 +79,8 @@ class TestGUISettings:
 
         assert settings.gui_settings.brand_name == DEFAULT_GUI_BRAND_NAME
         assert settings.gui_settings.brand_url == ""
+        assert settings.gui_settings.auto_cleanup_output_history is True
+        assert settings.gui_settings.output_history_retention_days == 7
 
     def test_gui_conversion_skips_default_engine_warning(self, caplog):
         caplog.set_level("WARNING")
@@ -112,6 +114,17 @@ class TestGUISettings:
         assert settings.output == str(tmp_path)
         assert settings.qps == 10
         assert settings.ignore_cache is True
+
+    def test_invalid_output_history_retention_days(self):
+        settings = CLIEnvSettingsModel(
+            gui_settings={"output_history_retention_days": 0}
+        ).to_settings_model()
+
+        with pytest.raises(
+            ValueError,
+            match="output_history_retention_days must be greater than or equal to 1",
+        ):
+            settings.validate_settings()
 
 
 class TestPDFSettings:

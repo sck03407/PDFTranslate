@@ -151,14 +151,18 @@ en:
   Auto term extraction is disabled. Term extraction settings below will not take effect until it is enabled.: Auto
     term extraction is disabled. Term extraction settings below will not take effect
     until it is enabled.
+  Auto clean pdf2zh_files on startup: Auto clean pdf2zh_files on startup
   Cancel: Cancel
   Brand Link: Brand Link
   Brand Name: Brand Name
+  Clean pdf2zh_files: Clean pdf2zh_files
+  Clean session folders older than N days: Clean session folders older than N days
   Character pattern to identify formula text (regex, not recommended to change): Character
     pattern to identify formula text (regex, not recommended to change)
   Concurrent Requests: Concurrent Requests
   Concurrent Threads: Concurrent Threads
   'Configuration saved to: {path}': 'Configuration saved to: {path}'
+  '{count} session folder(s) could not be removed. Check logs for details.': '{count} session folder(s) could not be removed. Check logs for details.'
   Custom: Custom
   Custom System Prompt: Custom System Prompt
   Custom prompt for the translator: Custom prompt for the translator
@@ -173,6 +177,10 @@ en:
   Download Translation (Dual): Download Translation (Dual)
   Download Translation (Mono): Download Translation (Mono)
   Download automatically extracted glossary: Download automatically extracted glossary
+  Kept the current session folder.: Kept the current session folder.
+  No historical session folders were removed from pdf2zh_files.: No historical session folders were removed from pdf2zh_files.
+  Removed {count} session folder(s) from pdf2zh_files.: Removed {count} session folder(s) from pdf2zh_files.
+  'Startup cleanup removed {count} expired session folder(s) older than {days} day(s).': 'Startup cleanup removed {count} expired session folder(s) older than {days} day(s).'
   '### Customer Glossary Template': '### Customer Glossary Template'
   Effective only when a page range is specified.: Effective only when a page range
     is specified.
@@ -1205,13 +1213,17 @@ zh:
   Auto enable OCR workaround (enable automatic OCR workaround for heavily scanned documents): 自动启用
     OCR 变通方案（为重度扫描文档启用自动 OCR 变通方案）
   Auto term extraction is disabled. Term extraction settings below will not take effect until it is enabled.: 自动术语提取功能已禁用。下方术语提取设置需启用此功能后方可生效。
+  Auto clean pdf2zh_files on startup: 启动时自动清理 pdf2zh_files
   Cancel: 取消
   Brand Link: 品牌链接
   Brand Name: 品牌名称
+  Clean pdf2zh_files: 清理 pdf2zh_files
+  Clean session folders older than N days: 清理 N 天前的会话目录
   Character pattern to identify formula text (regex, not recommended to change): 用于识别公式文本的字符模式（正则表达式，不建议更改）
   Concurrent Requests: 并发请求
   Concurrent Threads: 并发线程
   'Configuration saved to: {path}': 配置已保存至：{path}
+  '{count} session folder(s) could not be removed. Check logs for details.': '{count} 个会话目录未能删除，请查看日志了解详情。'
   Custom: 自定义
   Custom System Prompt: 自定义系统提示
   Custom prompt for the translator: 翻译器的自定义提示
@@ -1225,6 +1237,10 @@ zh:
   Download Translation (Dual): 下载翻译（双语）
   Download Translation (Mono): 下载翻译（单语版）
   Download automatically extracted glossary: 下载自动提取的词汇表
+  Kept the current session folder.: 已保留当前会话目录。
+  No historical session folders were removed from pdf2zh_files.: 未从 pdf2zh_files 删除任何历史会话目录。
+  Removed {count} session folder(s) from pdf2zh_files.: 已从 pdf2zh_files 删除 {count} 个会话目录。
+  'Startup cleanup removed {count} expired session folder(s) older than {days} day(s).': 启动清理已删除 {count} 个超过 {days} 天的过期会话目录。
   '### Customer Glossary Template': '### 客户术语模板'
   Effective only when a page range is specified.: 仅在指定页面范围时有效。
   Enable auto term extraction: 启用自动术语提取

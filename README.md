@@ -46,6 +46,34 @@
 3. [PDFMathTranslate-next/README.md](/E:/PDFMathTranslate/PDFMathTranslate-next/README.md)
 4. [PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md](/E:/PDFMathTranslate/PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md)
 
+## 输出目录清理
+
+- `PDFMathTranslate-next` 的 WebUI 输出默认保存在 `pdf2zh_files/<session_id>/`。
+- 当前仓库已规划为一套共用策略：
+  - GUI 设置页提供 `清理 pdf2zh_files` 按钮；
+  - 启动 GUI 时可自动清理 N 天前的历史会话目录；
+  - Windows 本地运行与 Docker 容器挂载目录共用同一组配置项和清理逻辑。
+
+### Docker 挂载示例
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+如果你希望在容器启动时也自动清理历史输出，可额外传入：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  -e PDF2ZH_AUTO_CLEANUP_OUTPUT_HISTORY=true `
+  -e PDF2ZH_OUTPUT_HISTORY_RETENTION_DAYS=7 `
+  pdfmathtranslate-fashion:local
+```
+
 ## 开源许可
 
 - `PDFMathTranslate-next/` 与 `BabelDOC/` 相关代码均受 AGPL 体系约束。

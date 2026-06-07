@@ -1,5 +1,6 @@
 import sys
 import tempfile
+import uuid
 from pathlib import Path
 
 
@@ -38,7 +39,7 @@ def test_pdf_preview_allowed_paths_keep_accepted_preview_locations(monkeypatch):
 
     allowed_paths = [Path(path).resolve() for path in gui.pdf_preview_allowed_paths]
     expected_paths = {
-        Path("pdf2zh_files").resolve(),
+        gui.get_gui_output_root_dir().resolve(),
         Path(tempfile.gettempdir()).resolve(),
     }
 
@@ -54,6 +55,62 @@ def test_resolve_launch_port_falls_forward_when_default_is_busy(monkeypatch):
     monkeypatch.setattr(gui, "_can_bind_port", fake_can_bind_port)
 
     assert gui._resolve_launch_port(7860) == 7861
+
+
+def test_clean_output_history_keeps_current_session(monkeypatch, tmp_path):
+    gui = _gui(monkeypatch)
+    monkeypatch.setattr(gui, "get_gui_output_root_dir", lambda: tmp_path)
+
+    current_session_id = str(uuid.uuid4())
+    current_dir = tmp_path / current_session_id
+    current_dir.mkdir()
+    old_dir = tmp_path / str(uuid.uuid4())
+    old_dir.mkdir()
+
+    status_update = gui.clean_output_history({"session_id": current_session_id})
+
+    assert current_dir.exists() is True
+    assert old_dir.exists() is False
+    assert status_update["visible"] is True
+    assert "Kept the current session folder." in status_update["value"]
+
+
+def test_startup_output_history_cleanup_uses_retention_days(monkeypatch, tmp_path):
+    gui = _gui(monkeypatch)
+    monkeypatch.setattr(gui, "get_gui_output_root_dir", lambda: tmp_path)
+
+    expired_dir = tmp_path / str(uuid.uuid4())
+    expired_dir.mkdir()
+    recent_dir = tmp_path / str(uuid.uuid4())
+    recent_dir.mkdir()
+
+    import os
+    from datetime import datetime
+    from datetime import timedelta
+    from datetime import timezone
+
+    expired_timestamp = (
+        datetime.now(timezone.utc) - timedelta(days=9)
+    ).timestamp()
+    recent_timestamp = (
+        datetime.now(timezone.utc) - timedelta(days=1)
+    ).timestamp()
+    os.utime(expired_dir, (expired_timestamp, expired_timestamp))
+    os.utime(recent_dir, (recent_timestamp, recent_timestamp))
+
+    message = gui._run_startup_output_history_cleanup(
+        gui.CLIEnvSettingsModel(
+            gui_settings={
+                "auto_cleanup_output_history": True,
+                "output_history_retention_days": 7,
+            }
+        )
+    )
+
+    assert expired_dir.exists() is False
+    assert recent_dir.exists() is True
+    assert message is not None
+    assert "older than 7 day(s)" in message
 
 
 def test_on_file_upload_empty_list_returns_all_declared_outputs(monkeypatch):

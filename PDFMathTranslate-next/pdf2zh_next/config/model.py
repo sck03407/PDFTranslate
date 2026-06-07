@@ -108,6 +108,14 @@ class GUISettings(BaseModel):
         default=DEFAULT_GUI_BRAND_URL,
         description="Custom brand link shown in the GUI header",
     )
+    auto_cleanup_output_history: bool = Field(
+        default=True,
+        description="Automatically remove expired pdf2zh_files session directories when the GUI starts",
+    )
+    output_history_retention_days: int = Field(
+        default=7,
+        description="Retention days for pdf2zh_files session directories before automatic cleanup",
+    )
 
 
 class TranslationSettings(BaseModel):
@@ -305,6 +313,11 @@ class SettingsModel(BaseModel):
             # only generate offline assets
             # so no need to validate other settings
             return
+
+        if self.gui_settings.output_history_retention_days < 1:
+            raise ValueError(
+                "output_history_retention_days must be greater than or equal to 1"
+            )
 
         if not self.translate_engine_settings:
             raise ValueError("Must provide a translation service")

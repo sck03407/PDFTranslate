@@ -24,6 +24,26 @@ powershell -ExecutionPolicy Bypass -File .\script\build_fashion_docker.ps1
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
+如果你希望把 `pdf2zh_files` 输出目录挂载到宿主机：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+如果你希望容器启动时也使用与 Windows / 本地运行相同的自动清理策略：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  -e PDF2ZH_AUTO_CLEANUP_OUTPUT_HISTORY=true `
+  -e PDF2ZH_OUTPUT_HISTORY_RETENTION_DAYS=7 `
+  pdfmathtranslate-fashion:local
+```
+
 > [!NOTE]
 >
 > - 如果你后续把镜像发布到自己的 GHCR，请将上面的镜像名替换成你自己的 `ghcr.io/<owner>/<repo>:tag`。

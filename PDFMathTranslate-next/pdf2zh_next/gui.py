@@ -52,6 +52,8 @@ from pdf2zh_next.high_level import do_translate_async_stream
 from pdf2zh_next.i18n import LANGUAGES
 from pdf2zh_next.i18n import gettext as _
 from pdf2zh_next.i18n import update_current_languages
+from pdf2zh_next.output_cleanup import cleanup_session_output_dirs
+from pdf2zh_next.output_cleanup import get_gui_output_root_dir
 
 logger = logging.getLogger(__name__)
 
@@ -170,6 +172,95 @@ def _build_brand_markdown(brand_name: str | None, brand_url: str | None) -> str:
     if resolved_url:
         return f"# [{resolved_name}]({resolved_url})"
     return f"# {resolved_name}"
+
+
+def _ensure_output_history_root_dir() -> Path:
+    output_root_dir = get_gui_output_root_dir()
+    output_root_dir.mkdir(parents=True, exist_ok=True)
+    return output_root_dir
+
+
+def _format_cleanup_history_message(
+    *,
+    deleted_count: int,
+    error_count: int,
+    retention_days: int | None = None,
+    manual: bool = False,
+    kept_current_session: bool = False,
+) -> str:
+    if manual:
+        if deleted_count:
+            message = _("Removed {count} session folder(s) from pdf2zh_files.").format(
+                count=deleted_count
+            )
+        else:
+            message = _("No historical session folders were removed from pdf2zh_files.")
+    else:
+        message = _(
+            "Startup cleanup removed {count} expired session folder(s) older than {days} day(s)."
+        ).format(
+            count=deleted_count,
+            days=retention_days,
+        )
+
+    if kept_current_session:
+        message += " " + _("Kept the current session folder.")
+
+    if error_count:
+        message += " " + _(
+            "{count} session folder(s) could not be removed. Check logs for details."
+        ).format(count=error_count)
+
+    return message
+
+
+def _run_startup_output_history_cleanup(
+    current_settings: CLIEnvSettingsModel,
+) -> str | None:
+    if not current_settings.gui_settings.auto_cleanup_output_history:
+        return None
+
+    retention_days = int(current_settings.gui_settings.output_history_retention_days)
+    if retention_days < 1:
+        logger.warning(
+            "Skip startup cleanup because output_history_retention_days is invalid: %s",
+            retention_days,
+        )
+        return None
+    result = cleanup_session_output_dirs(
+        base_dir=get_gui_output_root_dir(),
+        older_than_days=retention_days,
+    )
+    if not result.deleted_dirs and not result.errors:
+        return None
+    return _format_cleanup_history_message(
+        deleted_count=len(result.deleted_dirs),
+        error_count=len(result.errors),
+        retention_days=retention_days,
+        manual=False,
+    )
+
+
+def clean_output_history(state: dict | None):
+    current_session_id = state.get("session_id") if state else None
+    keep_session_ids = [current_session_id] if current_session_id else []
+    result = cleanup_session_output_dirs(
+        base_dir=get_gui_output_root_dir(),
+        remove_all=True,
+        keep_session_ids=keep_session_ids,
+    )
+    kept_current_session = any(
+        session_dir.name == current_session_id for session_dir in result.kept_dirs
+    )
+    return gr.update(
+        value=_format_cleanup_history_message(
+            deleted_count=len(result.deleted_dirs),
+            error_count=len(result.errors),
+            manual=True,
+            kept_current_session=kept_current_session,
+        ),
+        visible=True,
+    )
 
 
 def _type_hint_allows_none(type_hint: typing.Any) -> bool:
@@ -448,7 +539,7 @@ if default_gui_glossaries:
 
 
 disable_gui_sensitive_input = settings.gui_settings.disable_gui_sensitive_input
-
+startup_output_history_cleanup_message: str | None = None
 
 
 def _get_unique_dest_path(output_dir: Path, original_name: str) -> Path:
@@ -721,6 +812,16 @@ def _build_translate_settings(
     ignore_cache = ui_inputs.get("ignore_cache")
     brand_name = ui_inputs.get("brand_name")
     brand_url = ui_inputs.get("brand_url")
+    auto_cleanup_output_history = ui_inputs.get("auto_cleanup_output_history")
+    output_history_retention_days = ui_inputs.get("output_history_retention_days")
+    if auto_cleanup_output_history is None:
+        auto_cleanup_output_history = (
+            translate_settings.gui_settings.auto_cleanup_output_history
+        )
+    if output_history_retention_days is None:
+        output_history_retention_days = (
+            translate_settings.gui_settings.output_history_retention_days
+        )
 
     # PDF Output Options
     no_mono = ui_inputs.get("no_mono")
@@ -831,6 +932,14 @@ def _build_translate_settings(
     translate_settings.translation.ignore_cache = ignore_cache
     translate_settings.gui_settings.brand_name = _resolve_brand_name(brand_name)
     translate_settings.gui_settings.brand_url = _resolve_brand_url(brand_url)
+    if auto_cleanup_output_history is not None:
+        translate_settings.gui_settings.auto_cleanup_output_history = bool(
+            auto_cleanup_output_history
+        )
+    if output_history_retention_days is not None:
+        translate_settings.gui_settings.output_history_retention_days = int(
+            output_history_retention_days
+        )
     translate_settings.translation.disable_builtin_fashion_prompt = (
         not use_builtin_fashion_prompt
     )
@@ -1055,6 +1164,12 @@ def _build_translate_settings(
         translate_settings.gui_settings = original_gui_settings
         translate_settings.gui_settings.brand_name = _resolve_brand_name(brand_name)
         translate_settings.gui_settings.brand_url = _resolve_brand_url(brand_url)
+        translate_settings.gui_settings.auto_cleanup_output_history = bool(
+            auto_cleanup_output_history
+        )
+        translate_settings.gui_settings.output_history_retention_days = int(
+            output_history_retention_days
+        )
         translate_settings.basic.gui = False
         translate_settings.basic.debug = False
         translate_settings.translation.glossaries = persisted_glossaries
@@ -1123,6 +1238,7 @@ def build_ui_inputs(*args):
 
     Args:
         *args: UI setting controls in the following order:
+            brand_name, brand_url, auto_cleanup_output_history, output_history_retention_days,
             service, lang_from, lang_to, page_range, page_input,
             no_mono, no_dual, dual_translate_first, use_alternating_pages_dual, watermark_output_mode,
             rate_limit_mode, rpm_input, concurrent_threads_input, custom_qps_input, custom_pool_max_workers_input,
@@ -1143,6 +1259,8 @@ def build_ui_inputs(*args):
     fixed_param_names = [
         "brand_name",
         "brand_url",
+        "auto_cleanup_output_history",
+        "output_history_retention_days",
         "service",
         "lang_from",
         "lang_to",
@@ -1375,7 +1493,7 @@ async def translate_files(
         state["parent_map"] = {}
 
     # Prepare output directory
-    output_dir = Path("pdf2zh_files") / session_id
+    output_dir = _ensure_output_history_root_dir() / session_id
     output_dir.mkdir(parents=True, exist_ok=True)
 
     zip_path = output_dir / "all_translations.zip"
@@ -2053,7 +2171,7 @@ def save_config(
     progress(0, desc=_("Saving configuration..."))
 
     # Prepare output directory
-    output_dir = Path("pdf2zh_files")
+    output_dir = _ensure_output_history_root_dir()
 
     _build_translate_settings(
         settings.clone(), config_fake_pdf_path, output_dir, SaveMode.always, ui_inputs
@@ -2538,7 +2656,7 @@ assets_dir = current_dir / "assets"
 translation_file_path = current_dir / "gui_translation.yaml"
 config_fake_pdf_path = DEFAULT_CONFIG_DIR / "config.fake.pdf"
 pdf_preview_allowed_paths = [
-    Path("pdf2zh_files").resolve(),  # translation outputs
+    get_gui_output_root_dir().resolve(),  # translation outputs
     Path(tempfile.gettempdir()).resolve(),  # uploaded temp files
 ]
 
@@ -2716,6 +2834,24 @@ with gr.Blocks(
                         label=_("Brand Link"),
                         value=_resolve_brand_url(settings.gui_settings.brand_url),
                     )
+                    auto_cleanup_output_history_input = gr.Checkbox(
+                        label=_("Auto clean pdf2zh_files on startup"),
+                        value=settings.gui_settings.auto_cleanup_output_history,
+                        interactive=True,
+                    )
+                    output_history_retention_days_input = gr.Number(
+                        label=_("Clean session folders older than N days"),
+                        value=settings.gui_settings.output_history_retention_days,
+                        precision=0,
+                        minimum=1,
+                        interactive=True,
+                    )
+                    with gr.Row():
+                        clean_output_history_btn = gr.Button(
+                            _("Clean pdf2zh_files"),
+                            variant="secondary",
+                        )
+                    output_history_status = gr.Markdown(visible=False)
 
                     detail_index = 0
                     term_detail_index = 0
@@ -3860,6 +3996,12 @@ with gr.Blocks(
             term_disabled_info,
         )
 
+        clean_output_history_btn.click(
+            clean_output_history,
+            inputs=[state],
+            outputs=[output_history_status],
+        )
+
         # Term rate limit handlers
         term_rate_limit_mode.change(
             on_term_rate_limit_mode_change,
@@ -3919,6 +4061,8 @@ with gr.Blocks(
         ui_setting_controls = [
             brand_name_input,
             brand_url_input,
+            auto_cleanup_output_history_input,
+            output_history_retention_days_input,
             service,
             lang_from,
             lang_to,
@@ -3983,6 +4127,7 @@ with gr.Blocks(
             customer_glossary_table,
             customer_glossary_status,
             term_disabled_info,
+            output_history_status,
         ]
 
         # Language swap button click handler
@@ -4115,6 +4260,16 @@ with gr.Blocks(
                 updates.append(
                     gr.update(
                         value=_resolve_brand_url(fresh_settings.gui_settings.brand_url)
+                    )
+                )
+                updates.append(
+                    gr.update(
+                        value=fresh_settings.gui_settings.auto_cleanup_output_history
+                    )
+                )
+                updates.append(
+                    gr.update(
+                        value=fresh_settings.gui_settings.output_history_retention_days
                     )
                 )
                 # service
@@ -4408,6 +4563,12 @@ with gr.Blocks(
                         visible=fresh_settings.translation.no_auto_extract_glossary
                     )
                 )  # term_disabled_info visibility
+                updates.append(
+                    gr.update(
+                        value=startup_output_history_cleanup_message or "",
+                        visible=bool(startup_output_history_cleanup_message),
+                    )
+                )  # output_history_status visibility/value
 
                 return updates
             except Exception as e:
@@ -4698,6 +4859,15 @@ def setup_gui(
 
     user_list = None
     html = None
+
+    _ensure_output_history_root_dir()
+    global startup_output_history_cleanup_message
+    startup_output_history_cleanup_message = _run_startup_output_history_cleanup(
+        settings
+    )
+    if startup_output_history_cleanup_message:
+        logger.info(startup_output_history_cleanup_message)
+        print(startup_output_history_cleanup_message)
 
     user_list, html = parse_user_passwd(auth_file, welcome_page)
     resolved_server_port = _resolve_launch_port(server_port)
