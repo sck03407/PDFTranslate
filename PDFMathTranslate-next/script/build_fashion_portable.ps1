@@ -63,41 +63,86 @@ function Resolve-BuildPythonInterpreter {
         [string]$Version
     )
 
+    function Get-PythonVersionFamily {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$RawVersion
+        )
+
+        $parts = $RawVersion -split '\.'
+        if ($parts.Length -lt 2) {
+            return $RawVersion
+        }
+        return ($parts[0..1] -join '.')
+    }
+
     function Test-PythonVersionMatch {
         param(
             [Parameter(Mandatory = $true)]
             [string]$ExecutablePath,
             [Parameter(Mandatory = $true)]
-            [string]$ExpectedVersion
+            [string]$ExpectedVersion,
+            [switch]$AllowPatchMismatch
         )
 
         $resolvedVersion = (& $ExecutablePath -c "import platform; print(platform.python_version())" 2>$null)
-        return $LASTEXITCODE -eq 0 -and $resolvedVersion.Trim() -eq $ExpectedVersion
-    }
-
-    $launcher = Get-Command py -ErrorAction SilentlyContinue
-    if ($null -ne $launcher) {
-        $candidate = (& $launcher.Source "-$Version" -c "import sys; print(sys.executable)" 2>$null)
-        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($candidate) -and (Test-PythonVersionMatch -ExecutablePath $candidate.Trim() -ExpectedVersion $Version)) {
-            return $candidate.Trim()
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($resolvedVersion)) {
+            return $false
         }
 
-        $majorMinor = ($Version -split '\.')[0..1] -join '.'
-        $candidate = (& $launcher.Source "-$majorMinor" -c "import sys; print(sys.executable)" 2>$null)
-        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($candidate) -and (Test-PythonVersionMatch -ExecutablePath $candidate.Trim() -ExpectedVersion $Version)) {
-            return $candidate.Trim()
+        $resolvedVersion = $resolvedVersion.Trim()
+        if ($resolvedVersion -eq $ExpectedVersion) {
+            return $true
+        }
+
+        if ($AllowPatchMismatch) {
+            return (Get-PythonVersionFamily -RawVersion $resolvedVersion) -eq (Get-PythonVersionFamily -RawVersion $ExpectedVersion)
+        }
+
+        return $false
+    }
+
+    $majorMinor = Get-PythonVersionFamily -RawVersion $Version
+
+    $setupPythonDirs = @(
+        $env:pythonLocation,
+        $env:Python_ROOT_DIR,
+        $env:Python3_ROOT_DIR,
+        $env:Python2_ROOT_DIR
+    ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique
+
+    foreach ($candidateDir in $setupPythonDirs) {
+        $candidateExe = Join-Path $candidateDir "python.exe"
+        if (Test-Path -LiteralPath $candidateExe) {
+            if (Test-PythonVersionMatch -ExecutablePath $candidateExe -ExpectedVersion $Version -AllowPatchMismatch) {
+                return $candidateExe
+            }
         }
     }
 
     $pythonCmd = Get-Command python -ErrorAction SilentlyContinue
     if ($null -ne $pythonCmd) {
         $resolvedExe = (& $pythonCmd.Source -c "import sys; print(sys.executable)" 2>$null)
-        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($resolvedExe) -and (Test-PythonVersionMatch -ExecutablePath $resolvedExe.Trim() -ExpectedVersion $Version)) {
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($resolvedExe) -and (Test-PythonVersionMatch -ExecutablePath $resolvedExe.Trim() -ExpectedVersion $Version -AllowPatchMismatch)) {
             return $resolvedExe.Trim()
         }
     }
 
-    throw "Python $Version was not found. Install Python $Version or make it available through the Python launcher before building the portable package."
+    $launcher = Get-Command py -ErrorAction SilentlyContinue
+    if ($null -ne $launcher) {
+        try {
+            $candidate = (& $launcher.Source "-$majorMinor" -c "import sys; print(sys.executable)" 2>$null)
+        }
+        catch {
+            $candidate = $null
+        }
+
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($candidate) -and (Test-PythonVersionMatch -ExecutablePath $candidate.Trim() -ExpectedVersion $Version -AllowPatchMismatch)) {
+            return $candidate.Trim()
+        }
+    }
+
+    throw "Python $Version was not found. Install Python $majorMinor (preferred exact version $Version) or expose it through setup-python / PATH before building the portable package."
 }
 
 function Get-BabelDOCInstallTarget {

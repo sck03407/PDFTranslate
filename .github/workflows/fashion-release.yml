@@ -79,7 +79,7 @@ jobs:
         shell: pwsh
         working-directory: ./PDFMathTranslate-next
         run: |
-          powershell -ExecutionPolicy Bypass -File .\script\build_fashion_portable.ps1 `
+          .\script\build_fashion_portable.ps1 `
             -OutputDir "$PWD\dist\pdf2zh-fashion-portable" `
             -PythonVersion "${{ env.PORTABLE_PYTHON_VERSION }}" `
             -BabelDOCSource "${{ github.event.inputs.babeldoc_source }}" `
