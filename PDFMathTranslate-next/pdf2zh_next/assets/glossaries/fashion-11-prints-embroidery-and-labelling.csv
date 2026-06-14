@@ -135,3 +135,77 @@ hangtag artwork,吊牌图稿,zh
 barcode placement,条码位置,zh
 rfid label,RFID 标签,zh
 wash care symbol,洗护符号,zh
+glow in dark print,夜光印花,zh
+engineered print,工程印花,zh
+print repeat,印花循环,zh
+print handfeel,印花手感,zh
+print cracking,印花开裂,zh
+print bleeding,印花渗色,zh
+print migration,印花迁移,zh
+print misregistration,印花套位不准,zh
+print size,印花尺寸,zh
+print color standard,印花色样标准,zh
+embroidery stitch,绣花针迹,zh
+satin stitch,缎面针迹,zh
+fill stitch,填针,zh
+running stitch,平针,zh
+chain embroidery,链式绣,zh
+bead embroidery,珠绣,zh
+water soluble backing,水溶衬,zh
+embroidery tension,绣花张力,zh
+embroidery hoop mark,绣框印,zh
+embroidery approval,绣花确认,zh
+badge,章仔,zh
+heat seal patch,热压章,zh
+care label artwork,洗唛图稿,zh
+CMYK color,CMYK 色,zh
+print artwork size,印花图稿尺寸,zh
+print artwork placement,印花图稿位置,zh
+print colorway,印花配色,zh
+print color separation,印花分色,zh
+print screen,印花网版,zh
+mesh count,网目数,zh
+squeegee pressure,刮刀压力,zh
+curing temperature,固化温度,zh
+curing time,固化时间,zh
+flash cure,闪烘,zh
+print base,印花底浆,zh
+underbase print,打底印花,zh
+overprint,叠印,zh
+halftone print,网点印花,zh
+gradient print,渐变印花,zh
+cracked print effect,裂纹印花效果,zh
+reactive print,活性印花,zh
+acid print,酸性印花,zh
+burn out print,烂花印花,zh
+foil placement,烫金位置,zh
+foil adhesion,烫金牢度,zh
+flocking,植绒,zh
+stone placement,烫钻位置,zh
+rhinestone transfer,烫钻转印,zh
+heat press temperature,热压温度,zh
+heat press time,热压时间,zh
+transfer film,转印膜,zh
+transfer paper,转印纸,zh
+transfer backing,转印底纸,zh
+embroidery tape,绣花胶带,zh
+embroidery frame,绣框,zh
+embroidery swatch,绣花样片,zh
+embroidery machine,绣花机,zh
+embroidery needle,绣花针,zh
+embroidery registration,绣花套位,zh
+applique fabric,贴布绣布料,zh
+applique edge,贴布边,zh
+patch placement,章仔位置,zh
+badge placement,章仔位置,zh
+printed patch,印章,zh
+reflective patch,反光章,zh
+3D badge,3D 章,zh
+heat transfer badge,热转印章,zh
+screen charge,网版费,zh
+artwork revision,图稿修订,zh
+artwork scale,图稿比例,zh
+artwork orientation,图稿方向,zh
+label mockup,唛标效果图,zh
+QR code artwork,二维码图稿,zh
+variable data label,可变数据标签,zh

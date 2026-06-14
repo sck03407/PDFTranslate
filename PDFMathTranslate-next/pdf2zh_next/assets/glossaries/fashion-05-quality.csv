@@ -160,3 +160,95 @@ sharp edge,锐边,zh
 metal contamination,金属污染,zh
 broken needle found,发现断针,zh
 irregular measurement,尺寸不规则,zh
+loose stitch,线迹松,zh
+tight stitch,线迹紧,zh
+uneven stitching,线迹不均,zh
+wavy stitching,线迹起浪,zh
+runoff stitch,线迹跑偏,zh
+snag,勾丝,zh
+laddering,抽丝,zh
+pin hole,针孔,zh
+cut mark,刀痕,zh
+scissor mark,剪刀痕,zh
+oil spot,油点,zh
+water mark,水印,zh
+color streak,色条,zh
+dye lot variation,缸差,zh
+uneven sleeve length,袖长不一致,zh
+uneven pocket placement,袋位不一致,zh
+off center placket,门襟偏中,zh
+misaligned stripe,条纹不对齐,zh
+mismatched plaid,格纹不对称,zh
+poor matching,对条对格不良,zh
+loose button,纽扣松,zh
+missing snap,缺按扣,zh
+missing label,缺唛,zh
+broken zipper,拉链坏,zh
+zipper jammed,拉链卡滞,zh
+zipper wave,拉链起波浪,zh
+snap not holding,按扣不牢,zh
+buttonhole fraying,扣眼毛边,zh
+buttonhole too small,扣眼过小,zh
+buttonhole too large,扣眼过大,zh
+elastic too tight,松紧过紧,zh
+elastic twisted,松紧扭曲,zh
+drawcord missing,缺抽绳,zh
+measurement below tolerance,尺寸低于公差,zh
+measurement above tolerance,尺寸高于公差,zh
+out of spec,不符合规格,zh
+needle contamination,断针污染,zh
+thread end,线头,zh
+thread tails,线尾,zh
+seam twisting,缝线扭曲,zh
+oil line,油线,zh
+pressure mark,压痕,zh
+iron shine,烫亮,zh
+scorch mark,烫焦痕,zh
+burn mark,烧痕,zh
+seam shadow,缝影,zh
+open overlock,包缝散开,zh
+loose overlock,包缝松,zh
+broken overlock,包缝断线,zh
+skipped overlock,包缝跳针,zh
+uneven topstitch,明线不均,zh
+double stitching uneven,双线不均,zh
+poor bartack,打枣不良,zh
+bartack missing,漏打枣,zh
+bartack misplaced,打枣位置错误,zh
+seam allowance uneven,缝份不均,zh
+seam allowance exposed,缝份外露,zh
+raw edge exposed,毛边外露,zh
+lining showing,里布外露,zh
+shell showing,面布外露,zh
+puckered zipper,拉链起皱,zh
+wavy zipper,拉链起浪,zh
+zipper teeth missing,拉链缺齿,zh
+zipper tape damaged,拉链带损坏,zh
+snap damaged,按扣损坏,zh
+rivet loose,撞钉松,zh
+eyelet loose,鸡眼松,zh
+cord lock broken,绳扣损坏,zh
+drawcord uneven,抽绳长短不一,zh
+drawcord too long,抽绳过长,zh
+drawcord too short,抽绳过短,zh
+elastic loose,松紧过松,zh
+waistband twisted,腰头扭曲,zh
+waistband rolling,腰头翻卷,zh
+collar twisting,领子扭曲,zh
+lapel rolling,驳头翻卷,zh
+sleeve twisting,袖子扭曲,zh
+armhole puckering,袖窿起皱,zh
+crotch seam broken,裆缝断裂,zh
+pocket opening gaping,袋口张开,zh
+pocket bag visible,袋布外露,zh
+print defect,印花疵点,zh
+embroidery defect,绣花疵点,zh
+label off position,唛标位置偏差,zh
+stain mark,污迹,zh
+adhesive mark,胶印,zh
+glue stain,胶渍,zh
+chalk mark,粉印,zh
+size mix,混码,zh
+color mix,混色,zh
+assortment error,配比错误,zh
+packing error,包装错误,zh

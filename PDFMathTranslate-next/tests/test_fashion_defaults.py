@@ -36,7 +36,7 @@ def test_builtin_fashion_glossary_pack_has_expanded_term_volume():
         for glossary_path in get_builtin_fashion_glossary_paths()
     )
 
-    assert total_rows >= 2300
+    assert total_rows >= 3300
 
 
 def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
@@ -84,6 +84,18 @@ def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
         "time and action plan": "生产进度计划",
         "rotary screen print": "圆网印花",
         "cuttable width": "可裁幅宽",
+        "hood drawcord opening": "帽绳孔",
+        "front rise including waistband": "含腰头前裆长",
+        "seacell": "海藻纤维",
+        "ultrasonic bonding": "超声波粘合",
+        "seam allowance exposed": "缝份外露",
+        "professional dry clean gentle cycle": "专业轻柔干洗",
+        "PP sample approval": "产前样确认",
+        "phenolic yellowing": "酚黄变",
+        "biodegradable polybag": "可降解胶袋",
+        "root cause analysis": "根因分析",
+        "rhinestone transfer": "烫钻转印",
+        "shacket": "衬衫式夹克",
     }
 
     for source, target in expected_terms.items():

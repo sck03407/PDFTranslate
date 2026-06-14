@@ -116,7 +116,7 @@ Default behavior:
 - Supported services automatically include the built-in fashion glossary pack.
 - LLM-capable services also inherit the built-in fashion translation prompt.
 - The built-in terminology is organized as classified glossary packs for garment parts, measurements, materials, construction, QC, care labels, BOM / tech pack wording, testing, packaging, production merchandising, print, embroidery, labelling, fit, silhouette, and pattern making.
-- The bundled EN->ZH apparel glossary now contains 2300+ entries for common tech pack, BOM, wash-care, packaging, production merchandising, print, embroidery, fit, pattern-making, fabric-performance, and compliance-testing samples.
+- The bundled EN->ZH apparel glossary now contains 3300+ entries for common tech pack, BOM, detailed garment parts, measurements/POM, wash-care, packaging, production merchandising, print, embroidery, fit, pattern-making, fabric-performance, delivery workflow, and compliance-testing samples.
 
 GUI and CLI behavior:
 

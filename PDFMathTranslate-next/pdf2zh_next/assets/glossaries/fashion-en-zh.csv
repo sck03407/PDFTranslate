@@ -55,6 +55,265 @@ center back,后中,zh
 front neck,前领口,zh
 back neck,后领口,zh
 neckline,领口,zh
+upper collar,上领,zh
+under collar,下领,zh
+collar point,领尖,zh
+collar band,领座,zh
+collar facing,领贴边,zh
+lapel,驳头,zh
+notch lapel,缺角驳头,zh
+shawl collar,青果领,zh
+mandarin collar,立领,zh
+front bodice,前片,zh
+back bodice,后片,zh
+front panel,前片,zh
+back panel,后片,zh
+side panel,侧片,zh
+princess seam,公主缝,zh
+dart,省道,zh
+bust dart,胸省,zh
+waist dart,腰省,zh
+shoulder dart,肩省,zh
+sleeve,袖子,zh
+short sleeve,短袖,zh
+long sleeve,长袖,zh
+sleeve panel,袖片,zh
+sleeve slit,袖开衩,zh
+sleeve tab,袖袢,zh
+pocket flap,袋盖,zh
+pocket welt,嵌线,zh
+chest pocket,胸袋,zh
+side pocket,侧袋,zh
+kangaroo pocket,袋鼠袋,zh
+watch pocket,表袋,zh
+waist seam,腰缝,zh
+underarm seam,腋下缝,zh
+seat seam,后裆缝,zh
+yoke seam,过肩缝,zh
+skirt panel,裙片,zh
+front skirt,前裙片,zh
+back skirt,后裙片,zh
+dress bodice,连衣裙上身,zh
+neck seam,领缝,zh
+collar notch,领缺口,zh
+front opening,前开口,zh
+back opening,后开口,zh
+keyhole opening,水滴形开口,zh
+slash pocket,斜插袋,zh
+inseam,内缝,zh
+outseam,外侧缝,zh
+back vent,后开衩,zh
+front vent,前开衩,zh
+kick pleat,后开衩褶,zh
+box pleat,箱形褶,zh
+knife pleat,单向褶,zh
+inverted pleat,倒褶,zh
+godet,裙插片,zh
+peplum,荷叶腰摆,zh
+empire waist,高腰线,zh
+dropped shoulder,落肩,zh
+cap sleeve,盖肩袖,zh
+dolman sleeve,蝙蝠袖,zh
+kimono sleeve,和服袖,zh
+lantern sleeve,灯笼袖,zh
+balloon sleeve,泡泡袖,zh
+side entry pocket,侧插袋,zh
+coin pocket facing,零钱袋贴边,zh
+crotch gusset,裆部插片,zh
+inner placket,里门襟,zh
+outer placket,外门襟,zh
+button placket,纽扣门襟,zh
+snap placket,按扣门襟,zh
+zipper placket,拉链门襟,zh
+placket extension,门襟延伸位,zh
+fly guard,门襟挡片,zh
+fly shield,门襟里襟,zh
+waistband extension,腰头延伸位,zh
+front waist,前腰,zh
+back waist,后腰,zh
+side waist,侧腰,zh
+hip pocket,臀袋,zh
+slant pocket,斜插袋,zh
+jetted pocket,嵌线袋,zh
+ticket pocket,票袋,zh
+phone pocket,手机袋,zh
+pocket bag,袋布,zh
+pocket lining,袋里,zh
+storm cuff,防风袖口,zh
+inner cuff,里袖口,zh
+rib cuff,罗纹袖口,zh
+thumbhole,拇指孔,zh
+thumb opening,拇指开口,zh
+sleeve gusset,袖下插片,zh
+underarm gusset,腋下插片,zh
+side vent,侧开衩,zh
+back pleat,后背褶,zh
+center back seam,后中缝,zh
+center front seam,前中缝,zh
+princess panel,公主线片,zh
+knee panel,膝盖片,zh
+knee patch,膝盖补片,zh
+hem facing,下摆贴边,zh
+hood brim,帽檐,zh
+hood visor,帽舌,zh
+neck facing,领口贴边,zh
+armhole binding,袖窿包边,zh
+side gusset,侧插片,zh
+front crotch,前裆,zh
+back crotch,后裆,zh
+inside collar stand,内领座,zh
+outside collar stand,外领座,zh
+collar fall,翻领面,zh
+collar roll line,领翻折线,zh
+lapel roll line,驳头翻折线,zh
+gorge line,驳口线,zh
+front facing,前贴边,zh
+back neck facing,后领贴边,zh
+shoulder strap,肩带,zh
+epaulette,肩章,zh
+sleeve head,袖山头,zh
+sleeve placket,袖叉,zh
+continuous sleeve placket,连续袖叉,zh
+cuff vent,袖口开衩,zh
+cuff slit,袖口开口,zh
+cuff pleat,袖口褶,zh
+hem slit,下摆开衩,zh
+side seam pocket,侧缝袋,zh
+pocket facing,袋口贴边,zh
+coin pocket welt,零钱袋嵌线,zh
+fly facing,门襟贴边,zh
+fly extension,门襟延伸片,zh
+crotch lining,裆里,zh
+back waistband,后腰头,zh
+front waistband,前腰头,zh
+drawcord channel,抽绳通道,zh
+elastic casing,松紧通道,zh
+waist tunnel,腰部通道,zh
+hem band,下摆边,zh
+side seam panel,侧缝拼片,zh
+front pocket bag,前袋布,zh
+back pocket bag,后袋布,zh
+neck binding,领口包边,zh
+neck rib,领口罗纹,zh
+collar stand seam,领座缝,zh
+collar button,领扣,zh
+collar tip,领尖,zh
+collar edge,领边,zh
+lapel notch,驳头缺口,zh
+lapel facing,驳头贴边,zh
+front lapel,前驳头,zh
+under lapel,下驳头,zh
+shoulder panel,肩部拼片,zh
+under sleeve,下袖片,zh
+top sleeve,上袖片,zh
+two-piece sleeve,两片袖,zh
+sleeve vent,袖叉开口,zh
+sleeve opening binding,袖口包边,zh
+cuff button,袖口扣,zh
+cuff edge,袖口边,zh
+elbow patch,肘部补片,zh
+elbow dart,肘省,zh
+armhole seam,袖窿缝,zh
+armhole facing,袖窿贴边,zh
+armhole panel,袖窿拼片,zh
+double welt pocket,双嵌线袋,zh
+single welt pocket,单嵌线袋,zh
+bellows pocket,风琴袋,zh
+pouch pocket,贴身袋,zh
+inner pocket,内袋,zh
+hidden pocket,暗袋,zh
+zipper pocket,拉链袋,zh
+hand pocket,插手袋,zh
+card pocket,卡袋,zh
+welt opening,嵌线袋口,zh
+pocket mouth,袋口,zh
+waist yoke,腰过肩,zh
+crotch point,裆点,zh
+crotch curve,裆弯,zh
+rise seam,裆缝,zh
+leg panel,裤片,zh
+side insert,侧拼片,zh
+back patch,后补片,zh
+hem opening,下摆开口,zh
+shirt tail hem,衬衫圆摆,zh
+rib hem,罗纹下摆,zh
+bottom rib,下摆罗纹,zh
+hood lining,帽里,zh
+hood seam,帽缝,zh
+hood drawcord opening,帽绳孔,zh
+hood eyelet patch,帽绳孔贴片,zh
+zipper welt,拉链嵌线,zh
+storm placket,挡风门襟,zh
+neck dart,领省,zh
+shoulder notch,肩部剪口,zh
+shoulder pad pocket,肩垫袋,zh
+armhole notch,袖窿剪口,zh
+front armhole,前袖窿,zh
+back armhole,后袖窿,zh
+sleeve seam,袖缝,zh
+placket seam,门襟缝,zh
+placket edge,门襟边,zh
+placket overlap,门襟搭位,zh
+placket underlap,门襟底搭位,zh
+zipper facing,拉链贴边,zh
+button tab,纽扣袢,zh
+front waist seam,前腰缝,zh
+back waist seam,后腰缝,zh
+side waist seam,侧腰缝,zh
+hip yoke,臀部过肩,zh
+back rise seam,后浪缝,zh
+front rise seam,前浪缝,zh
+saddle seam,鞍形缝,zh
+saddle yoke,鞍形过肩,zh
+gusset panel,插片,zh
+crotch panel,裆片,zh
+knee dart,膝省,zh
+knee seam,膝缝,zh
+leg inseam,裤内缝,zh
+leg outseam,裤外侧缝,zh
+ankle cuff,脚踝袖口,zh
+ankle opening binding,脚口包边,zh
+cuff rib,袖口罗纹,zh
+sleeve rib,袖口罗纹,zh
+waistband rib,腰头罗纹,zh
+bottom cuff,下摆袖口,zh
+pocket zipper,袋拉链,zh
+pocket zipper guard,袋拉链挡片,zh
+pocket bag bottom,袋布底,zh
+pocket bag seam,袋布缝,zh
+flap edge,袋盖边,zh
+pocket flap edge,袋盖边,zh
+hood center seam,帽中缝,zh
+hood side panel,帽侧片,zh
+hood peak,帽尖,zh
+hood brim edge,帽檐边,zh
+collar tab,领袢,zh
+throat latch,领口挡片,zh
+storm collar,防风领,zh
+inner storm flap,内挡风片,zh
+outer storm flap,外挡风片,zh
+chin guard binding,护嘴包边,zh
+front zipper opening,前拉链开口,zh
+back zipper opening,后拉链开口,zh
+side zipper opening,侧拉链开口,zh
+underarm opening,腋下开口,zh
+ventilation panel,透气拼片,zh
+mesh panel,网布拼片,zh
+reflective panel,反光拼片,zh
+reinforcement patch,加固补片,zh
+wear patch,耐磨补片,zh
+seat patch,臀部补片,zh
+knee articulation,膝部立体剪裁,zh
+articulated knee,立体膝,zh
+elbow articulation,肘部立体剪裁,zh
+inner waistband,内腰头,zh
+outer waistband,外腰头,zh
+waistband lining,腰头里布,zh
+fly button,门襟扣,zh
+fly topstitch,门襟明线,zh
+crotch reinforcement,裆部加固片,zh
+hem cord channel,下摆绳通道,zh
+hem adjuster opening,下摆调节口,zh
 spec sheet,尺寸表,zh
 tech pack,工艺单,zh
 fit comment,版型评语,zh
@@ -91,8 +350,6 @@ armhole straight,直量袖窿,zh
 front rise,前裆长,zh
 back rise,后裆长,zh
 rise,裆长,zh
-inseam,内长,zh
-outseam,外长,zh
 thigh,大腿围,zh
 knee,膝围,zh
 front neck drop,前领深,zh
@@ -106,6 +363,232 @@ pit to pit,胸宽,zh
 spi,每英寸针数,zh
 bom,物料清单,zh
 w/b,腰头,zh
+front body length,前身长,zh
+back body length,后身长,zh
+garment length,成衣长,zh
+total length,总长,zh
+neck circumference,领围,zh
+collar height,领高,zh
+collar stand height,领座高,zh
+across front,前胸宽,zh
+across back width,后背宽,zh
+armhole depth,袖窿深,zh
+sleeve opening circumference,袖口围,zh
+sleeve width,袖宽,zh
+elbow width,肘围,zh
+wrist opening,腕口围,zh
+waistband height,腰头高,zh
+waistband width,腰头宽,zh
+front rise including waistband,含腰头前裆长,zh
+back rise including waistband,含腰头后裆长,zh
+crotch depth,裆深,zh
+thigh width,大腿围,zh
+knee width,膝围,zh
+hem circumference,下摆围,zh
+skirt length,裙长,zh
+dress length,裙长,zh
+strap length,肩带长,zh
+strap width,肩带宽,zh
+pocket opening length,袋口长,zh
+placket length,门襟长,zh
+zipper length,拉链长,zh
+drawcord length,抽绳长,zh
+elastic length,松紧长度,zh
+relaxed measurement,自然量尺寸,zh
+stretched measurement,拉伸量尺寸,zh
+half measurement,半量尺寸,zh
+measurement method,测量方法,zh
+measure flat,平铺测量,zh
+measure along curve,沿曲线测量,zh
+measure straight,直线测量,zh
+out of tolerance,超出公差,zh
+within tolerance,在公差范围内,zh
+hps length,肩颈点长,zh
+hps to waist,肩颈点至腰,zh
+hps to bust point,肩颈点至胸点,zh
+front length from hps,前肩颈点衣长,zh
+back length from hps,后肩颈点衣长,zh
+center back neck to waist,后中领点至腰,zh
+shoulder to shoulder,肩点到肩点,zh
+shoulder slope,肩斜,zh
+shoulder drop,肩落差,zh
+front shoulder drop,前肩落差,zh
+neck rib height,领罗纹高,zh
+neck rib width,领罗纹宽,zh
+armhole curve,袖窿弧长,zh
+armhole circumference,袖窿围,zh
+sleeve cap height,袖山高,zh
+sleeve inseam,袖内长,zh
+sleeve inseam length,袖内长,zh
+underarm sleeve length,腋下袖长,zh
+chest width at armhole,袖窿位胸宽,zh
+garment width,成衣宽,zh
+hem width,下摆宽,zh
+sweep relaxed,自然下摆围,zh
+sweep stretched,拉伸下摆围,zh
+waistband relaxed,腰头自然量,zh
+waistband stretched,腰头拉伸量,zh
+hip at low point,低臀围,zh
+seat width,臀宽,zh
+front crotch length,前裆长,zh
+back crotch length,后裆长,zh
+crotch extension,裆部延伸量,zh
+outseam including waistband,含腰头外长,zh
+inseam length,内长,zh
+leg opening relaxed,脚口自然量,zh
+leg opening stretched,脚口拉伸量,zh
+front pocket opening,前袋口,zh
+back pocket opening,后袋口,zh
+strap drop,肩带垂长,zh
+hood width,帽宽,zh
+hood length,帽长,zh
+knee placement,膝位,zh
+thigh at crotch,裆下大腿围,zh
+waist to hem,腰至下摆,zh
+side seam length,侧缝长,zh
+neck drop,领深,zh
+hps to front hem,肩颈点至前下摆,zh
+hps to back hem,肩颈点至后下摆,zh
+front shoulder length,前肩长,zh
+back shoulder length,后肩长,zh
+shoulder seam length,肩缝长,zh
+neck opening width,领口宽,zh
+neck opening circumference,领口围,zh
+armhole drop,袖窿落差,zh
+front chest width,前胸宽,zh
+back chest width,后胸宽,zh
+waist placement,腰位,zh
+hip placement,臀位,zh
+calf width,小腿围,zh
+ankle opening,脚踝口围,zh
+bottom hem width,下摆宽,zh
+sleeve length from center back,后中量袖长,zh
+sleeve length from shoulder,肩点量袖长,zh
+sleeve length from neck point,领点量袖长,zh
+cuff height,袖口高,zh
+cuff width,袖口宽,zh
+cuff circumference,袖口围,zh
+placket width,门襟宽,zh
+zipper opening length,拉链开口长,zh
+pocket depth,袋深,zh
+pocket width,袋宽,zh
+pocket placement from side seam,袋位距侧缝,zh
+pocket placement from waistband,袋位距腰头,zh
+strap adjustment range,肩带调节范围,zh
+elastic relaxed length,松紧自然长度,zh
+elastic stretched length,松紧拉伸长度,zh
+drawcord finished length,抽绳成品长度,zh
+allowable tolerance,允许公差,zh
+tolerance plus,正公差,zh
+tolerance minus,负公差,zh
+shrinkage after wash,洗后缩水率,zh
+growth after wash,洗后伸长率,zh
+twist percentage,扭曲百分比,zh
+skew percentage,扭斜百分比,zh
+seat circumference,臀围,zh
+upper thigh,大腿上围,zh
+thigh 1 inch below crotch,裆下 1 英寸大腿围,zh
+front across shoulder,前肩宽,zh
+back across shoulder,后肩宽,zh
+neck rib relaxed,领罗纹自然量,zh
+neck rib stretched,领罗纹拉伸量,zh
+chest relaxed,胸围自然量,zh
+chest stretched,胸围拉伸量,zh
+bust point to bust point,胸点距,zh
+apex to apex,胸点距,zh
+low waist,低腰围,zh
+high hip,高臀围,zh
+low hip,低臀围,zh
+sweep opening,下摆开口,zh
+sweep circumference,下摆围,zh
+rise length,裆长,zh
+knee circumference,膝围,zh
+calf circumference,小腿围,zh
+ankle width,脚踝宽,zh
+muscle width,袖肥,zh
+upper arm width,上臂围,zh
+forearm width,前臂围,zh
+sleeve opening relaxed,袖口自然量,zh
+sleeve opening stretched,袖口拉伸量,zh
+cuff opening relaxed,袖口自然量,zh
+cuff opening stretched,袖口拉伸量,zh
+armhole curved,弧量袖窿,zh
+sleeve cap width,袖山宽,zh
+sleeve head width,袖山宽,zh
+shoulder to elbow,肩点至肘,zh
+hood opening circumference,帽口围,zh
+hood front opening,帽前开口,zh
+hood back height,帽后高,zh
+collar point length,领尖长,zh
+lapel width,驳头宽,zh
+front placket length,前门襟长,zh
+button spacing,扣距,zh
+distance between buttons,扣间距,zh
+pocket opening width,袋口宽,zh
+pocket height,袋高,zh
+pocket position,袋位,zh
+knee patch height,膝盖补片高,zh
+knee patch width,膝盖补片宽,zh
+garment length front,前衣长,zh
+garment length back,后衣长,zh
+finished length,成品长,zh
+flat measurement,平量尺寸,zh
+measure stretched,拉伸量,zh
+garment measurement,成衣尺寸,zh
+body measurement,人体尺寸,zh
+across front at 1 below armhole,袖窿下 1 英寸前胸宽,zh
+across back at 1 below armhole,袖窿下 1 英寸后背宽,zh
+chest 1 below armhole,袖窿下 1 英寸胸围,zh
+chest 2 below armhole,袖窿下 2 英寸胸围,zh
+sweep at relaxed,下摆自然量,zh
+sweep at stretched,下摆拉伸量,zh
+bottom opening relaxed,脚口自然量,zh
+bottom opening stretched,脚口拉伸量,zh
+waist along top edge,沿腰头上口腰围,zh
+waist along seam,沿腰缝腰围,zh
+waistband top opening,腰头上口,zh
+waistband bottom opening,腰头下口,zh
+high hip 3 below waist,腰下 3 英寸高臀围,zh
+low hip 7 below waist,腰下 7 英寸低臀围,zh
+thigh 2 below crotch,裆下 2 英寸大腿围,zh
+thigh 3 below crotch,裆下 3 英寸大腿围,zh
+thigh circumference,大腿围,zh
+knee 13 below crotch,裆下 13 英寸膝围,zh
+inseam to hem,内长至脚口,zh
+outseam to hem,外长至脚口,zh
+seat at 8 below waist,腰下 8 英寸臀围,zh
+leg opening circumference,脚口围,zh
+bicep at 1 below armhole,袖窿下 1 英寸袖肥,zh
+sleeve width at bicep,袖肥宽,zh
+sleeve width at elbow,肘位袖宽,zh
+sleeve width at cuff,袖口位袖宽,zh
+cuff opening circumference,袖口围,zh
+cuff rib height,袖口罗纹高,zh
+cuff rib width,袖口罗纹宽,zh
+neck trim height,领口辅料高,zh
+neck trim relaxed,领口辅料自然量,zh
+neck trim stretched,领口辅料拉伸量,zh
+collar stand width,领座宽,zh
+collar fall width,翻领宽,zh
+collar spread,领尖距,zh
+hood height from neck seam,领缝量帽高,zh
+hood opening flat,帽口平量,zh
+hood drawcord length,帽绳长,zh
+drawcord extension,抽绳外露长,zh
+zipper tape length,拉链带长,zh
+front zipper length,前拉链长,zh
+side zipper length,侧拉链长,zh
+label placement from neck seam,唛位距领缝,zh
+label placement from hem,唛位距下摆,zh
+logo placement from hps,标志位距肩颈点,zh
+print placement from hps,印花位距肩颈点,zh
+embroidery placement from center front,绣花位距前中,zh
+pocket placement from center front,袋位距前中,zh
+pocket placement from hem,袋位距下摆,zh
+hem turnback,下摆折回量,zh
+seam allowance width,缝份宽,zh
+topstitch distance,明线距离,zh
+buttonhole length,扣眼长,zh
 shell fabric,面料,zh
 self fabric,本布,zh
 contrast fabric,配布,zh
@@ -167,6 +650,254 @@ padding,填充物,zh
 quilted,绗缝,zh
 tpu membrane,TPU膜,zh
 pu coating,PU涂层,zh
+main fabric,主面料,zh
+body fabric,大身面料,zh
+sleeve fabric,袖子面料,zh
+lining fabric,里布,zh
+interlining fabric,衬布,zh
+pocketing,袋布,zh
+pocketing fabric,袋布,zh
+mesh lining,网眼里布,zh
+taffeta lining,塔夫绸里布,zh
+single jersey,单面平纹布,zh
+rib knit,罗纹针织布,zh
+2x2 rib,2x2罗纹,zh
+waffle knit,华夫格针织布,zh
+jacquard,提花布,zh
+dobby,多臂布,zh
+seersucker,泡泡纱,zh
+voile,巴里纱,zh
+georgette,乔其纱,zh
+chiffon,雪纺,zh
+crepe,绉布,zh
+organza,欧根纱,zh
+taffeta,塔夫绸,zh
+velvet,丝绒,zh
+velour,天鹅绒,zh
+suede,麂皮,zh
+faux suede,仿麂皮,zh
+softshell,软壳面料,zh
+microfiber,超细纤维,zh
+polyurethane,聚氨酯,zh
+polypropylene,丙纶,zh
+elastomultiester,弹性复合聚酯纤维,zh
+tencel,天丝,zh
+bamboo,竹纤维,zh
+bamboo viscose,竹粘胶,zh
+ramie,苎麻,zh
+jute,黄麻,zh
+angora,安哥拉毛,zh
+recycled nylon,再生尼龙,zh
+cotton poplin,棉府绸,zh
+cotton twill,棉斜纹布,zh
+cotton canvas,棉帆布,zh
+cotton jersey,棉平纹针织布,zh
+poly cotton,涤棉,zh
+polyester cotton,涤棉,zh
+tc fabric,涤棉布,zh
+cvc fabric,CVC 布,zh
+tricot,经编布,zh
+warp knit,经编布,zh
+weft knit,纬编布,zh
+bird eye mesh,鸟眼网布,zh
+power mesh,弹力网布,zh
+scuba knit,空气层针织布,zh
+ponte knit,罗马布,zh
+micro ripstop,细格防撕裂布,zh
+slub jersey,竹节平纹布,zh
+burnout fabric,烂花布,zh
+melange,花灰,zh
+heather,花灰,zh
+yarn dyed fabric,色织布,zh
+piece dyed fabric,匹染布,zh
+space dyed yarn,段染纱,zh
+neppy yarn,粒结纱,zh
+filament yarn,长丝纱,zh
+staple yarn,短纤纱,zh
+core spun yarn,包芯纱,zh
+cotton spandex,棉氨纶,zh
+nylon spandex,尼龙氨纶,zh
+polyester spandex,涤纶氨纶,zh
+viscose spandex,粘胶氨纶,zh
+rayon spandex,人造丝氨纶,zh
+polyester fleece,涤纶抓绒,zh
+water resistant fabric,防泼水面料,zh
+waterproof breathable fabric,防水透气面料,zh
+down filling,羽绒填充,zh
+synthetic filling,化纤填充,zh
+primaloft,Primaloft 保暖棉,zh
+recycled polyamide,再生锦纶,zh
+recycled wool,再生羊毛,zh
+recycled down,再生羽绒,zh
+duck down,鸭绒,zh
+goose down,鹅绒,zh
+synthetic down,仿羽绒,zh
+polyfill,涤纶填充棉,zh
+brushed fleece,拉毛绒,zh
+micro fleece,微摇粒绒,zh
+coated fabric,涂层面料,zh
+bonded fabric,贴合面料,zh
+water repellent finish,防泼水整理,zh
+dwr,持久防泼水,zh
+breathable membrane,透气膜,zh
+waterproof membrane,防水膜,zh
+four way stretch,四面弹,zh
+two way stretch,两面弹,zh
+stretch woven,弹力梭织布,zh
+cotton blend,棉混纺,zh
+polyester blend,涤纶混纺,zh
+linen blend,亚麻混纺,zh
+fabric composition,面料成分,zh
+fiber content,纤维成分,zh
+supima cotton,Supima 棉,zh
+pima cotton,匹马棉,zh
+bci cotton,BCI 棉,zh
+transitional cotton,转换期棉,zh
+regenerative cotton,再生农业棉,zh
+sea island cotton,海岛棉,zh
+cotton linen,棉麻,zh
+linen cotton,麻棉,zh
+cupro,铜氨纤维,zh
+triacetate,三醋酯纤维,zh
+ecovero viscose,ECOVERO 粘胶,zh
+livaeco viscose,Livaeco 粘胶,zh
+seacell,海藻纤维,zh
+mulesing free wool,无割皮羊毛,zh
+rws wool,RWS 羊毛,zh
+rds down,RDS 羽绒,zh
+gots cotton,GOTS 有机棉,zh
+repreve polyester,REPREVE 再生涤纶,zh
+coolmax,Coolmax 纤维,zh
+thermolite,Thermolite 保暖纤维,zh
+sorona,Sorona 纤维,zh
+double knit,双面针织布,zh
+ribbed fabric,罗纹布,zh
+ribbed knit,罗纹针织布,zh
+pointelle,镂空针织布,zh
+ottoman rib,横凸罗纹布,zh
+thermal knit,华夫格保暖针织布,zh
+brushed jersey,拉毛平纹布,zh
+loopback fleece,毛圈卫衣布,zh
+sweater knit,毛衫针织布,zh
+boucle,圈圈纱面料,zh
+tweed,粗花呢,zh
+houndstooth,千鸟格,zh
+herringbone,人字纹,zh
+gabardine,华达呢,zh
+bengaline,横棱纹布,zh
+faille,罗缎,zh
+charmeuse,素绉缎,zh
+crepe de chine,双绉,zh
+habotai,电力纺,zh
+pongee,春亚纺,zh
+sateen,贡缎,zh
+drill,斜纹卡其布,zh
+duck canvas,厚帆布,zh
+moleskin,磨毛厚棉布,zh
+faux shearling,仿羊羔毛,zh
+pile fleece,长毛绒,zh
+insulation,保暖填充,zh
+down alternative,仿羽绒填充,zh
+tencel lyocell,TENCEL 莱赛尔,zh
+lenzing modal,兰精莫代尔,zh
+bamboo fiber,竹纤维,zh
+soybean fiber,大豆纤维,zh
+milk fiber,牛奶纤维,zh
+polylactic acid,聚乳酸,zh
+pla fiber,PLA 纤维,zh
+recycled cashmere,再生羊绒,zh
+responsible down,责任羽绒,zh
+organic linen,有机亚麻,zh
+european flax linen,欧洲亚麻,zh
+linen viscose,亚麻粘胶,zh
+cotton modal,棉莫代尔,zh
+cotton polyester,棉涤,zh
+spacer fabric,间隔布,zh
+bonded fleece,复合抓绒,zh
+polar fleece,摇粒绒,zh
+microfleece,微摇粒绒,zh
+coral fleece,珊瑚绒,zh
+melange yarn,麻灰纱,zh
+brushed back fleece,背刷毛卫衣布,zh
+terry fleece,毛圈抓绒,zh
+wicking finish,吸湿排汗整理,zh
+moisture wicking,吸湿排汗,zh
+quick dry,速干,zh
+anti pilling finish,抗起球整理,zh
+anti static finish,抗静电整理,zh
+antibacterial finish,抗菌整理,zh
+uv protection fabric,防紫外线面料,zh
+wind resistant fabric,防风面料,zh
+combed cotton,精梳棉,zh
+carded cotton,普梳棉,zh
+slub cotton,竹节棉,zh
+compact cotton,紧密纺棉,zh
+cotton voile,棉巴里纱,zh
+PBT,PBT 纤维,zh
+PTT,PTT 纤维,zh
+cationic polyester,阳离子涤纶,zh
+microfiber polyester,超细旦涤纶,zh
+spun yarn,短纤纱,zh
+ring spun yarn,环锭纺纱,zh
+open end yarn,气流纺纱,zh
+heather yarn,麻灰纱,zh
+mouline yarn,夹花纱,zh
+garment dyed fabric,成衣染色布,zh
+pigment dyed fabric,涂料染色布,zh
+neoprene,氯丁橡胶面料,zh
+hardshell,硬壳面料,zh
+sweatshirt fleece,卫衣抓绒布,zh
+mesh jersey,网眼针织布,zh
+tulle,网纱,zh
+micro suede,超纤麂皮绒,zh
+pile fabric,绒面布,zh
+drill fabric,斜纹卡其布,zh
+water repellent fabric,防泼水面料,zh
+waterproof fabric,防水面料,zh
+windproof fabric,防风面料,zh
+responsible wool,负责任羊毛,zh
+dope dyed polyester,原液着色涤纶,zh
+solution dyed nylon,原液着色尼龙,zh
+bio based nylon,生物基尼龙,zh
+sisal,剑麻,zh
+kapok,木棉,zh
+yak wool,牦牛毛,zh
+camel hair,驼毛,zh
+recycled polyester fill,再生涤纶填充棉,zh
+recycled nylon fill,再生尼龙填充棉,zh
+lenzing ecovero,Lenzing ECOVERO,zh
+q-nova nylon,Q-NOVA 尼龙,zh
+econyl nylon,ECONYL 尼龙,zh
+thinsulate,新雪丽保温棉,zh
+polyester wadding,涤纶絮片,zh
+synthetic fill,化纤填充物,zh
+loose fill,散纤填充,zh
+sheet padding,片棉,zh
+needle punched wadding,针刺棉,zh
+felt,毛毡,zh
+3D mesh,3D 网布,zh
+birdseye mesh,鸟眼网布,zh
+air mesh,空气网布,zh
+taslan,塔丝隆,zh
+peached fabric,磨毛面料,zh
+brushed cotton,磨毛棉布,zh
+brushed twill,磨毛斜纹布,zh
+french rib,法式罗纹,zh
+ottoman fabric,奥斯曼布,zh
+milano knit,米兰罗纹针织,zh
+supplex nylon,SUPPLEX 尼龙,zh
+taslan nylon,塔丝隆尼龙,zh
+memory fabric,记忆面料,zh
+crinkle fabric,皱感面料,zh
+wrinkle fabric,皱纹面料,zh
+plisse,压褶布,zh
+lace fabric,蕾丝面料,zh
+embroidered lace,绣花蕾丝,zh
+guipure lace,水溶蕾丝,zh
+raschel lace,拉舍尔蕾丝,zh
+single knit,单面针织布,zh
+birdseye pique,鸟眼珠地,zh
+honeycomb pique,蜂巢珠地,zh
 trim,辅料,zh
 zipper,拉链,zh
 zipper puller,拉头,zh
@@ -216,6 +947,225 @@ broken stitch,断线,zh
 skip stitch,跳针,zh
 seam puckering,起皱,zh
 seam slippage,滑缝,zh
+single needle stitch,单针线迹,zh
+double needle stitch,双针线迹,zh
+three needle coverstitch,三针绷缝,zh
+four needle six thread,四针六线,zh
+zigzag stitch,之字线迹,zh
+blind hem stitch,暗缝线迹,zh
+bar tack,打枣,zh
+back tack,倒回针,zh
+reinforcement stitch,加固线,zh
+understitch,压里线,zh
+stay stitch,固定线,zh
+join seam,合缝,zh
+close seam,合缝,zh
+lap seam,搭缝,zh
+flat felled seam,双折包缝,zh
+french seam,来去缝,zh
+welt seam,嵌线缝,zh
+bound seam,包边缝,zh
+cover seam,绷缝,zh
+seam sealing,压胶,zh
+heat taped seam,热压胶缝,zh
+edge binding,边缘包边,zh
+clean finish,光边处理,zh
+turn back hem,折边下摆,zh
+rolled hem,卷边,zh
+narrow hem,窄边,zh
+blind hem,暗缝下摆,zh
+hem allowance,下摆缝份,zh
+notch,剪口,zh
+clip seam allowance,剪开缝份,zh
+trim seam allowance,修剪缝份,zh
+press seam open,烫开缝,zh
+press seam to back,缝份烫向后片,zh
+press seam to front,缝份烫向前片,zh
+seam reinforcement,缝位加固,zh
+stress point,受力点,zh
+needle pitch,针距,zh
+stitch length,针距,zh
+thread tension,线张力,zh
+single fold hem,单折下摆,zh
+double fold hem,双折下摆,zh
+baby hem,细卷边,zh
+lettuce hem,波浪边,zh
+raw edge finish,毛边处理,zh
+serged edge,拷边,zh
+merrow edge,密拷边,zh
+overlock seam,包缝缝,zh
+safety stitch,安全线迹,zh
+cover hem,绷缝下摆,zh
+cover stitch hem,绷缝下摆,zh
+binding finish,包边处理,zh
+bias binding,斜裁包边,zh
+self fabric facing,本布贴边,zh
+clean finish neckline,领口光边处理,zh
+turn and stitch,翻折车缝,zh
+bagged lining,套里工艺,zh
+fully lined,全里,zh
+half lined,半里,zh
+unlined,无里,zh
+fused seam,粘合缝,zh
+taped shoulder seam,肩缝贴带,zh
+reinforced seam,加固缝,zh
+bar tack reinforcement,打枣加固,zh
+buttonhole stitch,扣眼线迹,zh
+snap reinforcement,按扣加固,zh
+gather stitch,抽褶线,zh
+shirring stitch,抽皱线,zh
+pleating,打褶,zh
+knife pleating,单向打褶,zh
+edge topstitch,边线明线,zh
+double topstitch,双明线,zh
+contrast stitching,撞色线迹,zh
+tonal stitching,同色线迹,zh
+thread matching,线色匹配,zh
+sew on label,车缝唛标,zh
+heat press,热压,zh
+ultrasonic welding,超声波焊接,zh
+bonded seam,贴合缝,zh
+mock safety stitch,仿安全线迹,zh
+five thread overlock,五线包缝,zh
+three thread overlock,三线包缝,zh
+four thread overlock,四线包缝,zh
+edgestitch,压边线,zh
+stitch in ditch,落坑车缝,zh
+stay tape shoulder,肩缝贴稳定带,zh
+reinforce stress points,加固受力点,zh
+bartack pocket opening,袋口打枣,zh
+bartack at pocket,袋位打枣,zh
+backstitch,倒针,zh
+overlock raw edge,毛边包缝,zh
+bind armhole,袖窿包边,zh
+bind neckline,领口包边,zh
+attach collar,上领,zh
+set collar,装领,zh
+attach cuff,上袖口,zh
+set sleeve,装袖,zh
+ease sleeve cap,吃袖山,zh
+close side seams,合侧缝,zh
+join shoulder seams,合肩缝,zh
+attach waistband,上腰头,zh
+insert elastic,穿松紧,zh
+thread drawcord,穿抽绳,zh
+set zipper,装拉链,zh
+attach zipper,上拉链,zh
+sew buttonhole,开扣眼,zh
+sew button,钉扣,zh
+attach snap,打四合扣,zh
+apply interlining,贴衬,zh
+fuse interlining,粘衬,zh
+block fusing,整片粘衬,zh
+tack label,固定唛标,zh
+secure thread ends,锁住线头,zh
+trim loose threads,剪净线头,zh
+press flat,烫平,zh
+final pressing,最终整烫,zh
+seam allowance pressed open,缝份烫开,zh
+seam allowance overlocked,缝份包缝,zh
+blindstitch hem,暗缝下摆,zh
+topstitch around neckline,领圈明线,zh
+topstitch around armhole,袖窿明线,zh
+edge stitch placket,门襟压边线,zh
+bar tack belt loop,裤袢打枣,zh
+sew down,车缝固定,zh
+attach sleeve,装袖,zh
+close side seam,合侧缝,zh
+close inseam,合内缝,zh
+set waistband,上腰头,zh
+apply binding,上包边,zh
+apply tape,上织带,zh
+stitch around,环车,zh
+stitch down,车缝固定,zh
+stitch through all layers,穿透所有层车缝,zh
+stitch and turn,车缝后翻转,zh
+press open,烫开,zh
+press seam allowance open,烫开缝份,zh
+serge edge,包缝边,zh
+five thread safety stitch,五线安全线迹,zh
+twin needle coverstitch,双针绷缝,zh
+tape shoulder seam,肩缝加贴条,zh
+reinforce pocket opening,加固袋口,zh
+bar tack pocket ends,袋口两端打枣,zh
+bartack at stress points,受力点打枣,zh
+attach label,装唛,zh
+edge stitch 1/8 inch,1/8 英寸压边线,zh
+topstitch 1/4 inch,1/4 英寸明线,zh
+topstitch double row,双行明线,zh
+chain stitch hem,链式下摆线,zh
+blind stitch hem,暗缝下摆,zh
+hand tack,手工固定,zh
+slip stitch,藏针缝,zh
+catch stitch,交叉暗缝,zh
+fell stitch,包缝手针,zh
+bag out lining,套里翻出,zh
+stitch lining to shell,里布与面布车合,zh
+turn through opening,从返口翻出,zh
+close opening,封返口,zh
+notch seam allowance,缝份打剪口,zh
+grade seam allowance,修薄缝份,zh
+understitch facing,贴边压里线,zh
+topstitch facing,贴边明线,zh
+sew elastic in casing,松紧穿通道车缝,zh
+insert drawcord,穿抽绳,zh
+zipper top stop,拉链上止,zh
+clean seam finish,清洁缝口处理,zh
+block fuse,整片粘衬,zh
+spot fuse,局部粘衬,zh
+collar fusing,领部粘衬,zh
+waistband fusing,腰头粘衬,zh
+placket fusing,门襟粘衬,zh
+press seam flat,烫平缝份,zh
+press crease,烫裤线,zh
+steam press,蒸汽整烫,zh
+open seam finish,开缝处理,zh
+closed seam finish,合缝处理,zh
+french seam finish,来去缝处理,zh
+flatlock seam,四针六线缝,zh
+mock flatlock,仿四针六线,zh
+cover stitch neckline,领口绷缝,zh
+cover stitch armhole,袖窿绷缝,zh
+twin needle hem,双针下摆,zh
+zigzag bartack,之字打枣,zh
+keyhole buttonhole,圆头扣眼,zh
+straight buttonhole,平头扣眼,zh
+attach shank button,钉有脚扣,zh
+sew belt loop,车裤耳,zh
+set pocket,装袋,zh
+attach pocket,装口袋,zh
+sew pocket bag,车袋布,zh
+close pocket bag,合袋布,zh
+topstitch pocket opening,袋口明线,zh
+edge stitch collar,领边压线,zh
+topstitch collar,领明线,zh
+close cuff,合袖口,zh
+sew sleeve placket,车袖叉,zh
+attach hood,装帽,zh
+set hood,上帽,zh
+attach rib,装罗纹,zh
+join rib,合罗纹,zh
+stretch rib to fit,拉罗纹上缝,zh
+quarter mark elastic,松紧四等分标记,zh
+overlap elastic ends,松紧两端重叠,zh
+secure elastic ends,固定松紧两端,zh
+feed elastic,穿松紧,zh
+smocking stitch,蜂巢褶线迹,zh
+ease stitch,吃势线,zh
+basting stitch,疏缝线,zh
+tack label corners,固定唛标四角,zh
+stitch label four sides,四边车唛,zh
+blind tack,暗针固定,zh
+reinforce crotch seam,加固裆缝,zh
+reinforce shoulder seam,加固肩缝,zh
+cover raw seam,包住毛缝,zh
+bind seam allowance,缝份包边,zh
+tape zipper seam,拉链缝压胶,zh
+waterproof seam tape,防水压胶条,zh
+ultrasonic bonding,超声波粘合,zh
+heat bonding,热压粘合,zh
+laser cut edge,激光切边,zh
+bonded hem,粘合下摆,zh
 approved sample,确认样,zh
 proto sample,初样,zh
 fit sample,试身样,zh
@@ -266,6 +1216,209 @@ rework,返工,zh
 repairable,可修复,zh
 non repairable,不可修复,zh
 needle detector test,验针测试,zh
+open stitch,开线,zh
+loose thread,线头,zh
+untrimmed thread,未剪线头,zh
+uneven stitch,线迹不均,zh
+crooked stitch,线迹歪斜,zh
+needle damage,针伤,zh
+fabric damage,面料损伤,zh
+abrasion,磨损,zh
+color bleeding,串色,zh
+color transfer,沾色,zh
+dye stain,染色污渍,zh
+print crack,印花开裂,zh
+print peeling,印花脱落,zh
+embroidery loose thread,绣花线头松脱,zh
+missing stitch,漏针,zh
+missing button,少扣,zh
+wrong label,错唛,zh
+wrong size label,错尺码唛,zh
+wrong care label,错洗唛,zh
+wrong color,颜色错误,zh
+wrong size,尺码错误,zh
+mixed size,混码,zh
+measurement out of tolerance,尺寸超公差,zh
+uneven hem,下摆不平,zh
+twisted leg,裤腿扭斜,zh
+twisted sleeve,袖子扭斜,zh
+poor pressing,整烫不良,zh
+shiny mark,烫亮痕,zh
+seam opening,缝口开裂,zh
+fraying,散口,zh
+pilling grade,起球等级,zh
+color shade lot,色差缸号,zh
+shade continuity,色差连续性,zh
+appearance defect,外观疵点,zh
+workmanship defect,工艺疵点,zh
+packing defect,包装疵点,zh
+labeling defect,标识疵点,zh
+critical measurement,关键尺寸,zh
+measurement discrepancy,尺寸差异,zh
+uneven color,颜色不均,zh
+color difference,色差,zh
+off shade,色光偏差,zh
+wrong shade,色号错误,zh
+shade mismatch,色差不匹配,zh
+fabric flaw,布疵,zh
+yarn defect,纱疵,zh
+missing yarn,缺纱,zh
+broken yarn,断纱,zh
+thick yarn,粗纱,zh
+barre,横档,zh
+needle line,针路,zh
+drop stitch,漏针,zh
+broken seam,爆缝,zh
+seam burst,爆缝,zh
+zipper not functioning,拉链不顺,zh
+uneven collar,领子不平,zh
+collar twisted,领子扭斜,zh
+pocket skewed,口袋歪斜,zh
+placket twisted,门襟扭斜,zh
+placket gaping,门襟张口,zh
+hem wavy,下摆波浪,zh
+side seam twisted,侧缝扭斜,zh
+leg length uneven,裤长不一致,zh
+sleeve length uneven,袖长不一致,zh
+label upside down,唛标倒置,zh
+care label missing,缺洗唛,zh
+wrong hangtag,错吊牌,zh
+barcode unreadable,条码不可读,zh
+mildew,霉斑,zh
+odor,异味,zh
+chemical odor,化学异味,zh
+loose rivet,铆钉松动,zh
+exposed metal,金属外露,zh
+print off position,印花位置偏差,zh
+embroidery off position,绣花位置偏差,zh
+shade lot mismatch,缸差不匹配,zh
+thin yarn,细纱,zh
+slub defect,竹节疵,zh
+hole at seam,缝位破洞,zh
+needle hole damage,针孔损伤,zh
+run off stitch,车线跑偏,zh
+roving stitch,线迹游走,zh
+pleat not aligned,褶位不对齐,zh
+stripe mismatch,条纹不对齐,zh
+check mismatch,格纹不对齐,zh
+off grain,丝缕歪斜,zh
+twisted garment,成衣扭曲,zh
+neckline wavy,领口波浪,zh
+collar uneven,领子不平,zh
+pocket uneven,口袋不平,zh
+button loose,纽扣松动,zh
+snap loose,按扣松动,zh
+zipper broken,拉链损坏,zh
+zipper wavy,拉链起波浪,zh
+teeth missing,链牙缺失,zh
+puller missing,拉头缺失,zh
+stitch density incorrect,针距密度不正确,zh
+wrong thread color,线色错误,zh
+label missing,缺唛,zh
+hangtag missing,缺吊牌,zh
+incorrect barcode,条码错误,zh
+poor folding,折叠不良,zh
+carton damaged,外箱破损,zh
+polybag damaged,胶袋破损,zh
+moisture damage,受潮损坏,zh
+mold,霉点,zh
+unacceptable odor,异味不可接受,zh
+sharp edge,锐边,zh
+metal contamination,金属污染,zh
+broken needle found,发现断针,zh
+irregular measurement,尺寸不规则,zh
+loose stitch,线迹松,zh
+tight stitch,线迹紧,zh
+uneven stitching,线迹不均,zh
+wavy stitching,线迹起浪,zh
+runoff stitch,线迹跑偏,zh
+snag,勾丝,zh
+laddering,抽丝,zh
+pin hole,针孔,zh
+cut mark,刀痕,zh
+scissor mark,剪刀痕,zh
+oil spot,油点,zh
+water mark,水印,zh
+color streak,色条,zh
+dye lot variation,缸差,zh
+uneven sleeve length,袖长不一致,zh
+uneven pocket placement,袋位不一致,zh
+off center placket,门襟偏中,zh
+misaligned stripe,条纹不对齐,zh
+mismatched plaid,格纹不对称,zh
+poor matching,对条对格不良,zh
+loose button,纽扣松,zh
+missing snap,缺按扣,zh
+missing label,缺唛,zh
+broken zipper,拉链坏,zh
+zipper jammed,拉链卡滞,zh
+zipper wave,拉链起波浪,zh
+snap not holding,按扣不牢,zh
+buttonhole fraying,扣眼毛边,zh
+buttonhole too small,扣眼过小,zh
+buttonhole too large,扣眼过大,zh
+elastic too tight,松紧过紧,zh
+elastic twisted,松紧扭曲,zh
+drawcord missing,缺抽绳,zh
+measurement below tolerance,尺寸低于公差,zh
+measurement above tolerance,尺寸高于公差,zh
+out of spec,不符合规格,zh
+needle contamination,断针污染,zh
+thread end,线头,zh
+thread tails,线尾,zh
+seam twisting,缝线扭曲,zh
+oil line,油线,zh
+pressure mark,压痕,zh
+iron shine,烫亮,zh
+scorch mark,烫焦痕,zh
+burn mark,烧痕,zh
+seam shadow,缝影,zh
+open overlock,包缝散开,zh
+loose overlock,包缝松,zh
+broken overlock,包缝断线,zh
+skipped overlock,包缝跳针,zh
+uneven topstitch,明线不均,zh
+double stitching uneven,双线不均,zh
+poor bartack,打枣不良,zh
+bartack missing,漏打枣,zh
+bartack misplaced,打枣位置错误,zh
+seam allowance uneven,缝份不均,zh
+seam allowance exposed,缝份外露,zh
+raw edge exposed,毛边外露,zh
+lining showing,里布外露,zh
+shell showing,面布外露,zh
+puckered zipper,拉链起皱,zh
+wavy zipper,拉链起浪,zh
+zipper teeth missing,拉链缺齿,zh
+zipper tape damaged,拉链带损坏,zh
+snap damaged,按扣损坏,zh
+rivet loose,撞钉松,zh
+eyelet loose,鸡眼松,zh
+cord lock broken,绳扣损坏,zh
+drawcord uneven,抽绳长短不一,zh
+drawcord too long,抽绳过长,zh
+drawcord too short,抽绳过短,zh
+elastic loose,松紧过松,zh
+waistband twisted,腰头扭曲,zh
+waistband rolling,腰头翻卷,zh
+collar twisting,领子扭曲,zh
+lapel rolling,驳头翻卷,zh
+sleeve twisting,袖子扭曲,zh
+armhole puckering,袖窿起皱,zh
+crotch seam broken,裆缝断裂,zh
+pocket opening gaping,袋口张开,zh
+pocket bag visible,袋布外露,zh
+print defect,印花疵点,zh
+embroidery defect,绣花疵点,zh
+label off position,唛标位置偏差,zh
+stain mark,污迹,zh
+adhesive mark,胶印,zh
+glue stain,胶渍,zh
+chalk mark,粉印,zh
+size mix,混码,zh
+color mix,混色,zh
+assortment error,配比错误,zh
+packing error,包装错误,zh
 care label,洗唛,zh
 main label,主唛,zh
 size label,尺码唛,zh
@@ -309,6 +1462,173 @@ remove promptly,及时取出,zh
 dry away from direct sunlight,避免阳光直晒,zh
 reshape while damp,湿态整形,zh
 keep away from fire,远离火源,zh
+wash at 30 degrees,30 度水洗,zh
+wash at 40 degrees,40 度水洗,zh
+maximum wash temperature,最高洗涤温度,zh
+permanent press cycle,免烫程序,zh
+synthetic cycle,化纤洗程序,zh
+delicate wash,轻柔洗涤,zh
+do not hand wring,不可手拧,zh
+dry flat in shade,阴凉平摊晾干,zh
+hang dry,悬挂晾干,zh
+dry in shade,阴凉处晾干,zh
+line dry only,仅可悬挂晾干,zh
+do not line dry,不可悬挂晾干,zh
+do not dry in the sun,不可日晒晾干,zh
+iron low heat,低温熨烫,zh
+iron medium heat,中温熨烫,zh
+iron high heat,高温熨烫,zh
+iron with cloth,垫布熨烫,zh
+do not iron trim,不可熨烫辅料,zh
+do not iron embellishment,不可熨烫装饰,zh
+do not iron directly,不可直接熨烫,zh
+dry clean with any solvent,可用任意溶剂干洗,zh
+dry clean with petroleum solvent,石油溶剂干洗,zh
+reduced moisture,降低湿度处理,zh
+short cycle,短程序,zh
+low heat,低温,zh
+no optical brighteners,不可使用荧光增白剂,zh
+remove accessories before washing,洗前取下配件,zh
+close zipper before washing,洗前拉好拉链,zh
+fasten buttons before washing,洗前扣好纽扣,zh
+turn garment inside out,反面洗涤,zh
+color may transfer,可能沾色,zh
+avoid contact with light colors,避免接触浅色衣物,zh
+natural fading may occur,可能自然褪色,zh
+exclusive of decoration,不含装饰部分,zh
+exclusive of trims,不含辅料,zh
+wash garment separately,单独洗涤,zh
+professional leather clean only,仅可专业皮革清洁,zh
+wash at 60 degrees,60 度水洗,zh
+wash at 95 degrees,95 度水洗,zh
+maximum wash temperature 30c,最高 30 度水洗,zh
+maximum wash temperature 40c,最高 40 度水洗,zh
+maximum wash temperature 60c,最高 60 度水洗,zh
+machine wash gentle,轻柔机洗,zh
+machine wash permanent press,免烫程序机洗,zh
+hand wash only,仅可手洗,zh
+do not use biological detergent,不可使用生物酶洗涤剂,zh
+use laundry bag,使用洗衣袋,zh
+avoid prolonged soaking,避免长时间浸泡,zh
+do not rub isolated stains,不可揉搓局部污渍,zh
+dry naturally,自然晾干,zh
+dry on hanger,衣架悬挂晾干,zh
+tumble dry normal,常规滚筒烘干,zh
+tumble dry gentle,轻柔滚筒烘干,zh
+iron at low temperature,低温熨烫,zh
+iron at medium temperature,中温熨烫,zh
+iron at high temperature,高温熨烫,zh
+wash with similar colors,与相近颜色衣物一起洗涤,zh
+gentle machine wash cold,冷水轻柔机洗,zh
+wash inside out with like colors,反面与同色衣物一起洗涤,zh
+remove faux fur before washing,洗前取下仿毛饰边,zh
+fasten velcro before washing,洗前贴好魔术贴,zh
+zip up before washing,洗前拉好拉链,zh
+do not bleach soak or wring,不可漂白浸泡或拧干,zh
+do not tumble dry line dry in shade,不可滚筒烘干 阴凉悬挂晾干,zh
+tumble dry low remove promptly,低温滚筒烘干后及时取出,zh
+lay flat to dry,平铺晾干,zh
+dry flat away from heat,远离热源平摊晾干,zh
+iron on low reverse,反面低温熨烫,zh
+cool iron on reverse,反面低温熨烫,zh
+do not iron print or trim,不可熨烫印花或辅料,zh
+dry clean recommended,建议干洗,zh
+do not dry clean leather trims,不可干洗皮革辅料,zh
+wipe clean only,仅可擦拭清洁,zh
+spot clean with damp cloth,用湿布局部清洁,zh
+sponge clean only,仅可海绵擦洗,zh
+air dry only,仅可自然晾干,zh
+keep away from direct heat,远离直接热源,zh
+wash before first wear,首次穿着前洗涤,zh
+color may fade,颜色可能褪色,zh
+color may rub off,颜色可能摩擦掉色,zh
+dark colors may bleed,深色可能串色,zh
+do not iron pu coating,不可熨烫 PU 涂层,zh
+do not dry clean bonded fabric,复合面料不可干洗,zh
+remove padding before washing,洗前取出填充垫,zh
+wash in laundry bag,放入洗衣袋洗涤,zh
+do not twist dry,不可扭绞甩干,zh
+reshape and dry flat,整形后平摊晾干,zh
+iron on low setting,低档熨烫,zh
+steam only,仅可蒸汽处理,zh
+professional dry clean only,仅可专业干洗,zh
+dry clean p,P 类干洗,zh
+dry clean f,F 类干洗,zh
+remove detachable parts before washing,洗前取下可拆卸部件,zh
+remove belt before washing,洗前取下腰带,zh
+remove faux fur trim before washing,洗前取下仿毛饰边,zh
+wash with zipper closed,拉好拉链后洗涤,zh
+close hook and loop before washing,洗前合上魔术贴,zh
+fasten hook and loop before washing,洗前合上魔术贴,zh
+wash dark garment separately,深色衣物单独洗涤,zh
+due to the nature of this dye,由于染料特性,zh
+color may fade after washing,洗后可能褪色,zh
+avoid contact with sharp objects,避免接触尖锐物,zh
+do not bleach or tumble dry,不可漂白或滚筒烘干,zh
+close zippers before washing,洗涤前拉好拉链,zh
+remove detachable trims,取下可拆卸辅料,zh
+do not use fabric softener,请勿使用柔顺剂,zh
+do not leave wet,请勿湿置,zh
+drip dry in shade,阴凉处滴干,zh
+iron on reverse,反面熨烫,zh
+iron with press cloth,垫布熨烫,zh
+avoid ironing print,避免熨烫印花,zh
+due to the nature of this garment,因本衣物特性,zh
+color transfer may occur,可能发生沾色,zh
+keep away from direct sunlight,避免阳光直射,zh
+close all fasteners,扣好所有扣件,zh
+wash garment separately before wearing,穿着前单独洗涤,zh
+use laundry net,使用洗衣网袋,zh
+remove hood before washing,洗涤前取下帽子,zh
+remove pads before washing,洗涤前取出垫片,zh
+hang to dry immediately,立即悬挂晾干,zh
+low spin only,仅低速脱水,zh
+do not tumble dry with heat,请勿热风滚筒烘干,zh
+iron avoiding trims,熨烫时避开辅料,zh
+natural indigo may rub off,天然靛蓝可能掉色,zh
+indigo dye may transfer,靛蓝染料可能沾色,zh
+wash denim separately,牛仔单独洗涤,zh
+remove promptly after washing,洗后及时取出,zh
+store flat,平放存放,zh
+store hanging,悬挂存放,zh
+gentle machine wash,轻柔机洗,zh
+machine wash gentle cycle,机洗轻柔程序,zh
+machine wash separately,单独机洗,zh
+hand wash warm,温水手洗,zh
+hand wash in cold water,冷水手洗,zh
+hand wash in warm water,温水手洗,zh
+wash using neutral detergent,使用中性洗涤剂洗涤,zh
+use wool detergent,使用羊毛洗涤剂,zh
+use silk detergent,使用丝绸洗涤剂,zh
+do not bleach or soak,请勿漂白或浸泡,zh
+wash immediately after use,使用后立即洗涤,zh
+rinse thoroughly,彻底漂洗,zh
+do not leave folded when wet,潮湿时请勿折叠放置,zh
+dry away from heat,远离热源晾干,zh
+tumble dry no heat,无热风滚筒烘干,zh
+tumble dry delicate,轻柔滚筒烘干,zh
+do not tumble dry decoration,装饰部位请勿滚筒烘干,zh
+iron while damp,潮湿时熨烫,zh
+do not iron bonding,请勿熨烫粘合部位,zh
+avoid contact with rough surfaces,避免接触粗糙表面,zh
+wash with buttons fastened,扣好纽扣洗涤,zh
+fasten drawcords before washing,洗涤前固定抽绳,zh
+remove detachable collar before washing,洗涤前取下可拆卸领,zh
+remove detachable lining before washing,洗涤前取下可拆卸里布,zh
+dry clean separately,单独干洗,zh
+do not dry clean trims,辅料部位请勿干洗,zh
+professional dry clean gentle cycle,专业轻柔干洗,zh
+leather specialist clean,皮革专业清洁,zh
+suede specialist clean,麂皮专业清洁,zh
+down product professionally launder,羽绒制品专业洗涤,zh
+fluff after drying,干燥后拍松,zh
+store in a cool dry place,存放于阴凉干燥处,zh
+avoid damp storage,避免潮湿存放,zh
+keep folded,折叠存放,zh
+do not hang when wet,潮湿时请勿悬挂,zh
+reshape collar while damp,潮湿时整理领型,zh
+reshape cups while damp,潮湿时整理杯型,zh
+use garment bag when dry cleaning,干洗时使用洗衣袋,zh
 bill of materials,物料清单,zh
 material code,物料编码,zh
 item code,项目编码,zh
@@ -316,12 +1636,7 @@ component,部件,zh
 component description,部件描述,zh
 fabrication,面料规格,zh
 fabric content,面料成分,zh
-fiber content,纤维成分,zh
 shell,面层,zh
-body fabric,大身面料,zh
-sleeve fabric,袖子面料,zh
-pocketing,袋布,zh
-pocket bag,袋布,zh
 waistband curtain,腰里,zh
 fusing,粘合衬,zh
 fusible,可粘合,zh
@@ -397,7 +1712,6 @@ peaching,桃皮处理,zh
 coating,涂层,zh
 water repellent,防泼水,zh
 durable water repellent,持久防泼水,zh
-dwr,持久防泼水,zh
 breathable,透气,zh
 windproof,防风,zh
 waterproof,防水,zh
@@ -408,26 +1722,44 @@ lamination,贴膜,zh
 padding weight,填充克重,zh
 fill power,蓬松度,zh
 down proof,防钻绒,zh
+design sketch,设计草图,zh
+colorway code,配色代码,zh
+sample comments,样品评语,zh
+fit correction,版型修改,zh
+bulk fabric approval,大货面料确认,zh
+approved color standard,确认色样标准,zh
+garment construction,成衣工艺,zh
+workmanship notes,做工说明,zh
+seam detail,缝制细节,zh
+stitch detail,线迹细节,zh
+pom chart,测量点表,zh
+graded spec,放码尺寸表,zh
+tolerance column,公差栏,zh
+supplier reference,供应商参考号,zh
+vendor item number,供应商物料号,zh
+customer style number,客户款号,zh
+buyer style number,买家款号,zh
+carton packing method,装箱方式,zh
+ratio pack,配比装箱,zh
+open stock pack,散码装箱,zh
+prepack ratio,预包装配比,zh
+assortment detail,配码明细,zh
+label copy,唛标文案,zh
+wash care copy,洗护文案,zh
+ticketing instruction,价签说明,zh
+testing requirement,测试要求,zh
 anti pilling,抗起球,zh
 anti static,防静电,zh
 anti bacterial,抗菌,zh
-moisture wicking,吸湿排汗,zh
-quick dry,速干,zh
 uv protection,防紫外线,zh
 upf,紫外线防护系数,zh
 stretch,弹力,zh
-four way stretch,四面弹,zh
-two way stretch,两面弹,zh
 recovery,回弹,zh
 compressive,压缩性,zh
 brushed back,内磨毛,zh
-bonded fleece,复合抓绒,zh
-microfleece,摇粒绒,zh
-polar fleece,双面绒,zh
 mock layer,假两件层次,zh
 layered look,层次感效果,zh
 garment accessory,成衣辅件,zh
-main fabric,主面料,zh
 secondary fabric,次要面料,zh
 trim card,辅料卡,zh
 fabric swatch,面料小样,zh
@@ -441,6 +1773,176 @@ operation bulletin,工序表,zh
 smv,标准工时,zh
 sam,动作分析表,zh
 needle policy,断针管理制度,zh
+product development,产品开发,zh
+style description,款式描述,zh
+style name,款名,zh
+style code,款号,zh
+colorway,配色,zh
+color name,颜色名称,zh
+size range,尺码范围,zh
+season,季节,zh
+collection,系列,zh
+buyer,买家,zh
+vendor,供应商,zh
+factory,工厂,zh
+supplier,供应商,zh
+country of origin,原产国,zh
+hs code,海关编码,zh
+sample request,样衣需求,zh
+sample submission,样衣提交,zh
+sample comment,样衣意见,zh
+fit approval,版型确认,zh
+wear test,试穿测试,zh
+proto approval,初样确认,zh
+sales sample approval,销售样确认,zh
+top sample,头件样,zh
+top approval,头件确认,zh
+fabric approval,面料确认,zh
+trim approval,辅料确认,zh
+lab dip approval,色样确认,zh
+artwork approval,图案确认,zh
+size specification,尺寸规格,zh
+measurement chart,尺寸表,zh
+pattern correction,纸样修正,zh
+grading,放码,zh
+marker,唛架,zh
+cutting instruction,裁剪说明,zh
+sewing operation,车缝工序,zh
+critical path,关键路径,zh
+time and action calendar,生产进度表,zh
+tna calendar,生产进度表,zh
+purchase order,采购订单,zh
+order quantity,订单数量,zh
+minimum order quantity,最小起订量,zh
+moq,最小起订量,zh
+delivery date,交货日期,zh
+ship date,出货日期,zh
+ex factory,离厂,zh
+fabric consumption,面料用量,zh
+trim consumption,辅料用量,zh
+wastage,损耗,zh
+yield,单耗,zh
+costing sheet,成本单,zh
+unit price,单价,zh
+sample yardage,样布用量,zh
+sample tag,样衣吊牌,zh
+development sample,开发样,zh
+photo sample,拍照样,zh
+wearer trial sample,试穿样,zh
+red seal sample,红封样,zh
+green seal sample,绿封样,zh
+black seal sample,黑封样,zh
+bulk shipment sample,大货船样,zh
+proto comments,初样意见,zh
+fit meeting,试身会议,zh
+pattern amendment,纸样修改,zh
+style sketch,款式图,zh
+technical sketch,技术款式图,zh
+flat sketch,平面款式图,zh
+color standard,颜色标准,zh
+approved lab dip,确认色样,zh
+bulk fabric standard,大货面料标准,zh
+trim sheet,辅料表,zh
+bill of labor,工序工价表,zh
+operation breakdown,工序分解,zh
+line layout,生产线布局,zh
+cutting marker,裁剪唛架,zh
+marker efficiency,唛架利用率,zh
+fabric width,布封,zh
+usable width,有效门幅,zh
+shrinkage allowance,缩水预留,zh
+fabric utilization,面料利用率,zh
+cost breakdown,成本明细,zh
+target price,目标价,zh
+quoted price,报价,zh
+landed cost,到岸成本,zh
+freight cost,运费成本,zh
+duty rate,关税税率,zh
+sample charge,样品费,zh
+fabric liability,面料责任库存,zh
+trim liability,辅料责任库存,zh
+excess fabric,多余面料,zh
+leftover trim,剩余辅料,zh
+vendor manual,供应商手册,zh
+compliance requirement,合规要求,zh
+testing protocol,测试规范,zh
+inspection protocol,检验规范,zh
+product description,产品描述,zh
+garment description,成衣描述,zh
+size break,尺码断档,zh
+size ratio,尺码比例,zh
+lab dip reference,缸样参考,zh
+fabric code,面料编号,zh
+supplier code,供应商编号,zh
+mill name,布厂名称,zh
+trim supplier,辅料供应商,zh
+trim code,辅料编号,zh
+nominated supplier,指定供应商,zh
+placement instruction,位置说明,zh
+workmanship standard,做工标准,zh
+artwork file,图稿文件,zh
+print artwork,印花图稿,zh
+initial spec,初版规格,zh
+final spec,最终规格,zh
+revised spec,修订规格,zh
+duplicate sample,复样,zh
+showroom sample,展厅样,zh
+advertising sample,广告样,zh
+approval status,确认状态,zh
+pending approval,待确认,zh
+approved with comments,附意见确认,zh
+rejected sample,样品拒收,zh
+fit issue,试身问题,zh
+spec revision,规格修订,zh
+bulk comments,大货意见,zh
+risk assessment,风险评估,zh
+change log,变更记录,zh
+revision history,修订历史,zh
+deviation request,偏差申请,zh
+concession approval,让步接收确认,zh
+care instruction sheet,洗护说明页,zh
+material list,物料列表,zh
+fabric swatch card,面料色卡,zh
+tech sketch,款式工艺图,zh
+detail sketch,细节图,zh
+construction sketch,工艺结构图,zh
+measurement diagram,测量示意图,zh
+callout,标注,zh
+callout number,标注编号,zh
+comment sheet,评语表,zh
+PP sample approval,产前样确认,zh
+TOP sample approval,大货船头样确认,zh
+wash sample,洗水样,zh
+salesman sample request,销售样申请,zh
+bulk trim approval,大货辅料确认,zh
+color approval,颜色确认,zh
+carton approval,纸箱确认,zh
+testing approval,测试确认,zh
+quality standard,质量标准,zh
+inspection standard,检验标准,zh
+workmanship note,做工说明,zh
+tolerance chart,公差表,zh
+point of measure code,测量点代码,zh
+revised measurement,修订尺寸,zh
+sealed sample,封样,zh
+gold seal,金封,zh
+red seal,红封,zh
+black seal,黑封,zh
+customer comments,客户意见,zh
+vendor comments,供应商意见,zh
+factory comments,工厂意见,zh
+action required,需采取行动,zh
+status update,状态更新,zh
+open issue,未解决问题,zh
+resolved issue,已解决问题,zh
+pending issue,待处理问题,zh
+owner,负责人,zh
+due date,截止日期,zh
+target date,目标日期,zh
+sample quantity,样品数量,zh
+bulk quantity,大货数量,zh
+surcharge,附加费,zh
+FOB price,FOB 价格,zh
 care instruction,护理说明,zh
 wash care,洗护说明,zh
 cold gentle machine wash,冷和缓机洗,zh
@@ -557,18 +2059,194 @@ prop 65 compliant,符合加州 65 法案,zh
 wash durability,耐洗性,zh
 appearance retention,外观保持性,zh
 seam grin,缝位开口,zh
-needle line,针路痕,zh
 color migration,颜色迁移,zh
 crocking wet,湿摩擦色牢度,zh
 crocking dry,干摩擦色牢度,zh
 dimensional change,尺寸变化率,zh
 stiff hand feel,手感偏硬,zh
 harsh hand feel,手感粗硬,zh
-odor,异味,zh
-mildew,霉斑,zh
 rust stain,锈渍,zh
 water stain,水渍,zh
 glue mark,胶印,zh
+ph value,pH 值,zh
+colorfastness to chlorinated water,耐氯水色牢度,zh
+colorfastness to sea water,耐海水色牢度,zh
+colorfastness to dry cleaning,耐干洗色牢度,zh
+colorfastness to ironing,耐熨烫色牢度,zh
+colorfastness to heat pressing,耐热压色牢度,zh
+phenolic yellowing,酚黄变,zh
+yellowing test,黄变测试,zh
+nickel release,镍释放,zh
+lead content,铅含量,zh
+cadmium content,镉含量,zh
+phthalates,邻苯二甲酸盐,zh
+restricted substance,限用物质,zh
+rsl,限用物质清单,zh
+mrsl,制造限用物质清单,zh
+fiber composition test,纤维成分测试,zh
+fabric weight test,克重测试,zh
+down content test,羽绒含量测试,zh
+fill power test,蓬松度测试,zh
+water repellency test,防泼水测试,zh
+spray test,喷淋测试,zh
+hydrostatic pressure test,静水压测试,zh
+breathability test,透气性测试,zh
+air permeability,透气量,zh
+water vapor transmission,透湿量,zh
+thermal resistance,热阻,zh
+abrasion resistance,耐磨性,zh
+martindale abrasion,马丁代尔耐磨,zh
+taber abrasion,泰伯耐磨,zh
+zipper durability,拉链耐用性,zh
+button attachment strength,纽扣附着强力,zh
+snap attachment strength,按扣附着强力,zh
+seam appearance,缝位外观,zh
+washed appearance,洗后外观,zh
+after care appearance,洗护后外观,zh
+residual shrinkage,残余缩水率,zh
+widthwise shrinkage,纬向缩水率,zh
+lengthwise shrinkage,经向缩水率,zh
+dimensional stability to washing,耐洗尺寸稳定性,zh
+dimensional stability to dry cleaning,耐干洗尺寸稳定性,zh
+abrasion test,耐磨测试,zh
+pilling resistance,抗起球性,zh
+snagging resistance,抗勾丝性,zh
+burst strength test,胀破强力测试,zh
+tensile strength test,拉伸强力测试,zh
+tear strength test,撕破强力测试,zh
+seam strength test,接缝强力测试,zh
+stretch and recovery test,拉伸回复测试,zh
+elastic recovery,弹性回复率,zh
+compression recovery,压缩回复率,zh
+wicking test,吸湿排汗测试,zh
+drying rate,干燥速率,zh
+water vapor permeability,透湿率,zh
+thermal insulation,保温性,zh
+down leakage test,钻绒测试,zh
+feather leakage,钻毛,zh
+colorfastness to ozone,耐臭氧色牢度,zh
+colorfastness to phenolic yellowing,耐酚黄变色牢度,zh
+antibacterial test,抗菌测试,zh
+uv protection test,防紫外线测试,zh
+flammability warning,燃烧警示,zh
+cord and drawstring safety,绳带安全,zh
+small parts test,小部件测试,zh
+sharp point test,尖点测试,zh
+sharp edge test,锐边测试,zh
+choking hazard,窒息危险,zh
+pull force test,拉力测试,zh
+torque test,扭力测试,zh
+commercial laundry test,商业洗涤测试,zh
+home laundering,家庭洗涤,zh
+dry cleaning test,干洗测试,zh
+appearance after laundering,洗涤后外观,zh
+pilling box test,起球箱测试,zh
+random tumble pilling,随机翻滚起球,zh
+ici pilling,ICI 起球测试,zh
+mace snagging,钉锤勾丝测试,zh
+hydrostatic head,静水压,zh
+colorfastness to hot pressing,耐热压色牢度,zh
+dimensional change to washing,水洗尺寸变化率,zh
+dimensional change to dry cleaning,干洗尺寸变化率,zh
+fabric stretch recovery,面料拉伸回复率,zh
+seam fatigue,接缝疲劳,zh
+seam bursting strength,接缝胀破强力,zh
+drawcord safety test,抽绳安全测试,zh
+nickel release test,镍释放测试,zh
+azo dye test,偶氮染料测试,zh
+formaldehyde test,甲醛测试,zh
+ph value test,pH 值测试,zh
+restricted substances list,限用物质清单,zh
+rsl test,RSL 测试,zh
+reach compliance,REACH 合规,zh
+cpsia compliance,CPSIA 合规,zh
+gb 18401,GB 18401,zh
+gb 31701,GB 31701,zh
+oeko tex standard 100,OEKO-TEX Standard 100,zh
+oeko-tex standard 100,OEKO-TEX Standard 100,zh
+moisture management test,湿气管理测试,zh
+air permeability test,透气性测试,zh
+hydrostatic pressure rating,静水压等级,zh
+feather leakage test,钻毛测试,zh
+appearance after washing,洗后外观,zh
+dry crocking,干摩擦,zh
+wet crocking,湿摩擦,zh
+colorfastness to seawater,耐海水色牢度,zh
+zipper strength test,拉链强力测试,zh
+needle detection test,验针测试,zh
+metal detection test,金属探测测试,zh
+restricted substances test,限用物质测试,zh
+formaldehyde content,甲醛含量,zh
+azo dyes,偶氮染料,zh
+chromium VI,六价铬,zh
+DMFu,富马酸二甲酯,zh
+organotin compounds,有机锡化合物,zh
+PFAS,全氟和多氟烷基物质,zh
+spray rating,喷淋等级,zh
+moisture vapor transmission rate,透湿率,zh
+down fill power,羽绒蓬松度,zh
+fiber content test,纤维含量测试,zh
+care label review,洗唛审核,zh
+garment wash test,成衣洗水测试,zh
+spirality after wash,洗后扭曲率,zh
+skewness after wash,洗后纬斜率,zh
+crease recovery,折皱回复性,zh
+water absorption,吸水性,zh
+quick dry test,速干测试,zh
+uv protection factor,紫外线防护系数,zh
+anti microbial test,抗菌测试,zh
+odor control test,抑味测试,zh
+water column test,水柱测试,zh
+color migration test,颜色迁移测试,zh
+print durability test,印花耐久性测试,zh
+coating adhesion test,涂层附着力测试,zh
+lamination peel strength,复合剥离强力,zh
+wash fastness,耐洗色牢度,zh
+rubbing fastness,耐摩擦色牢度,zh
+perspiration fastness,耐汗渍色牢度,zh
+light fastness,耐光色牢度,zh
+length shrinkage,长度缩水率,zh
+width shrinkage,宽度缩水率,zh
+print colorfastness,印花色牢度,zh
+embroidery colorfastness,绣花色牢度,zh
+coated fabric test,涂层面料测试,zh
+bonded fabric test,复合面料测试,zh
+seam performance,接缝性能,zh
+seam bursting,接缝顶破,zh
+seam elongation,接缝伸长,zh
+yarn slippage,纱线滑移,zh
+fabric width test,幅宽测试,zh
+fabric count,织物密度,zh
+yarn count test,纱支测试,zh
+GSM test,克重测试,zh
+oz weight,盎司重量,zh
+fabric handfeel test,面料手感测试,zh
+fabric inspection,验布,zh
+broken needle procedure,断针处理程序,zh
+mold test,霉菌测试,zh
+mildew test,防霉测试,zh
+odor test,气味测试,zh
+antimicrobial finish test,抗菌整理测试,zh
+water resistance,防水性,zh
+water repellency,拒水性,zh
+oil repellency,拒油性,zh
+soil release,易去污性,zh
+stain resistance,抗污性,zh
+chlorine resistance,耐氯性,zh
+perspiration acidic,酸性汗渍,zh
+perspiration alkaline,碱性汗渍,zh
+saliva colorfastness,耐唾液色牢度,zh
+storage yellowing,储存黄变,zh
+transfer print fastness,转印色牢度,zh
+sublimation fastness,升华色牢度,zh
+dry heat test,干热测试,zh
+ironing test,熨烫测试,zh
+dimensional stability to steaming,汽蒸尺寸稳定性,zh
+dry clean shrinkage,干洗缩水率,zh
+stretch recovery,拉伸回复率,zh
+button impact test,纽扣冲击测试,zh
+snap fatigue test,按扣疲劳测试,zh
+drawstring requirement,抽绳要求,zh
 main zipper,主拉链,zh
 fly zipper,门襟拉链,zh
 invisible zipper,隐形拉链,zh
@@ -709,3 +2387,904 @@ encased elastic,包覆松紧,zh
 smocking,抽褶,zh
 shirring,抽皱,zh
 gathering,抽褶处理,zh
+zipper slider,拉头,zh
+zipper teeth,链牙,zh
+zipper stop,止码,zh
+top stop,上止,zh
+bottom stop,下止,zh
+zipper pull tab,拉片,zh
+auto lock slider,自动锁拉头,zh
+reversible zipper,双面拉链,zh
+waterproof zipper,防水拉链,zh
+coil zipper,尼龙拉链,zh
+vislon zipper,树脂拉链,zh
+metal snap,金属按扣,zh
+plastic snap,塑料按扣,zh
+press stud,四合扣,zh
+hook and eye,钩眼扣,zh
+bar hook,裤钩,zh
+trouser hook,裤钩,zh
+waist hook,腰钩,zh
+adjustable buckle,调节扣,zh
+ladder lock,日字扣,zh
+tri glide,日字扣,zh
+cord lock,绳扣,zh
+stopper,绳扣,zh
+cord end,绳尾扣,zh
+drawcord tip,绳头,zh
+aglet,绳头,zh
+elastic cord,弹力绳,zh
+round cord,圆绳,zh
+flat drawcord,扁抽绳,zh
+grosgrain tape,罗缎带,zh
+herringbone tape,人字带,zh
+reflective tape,反光带,zh
+piping,滚边,zh
+piping cord,滚条绳,zh
+bias tape,斜裁包边条,zh
+seam binding tape,缝份包边条,zh
+sewing thread,缝纫线,zh
+polyester thread,涤纶线,zh
+nylon thread,尼龙线,zh
+elastic thread,橡筋线,zh
+smocking thread,抽褶线,zh
+wash care label,洗唛,zh
+heat transfer label,热转印标,zh
+leather patch,皮牌,zh
+rubber patch,胶章,zh
+silicone badge,硅胶章,zh
+woven patch,织章,zh
+embroidery patch,绣章,zh
+velcro patch,魔术贴章,zh
+shoulder pad,垫肩,zh
+bra cup,胸杯,zh
+removable pad,可拆胸垫,zh
+boning,胶骨,zh
+underwire,钢圈,zh
+zipper chain,拉链链带,zh
+zipper tape color,拉链布带色,zh
+zipper teeth color,拉链牙色,zh
+zipper puller color,拉头色,zh
+open end zipper,开尾拉链,zh
+closed end zipper,闭尾拉链,zh
+separating zipper,开尾拉链,zh
+water resistant zipper,防泼水拉链,zh
+reverse coil zipper,反装尼龙拉链,zh
+zipper garage,拉链护口,zh
+snap cap,按扣面件,zh
+snap socket,按扣母扣,zh
+snap stud,按扣公扣,zh
+snap post,按扣底钉,zh
+prong snap,爪扣,zh
+magnetic snap,磁扣,zh
+button shank,纽扣脚,zh
+button size,纽扣尺寸,zh
+button color,纽扣颜色,zh
+logo button,Logo 纽扣,zh
+sew on button,手缝钮,zh
+horn button,牛角扣,zh
+coconut button,椰壳扣,zh
+shell button,贝壳扣,zh
+resin button,树脂扣,zh
+plastic button,塑料扣,zh
+metal button,金属扣,zh
+covered button,包布扣,zh
+elastic waistband,松紧腰头,zh
+knitted elastic,针织松紧带,zh
+woven elastic,梭织松紧带,zh
+braided elastic,编织松紧带,zh
+button loop,扣袢,zh
+thread loop,线袢,zh
+label loop,唛标挂环,zh
+heat transfer artwork,热转印图案,zh
+silicone patch,硅胶章,zh
+pu patch,PU 章,zh
+metal badge,金属章,zh
+hangtag hole,吊牌孔,zh
+hangtag eyelet,吊牌鸡眼,zh
+hangtag cord,吊牌绳,zh
+folding method,折叠方式,zh
+polybag opening,胶袋开口,zh
+self seal polybag,自粘胶袋,zh
+ziplock polybag,拉链胶袋,zh
+biodegradable polybag,可降解胶袋,zh
+recycled polybag,再生胶袋,zh
+carton liner,箱内衬袋,zh
+corner protector,护角,zh
+carton divider,纸箱隔板,zh
+concealed zipper,隐蔽拉链,zh
+resin zipper,树脂拉链,zh
+zipper end stop,拉链端止,zh
+zipper box,拉链插座,zh
+zipper pin,拉链插销,zh
+zipper retainer box,拉链方块插座,zh
+zipper insertion pin,拉链插针,zh
+puller logo,拉头 Logo,zh
+engraved button,雕刻纽扣,zh
+debossed button,凹印纽扣,zh
+snap reinforcement patch,按扣加固片,zh
+eyelet washer,鸡眼垫片,zh
+cord adjuster,绳调节扣,zh
+elastic drawcord,弹力抽绳,zh
+bungee cord,弹力绳,zh
+flat cord,扁绳,zh
+cord tip,绳头,zh
+metal cord end,金属绳尾扣,zh
+plastic cord end,塑料绳尾扣,zh
+webbing belt,织带腰带,zh
+jacquard webbing,提花织带,zh
+elastic tape,松紧带,zh
+foldover elastic,折边松紧带,zh
+picot elastic,花边松紧带,zh
+clear shoulder tape,透明肩带,zh
+clear stay tape,透明止口带,zh
+compostable polybag,可堆肥胶袋,zh
+paper hangtag,纸吊牌,zh
+fsc paper,FSC 纸张,zh
+recycled paper hangtag,再生纸吊牌,zh
+kraft paper,牛皮纸,zh
+carton sticker,外箱贴纸,zh
+warning sticker,警示贴纸,zh
+size cube,尺码粒,zh
+hanger sizer,衣架尺码粒,zh
+sizer,尺码粒,zh
+collar stay,领插片,zh
+shirt board,衬衫纸板,zh
+backer card,背卡,zh
+e-commerce polybag,电商胶袋,zh
+self adhesive tape,自粘胶带,zh
+tamper evident seal,防拆封条,zh
+desiccant pouch,干燥剂包,zh
+moisture absorber,吸湿包,zh
+carton strap,打包带,zh
+strapping band,打包带,zh
+corner board,护角板,zh
+pallet label,托盘标签,zh
+concealed snap,隐形按扣,zh
+corozo button,果实扣,zh
+sew through button,平眼扣,zh
+four hole button,四眼扣,zh
+two hole button,两眼扣,zh
+cord end stopper,绳尾扣,zh
+braided tape,编织带,zh
+grosgrain ribbon,罗纹带,zh
+satin ribbon,缎带,zh
+label tape,唛标带,zh
+size pip,尺码小标,zh
+hanger clip,衣架夹,zh
+polybag thickness,胶袋厚度,zh
+polybag vent hole,胶袋透气孔,zh
+master polybag,大胶袋,zh
+inner polybag,内胶袋,zh
+sealing tape,封箱胶带,zh
+kraft tape,牛皮纸胶带,zh
+pp strap,PP 打包带,zh
+barcode hangtag,条码吊牌,zh
+rfid tag,RFID 吊牌,zh
+source tag,防盗源标签,zh
+security label,防盗标签,zh
+care booklet,护理手册,zh
+nylon coil zipper,尼龙盘齿拉链,zh
+fisheye button,鱼眼扣,zh
+lace,蕾丝,zh
+velcro tape,魔术贴,zh
+hook tape,勾面魔术贴,zh
+loop tape,毛面魔术贴,zh
+hangtag pin,吊牌针,zh
+kimble,胶针,zh
+export carton,外箱,zh
+carton label,箱贴,zh
+clip hanger,夹子衣架,zh
+paper band,纸腰封,zh
+button rim,纽扣边,zh
+button engraving,纽扣刻字,zh
+spare button bag,备用扣袋,zh
+button card,纽扣卡,zh
+pearl snap,珍珠按扣,zh
+ring snap,圈形按扣,zh
+rivet burr,撞钉底片,zh
+back rivet,后撞钉,zh
+decorative rivet,装饰撞钉,zh
+buckle prong,扣针,zh
+adjuster buckle,调节扣,zh
+slider buckle,日字扣,zh
+D-ring,D 形环,zh
+O-ring,O 形环,zh
+square ring,方环,zh
+suspender clip,背带夹,zh
+bra slider,文胸调节扣,zh
+bra ring,文胸圈,zh
+bra hook,文胸钩,zh
+bra eye,文胸扣眼,zh
+zipper end,拉链尾端,zh
+metal aglet,金属绳头套,zh
+plastic aglet,塑料绳头套,zh
+drawcord knot,抽绳结,zh
+shock cord,弹力绳,zh
+round drawcord,圆抽绳,zh
+braided drawcord,编织抽绳,zh
+cotton tape,棉带,zh
+jacquard tape,提花织带,zh
+wash label,洗唛,zh
+carton seal,封箱贴,zh
+packing tape,封箱胶带,zh
+suit bag,西装袋,zh
+shoulder cover,肩套,zh
+collar butterfly,领托,zh
+lead time,交期,zh
+production lead time,生产周期,zh
+sample lead time,样品周期,zh
+bulk order,大货订单,zh
+salesman sample,销售样,zh
+top of production sample,头件样,zh
+approval sample,确认样,zh
+approved for bulk,可投大货,zh
+revise and resubmit,修改后重提,zh
+final inspection,尾期验货,zh
+carton marking,外箱唛头,zh
+assortment ratio,配码比例,zh
+ex factory date,离厂日期,zh
+on board date,装船日期,zh
+line plan,生产线计划,zh
+capacity booking,产能预订,zh
+production schedule,生产排期,zh
+cutting date,裁剪日期,zh
+sewing start date,开车日期,zh
+packing date,包装日期,zh
+shipment window,出货窗口,zh
+delivery window,交货窗口,zh
+factory allocation,工厂分配,zh
+vendor allocation,供应商分配,zh
+material booking,物料预订,zh
+fabric booking,面料预订,zh
+trim booking,辅料预订,zh
+fabric in house date,面料到厂日期,zh
+trim in house date,辅料到厂日期,zh
+cutting ticket,裁剪单,zh
+bundle ticket,扎号票,zh
+bundle number,扎号,zh
+cut lot,裁剪批次,zh
+production lot,生产批次,zh
+sewing line,车缝线,zh
+line balancing,生产线平衡,zh
+hourly output,小时产量,zh
+daily output,日产量,zh
+production efficiency,生产效率,zh
+work in progress,在制品,zh
+wip,在制品,zh
+line inspection,生产线检验,zh
+end line inspection,尾道检验,zh
+finishing,后整,zh
+pressing,整烫,zh
+thread trimming,剪线,zh
+needle control,断针控制,zh
+metal free zone,无金属区,zh
+shipment booking,订舱,zh
+forwarder,货代,zh
+vessel date,船期,zh
+estimated time of departure,预计离港时间,zh
+etd,预计离港时间,zh
+estimated time of arrival,预计到港时间,zh
+eta,预计到港时间,zh
+commercial invoice,商业发票,zh
+packing declaration,包装声明,zh
+booking confirmation,订舱确认,zh
+sample room,样衣房,zh
+cutting room,裁剪车间,zh
+sewing workshop,车缝车间,zh
+finishing workshop,后整车间,zh
+packing section,包装区,zh
+production meeting,生产会议,zh
+line feeding,产线投料,zh
+material shortage,物料短缺,zh
+fabric shortage,面料短缺,zh
+trim shortage,辅料短缺,zh
+bottleneck operation,瓶颈工序,zh
+line output,产线产量,zh
+piece rate,计件工资,zh
+operator efficiency,员工效率,zh
+learning curve,学习曲线,zh
+first output,首件产出,zh
+inline audit,中期审核,zh
+roving qc,巡检 QC,zh
+pre final inspection,预尾期验货,zh
+final audit,最终审核,zh
+shipment sample approval,船样确认,zh
+order confirmation,订单确认,zh
+order amendment,订单修改,zh
+cancel date,取消日期,zh
+handover date,交接日期,zh
+fabric delivery date,面料交付日期,zh
+trim delivery date,辅料交付日期,zh
+pilot run approval,试产确认,zh
+bulk cut approval,大货裁剪确认,zh
+cutting approval,裁剪确认,zh
+sewing approval,车缝确认,zh
+packing approval,包装确认,zh
+shipping document,出货文件,zh
+bill of lading,提单,zh
+certificate of origin,原产地证,zh
+fumigation certificate,熏蒸证书,zh
+container loading,装柜,zh
+loading plan,装柜计划,zh
+cargo ready date,货好日期,zh
+booking cut off,订舱截单,zh
+si cut off,补料截单,zh
+time and action plan,生产进度计划,zh
+sample tracking,样品追踪,zh
+fabric nomination,面料指定,zh
+trim nomination,辅料指定,zh
+mill booking,布厂排期,zh
+yarn booking,纱线预订,zh
+greige booking,胚布预订,zh
+lab dip submission,色样提交,zh
+strike off submission,印花色样提交,zh
+bulk fabric inspection,大货面料检验,zh
+fabric inspection report,面料检验报告,zh
+four point inspection,四分制检验,zh
+pre production meeting,产前会议,zh
+ppm,产前会议,zh
+size set approval,齐码样确认,zh
+cutting start,开始裁剪,zh
+sewing start,开始车缝,zh
+finishing start,开始后整,zh
+packing start,开始包装,zh
+factory ex works,工厂交货,zh
+cargo handover,交货交接,zh
+vessel booking,船期订舱,zh
+air shipment,空运出货,zh
+sea shipment,海运出货,zh
+courier shipment,快递出货,zh
+shipment delay,出货延误,zh
+revised etd,更新预计离港时间,zh
+revised eta,更新预计到港时间,zh
+production status,生产状态,zh
+wip report,在制品报告,zh
+daily production report,每日生产报告,zh
+output target,产量目标,zh
+line capacity,产线产能,zh
+overtime plan,加班计划,zh
+material eta,物料预计到达时间,zh
+fabric eta,面料预计到达时间,zh
+trim eta,辅料预计到达时间,zh
+approval pending,待确认,zh
+risk item,风险项,zh
+escalation,升级处理,zh
+line loading,生产线排期,zh
+capacity planning,产能规划,zh
+production capacity,产能,zh
+finishing line,后整线,zh
+sewing room,车缝车间,zh
+finishing room,后整车间,zh
+packing room,包装车间,zh
+midline inspection,中期检验,zh
+PP meeting,产前会议,zh
+trial production,试产,zh
+bulk production start,大货开产,zh
+shipment date,出货日期,zh
+production tracking,生产跟踪,zh
+WIP status,在制品状态,zh
+efficiency rate,效率率,zh
+line efficiency,生产线效率,zh
+absenteeism,缺勤率,zh
+operator training,工人培训,zh
+sewing operator,车位工,zh
+line supervisor,组长,zh
+quality controller,质检员,zh
+merchandiser,跟单员,zh
+pattern maker,纸样师,zh
+shade band control,色档控制,zh
+fabric relaxation,松布,zh
+fabric spreading,铺布,zh
+fabric cutting,裁剪,zh
+bundling,分扎,zh
+numbering,编号,zh
+ticketing,挂票,zh
+embroidery input,送绣花,zh
+printing input,送印花,zh
+washing input,送洗水,zh
+finishing process,后整工序,zh
+pressing process,整烫工序,zh
+garment inspection,成衣检验,zh
+packing process,包装工序,zh
+vessel schedule,船期,zh
+delay notice,延期通知,zh
+corrective action plan,纠正措施计划,zh
+production hold,生产暂停,zh
+partial shipment,分批出货,zh
+production plan,生产计划,zh
+production milestone,生产节点,zh
+fabric in-house date,面料到厂日期,zh
+trims in-house date,辅料到厂日期,zh
+cutting start date,开裁日期,zh
+finishing start date,后整开始日期,zh
+packing start date,包装开始日期,zh
+final inspection date,最终检验日期,zh
+handover to warehouse,交仓,zh
+warehouse receipt,仓库收货,zh
+cutting output,裁剪产量,zh
+sewing output,车缝产量,zh
+finishing output,后整产量,zh
+packing output,包装产量,zh
+rework rate,返修率,zh
+defect rate,疵点率,zh
+pass rate,通过率,zh
+first pass yield,一次通过率,zh
+line setup,生产线设置,zh
+line trial,试线,zh
+feeding plan,投料计划,zh
+material feeding,投料,zh
+bundle flow,扎流,zh
+standard minute value,标准工时,zh
+takt time,节拍时间,zh
+subcontractor,外协厂,zh
+outsourcing,外发,zh
+wash factory,洗水厂,zh
+embroidery factory,绣花厂,zh
+print factory,印花厂,zh
+finishing factory,后整厂,zh
+customs document,报关文件,zh
+cut off date,截关日期,zh
+booking deadline,订舱截止日期,zh
+consolidator,拼柜仓,zh
+warehouse delivery,送仓,zh
+release note,放货单,zh
+inspection booking,验货预约,zh
+inspection result,验货结果,zh
+remediation plan,整改计划,zh
+root cause analysis,根因分析,zh
+all over print,满印,zh
+heat transfer print,热转印,zh
+water based print,水浆印花,zh
+plastisol print,胶浆印花,zh
+discharge print,拔染印花,zh
+embroidery,绣花,zh
+flat embroidery,平绣,zh
+chain stitch embroidery,链式绣,zh
+sequin embroidery,亮片绣,zh
+applique embroidery,贴布绣,zh
+hangtag,吊牌,zh
+brand label,品牌标,zh
+warning label,警示标,zh
+digital print,数码印花,zh
+sublimation print,升华转印,zh
+pigment print,涂料印花,zh
+rubber print,胶浆印花,zh
+glitter print,闪粉印花,zh
+crack print,裂纹印花,zh
+flock print,植绒印花,zh
+emboss print,压花印花,zh
+deboss print,凹压印花,zh
+laser cut,激光切割,zh
+laser perforation,激光打孔,zh
+embroidered logo,绣花 Logo,zh
+3d embroidery,立体绣,zh
+chenille embroidery,毛巾绣,zh
+cord embroidery,绳绣,zh
+badge embroidery,章仔绣,zh
+embroidery backing,绣花底衬,zh
+embroidery thread,绣花线,zh
+print position,印花位置,zh
+embroidery position,绣花位置,zh
+artwork size,图案尺寸,zh
+artwork color,图案颜色,zh
+pantone color,潘通色号,zh
+pantone reference,潘通参考色,zh
+strike off approval,印花色样确认,zh
+labelling instruction,唛标说明,zh
+label layout,唛标排版,zh
+label artwork,唛标图稿,zh
+photo print,照片印花,zh
+foil transfer,烫金转印,zh
+metallic print,金属效果印花,zh
+gel print,啫喱印花,zh
+crack ink,裂纹浆,zh
+pvc print,PVC 印花,zh
+phthalate free print,无邻苯印花,zh
+reflective heat transfer,反光热转印,zh
+embroidered applique,贴布绣,zh
+chenille patch,毛巾绣章,zh
+tackle twill,贴布斜纹绣,zh
+satin stitch embroidery,缎面针迹绣,zh
+running stitch embroidery,平针绣,zh
+embroidery density,绣花密度,zh
+embroidery stitch count,绣花针数,zh
+thread break,断线,zh
+backing paper,绣花底纸,zh
+tear away backing,易撕底衬,zh
+cut away backing,剪裁底衬,zh
+soluble backing,水溶底衬,zh
+woven badge,织章,zh
+printed badge,印章,zh
+rubber badge,胶章,zh
+label fold,唛标折法,zh
+center fold label,中折唛,zh
+end fold label,端折唛,zh
+mitre fold label,斜角折唛,zh
+loop fold label,环折唛,zh
+label placement tolerance,唛标位置公差,zh
+barcode artwork,条码图稿,zh
+qr code label,二维码唛标,zh
+care symbol artwork,洗护符号图稿,zh
+country of origin artwork,产地图稿,zh
+heat transfer placement,热转印位置,zh
+rotary screen print,圆网印花,zh
+flat screen print,平网印花,zh
+digital sublimation,数码升华转印,zh
+transfer print,转印,zh
+silicone heat transfer,硅胶热转印,zh
+reflective logo,反光 Logo,zh
+flock transfer,植绒转印,zh
+foil logo,烫金 Logo,zh
+puff logo,发泡 Logo,zh
+crackle print,裂纹印花,zh
+distressed print,做旧印花,zh
+burnout print,烂花印花,zh
+discharge ink,拔染浆,zh
+water based ink,水性浆,zh
+plastisol ink,胶浆,zh
+pigment ink,涂料浆,zh
+silicone ink,硅胶浆,zh
+print hand feel,印花手感,zh
+print strike off,印花色样,zh
+bulk print approval,大货印花确认,zh
+embroidery artwork,绣花图稿,zh
+embroidery sample,绣花样,zh
+embroidery placement,绣花位置,zh
+embroidery thread color,绣花线色,zh
+embroidery backing removal,绣花底衬清除,zh
+applique patch,贴布章,zh
+chenille logo,毛巾绣 Logo,zh
+embroidered badge,绣章,zh
+label position,唛标位置,zh
+neck label,领标,zh
+side seam label,侧缝唛,zh
+hem label,下摆唛,zh
+flag label,旗唛,zh
+care label fold,洗唛折法,zh
+main label artwork,主唛图稿,zh
+size label artwork,尺码唛图稿,zh
+hangtag artwork,吊牌图稿,zh
+barcode placement,条码位置,zh
+rfid label,RFID 标签,zh
+wash care symbol,洗护符号,zh
+glow in dark print,夜光印花,zh
+engineered print,工程印花,zh
+print repeat,印花循环,zh
+print handfeel,印花手感,zh
+print cracking,印花开裂,zh
+print bleeding,印花渗色,zh
+print migration,印花迁移,zh
+print misregistration,印花套位不准,zh
+print size,印花尺寸,zh
+print color standard,印花色样标准,zh
+embroidery stitch,绣花针迹,zh
+satin stitch,缎面针迹,zh
+fill stitch,填针,zh
+running stitch,平针,zh
+chain embroidery,链式绣,zh
+bead embroidery,珠绣,zh
+water soluble backing,水溶衬,zh
+embroidery tension,绣花张力,zh
+embroidery hoop mark,绣框印,zh
+embroidery approval,绣花确认,zh
+badge,章仔,zh
+heat seal patch,热压章,zh
+care label artwork,洗唛图稿,zh
+CMYK color,CMYK 色,zh
+print artwork size,印花图稿尺寸,zh
+print artwork placement,印花图稿位置,zh
+print colorway,印花配色,zh
+print color separation,印花分色,zh
+print screen,印花网版,zh
+mesh count,网目数,zh
+squeegee pressure,刮刀压力,zh
+curing temperature,固化温度,zh
+curing time,固化时间,zh
+flash cure,闪烘,zh
+print base,印花底浆,zh
+underbase print,打底印花,zh
+overprint,叠印,zh
+halftone print,网点印花,zh
+gradient print,渐变印花,zh
+cracked print effect,裂纹印花效果,zh
+reactive print,活性印花,zh
+acid print,酸性印花,zh
+burn out print,烂花印花,zh
+foil placement,烫金位置,zh
+foil adhesion,烫金牢度,zh
+flocking,植绒,zh
+stone placement,烫钻位置,zh
+rhinestone transfer,烫钻转印,zh
+heat press temperature,热压温度,zh
+heat press time,热压时间,zh
+transfer film,转印膜,zh
+transfer paper,转印纸,zh
+transfer backing,转印底纸,zh
+embroidery tape,绣花胶带,zh
+embroidery frame,绣框,zh
+embroidery swatch,绣花样片,zh
+embroidery machine,绣花机,zh
+embroidery needle,绣花针,zh
+embroidery registration,绣花套位,zh
+applique fabric,贴布绣布料,zh
+applique edge,贴布边,zh
+patch placement,章仔位置,zh
+badge placement,章仔位置,zh
+printed patch,印章,zh
+reflective patch,反光章,zh
+3D badge,3D 章,zh
+heat transfer badge,热转印章,zh
+screen charge,网版费,zh
+artwork revision,图稿修订,zh
+artwork scale,图稿比例,zh
+artwork orientation,图稿方向,zh
+label mockup,唛标效果图,zh
+QR code artwork,二维码图稿,zh
+variable data label,可变数据标签,zh
+t-shirt,T 恤,zh
+t shirt,T 恤,zh
+tank top,背心,zh
+camisole,吊带背心,zh
+blouse,女式衬衫,zh
+shirt,衬衫,zh
+polo shirt,POLO 衫,zh
+sweatshirt,卫衣,zh
+hoodie,连帽卫衣,zh
+sweater,毛衣,zh
+cardigan,开衫,zh
+jacket,夹克,zh
+blazer,西装外套,zh
+coat,大衣,zh
+trench coat,风衣,zh
+parka,派克大衣,zh
+puffer jacket,羽绒棉服,zh
+down jacket,羽绒服,zh
+windbreaker,风衣夹克,zh
+shell jacket,冲锋衣外壳,zh
+softshell jacket,软壳夹克,zh
+vest,马甲,zh
+waistcoat,马甲,zh
+dress,连衣裙,zh
+shirt dress,衬衫裙,zh
+wrap dress,裹身裙,zh
+slip dress,吊带裙,zh
+maxi dress,长款连衣裙,zh
+midi dress,中长款连衣裙,zh
+mini dress,短款连衣裙,zh
+skirt,半身裙,zh
+pencil skirt,铅笔裙,zh
+a-line skirt,A 字裙,zh
+pleated skirt,百褶裙,zh
+skort,裙裤,zh
+pants,裤子,zh
+trousers,长裤,zh
+jeans,牛仔裤,zh
+chino pants,斜纹棉布裤,zh
+cargo pants,工装裤,zh
+jogger pants,束脚裤,zh
+leggings,打底裤,zh
+shorts,短裤,zh
+bermuda shorts,百慕大短裤,zh
+jumpsuit,连体裤,zh
+romper,连体短裤,zh
+bodysuit,连体衣,zh
+swimsuit,泳衣,zh
+bikini,比基尼,zh
+bra,文胸,zh
+briefs,三角内裤,zh
+bomber jacket,飞行夹克,zh
+field jacket,野战夹克,zh
+utility jacket,多口袋夹克,zh
+shacket,衬衫式夹克,zh
+anorak,套头风衣,zh
+gilet,马甲,zh
+culottes,阔腿裙裤,zh
+palazzo pants,宽腿裤,zh
+track pants,运动长裤,zh
+track jacket,运动夹克,zh
+base layer,贴身层,zh
+mid layer,中间层,zh
+outer layer,外层,zh
+slim fit,修身版型,zh
+regular fit,常规版型,zh
+classic fit,经典版型,zh
+relaxed fit,宽松版型,zh
+loose fit,宽松版型,zh
+oversized fit,超宽松版型,zh
+boxy fit,箱型版型,zh
+tailored fit,合体剪裁,zh
+straight fit,直筒版型,zh
+skinny fit,紧身版型,zh
+tapered fit,锥形版型,zh
+athletic fit,运动版型,zh
+comfort fit,舒适版型,zh
+compression fit,压缩版型,zh
+bodycon fit,包身版型,zh
+cropped fit,短款版型,zh
+longline fit,长款版型,zh
+bootcut,微喇裤型,zh
+flared leg,喇叭裤腿,zh
+wide leg,阔腿,zh
+straight leg,直筒裤腿,zh
+tapered leg,锥形裤腿,zh
+cropped length,短截长度,zh
+ankle length,九分长度,zh
+full length,全长,zh
+high waisted,高腰,zh
+mid rise,中腰,zh
+low rise,低腰,zh
+high rise,高腰,zh
+drop crotch,低裆,zh
+a-line silhouette,A 字廓形,zh
+h-line silhouette,H 型廓形,zh
+x-line silhouette,X 型廓形,zh
+cocoon silhouette,茧型廓形,zh
+trapeze silhouette,梯形廓形,zh
+fit and flare,收腰伞摆,zh
+bodycon,包身,zh
+wrap front,裹身前片,zh
+empire line,高腰线,zh
+peplum silhouette,荷叶腰摆廓形,zh
+color block,拼色,zh
+cut out,镂空,zh
+asymmetrical hem,不对称下摆,zh
+hi-low hem,前短后长下摆,zh
+curved hem,弧形下摆,zh
+scalloped hem,贝壳边下摆,zh
+pattern,纸样,zh
+paper pattern,纸样,zh
+block pattern,基础纸样,zh
+base pattern,基础纸样,zh
+production pattern,大货纸样,zh
+sample pattern,样衣纸样,zh
+graded pattern,放码纸样,zh
+marker making,排唛架,zh
+pattern piece,纸样片,zh
+pattern block,纸样板,zh
+sloper,原型纸样,zh
+toile,白坯样衣,zh
+muslin sample,白坯样衣,zh
+fit model,试身模特,zh
+dress form,立裁人台,zh
+mannequin,人台,zh
+ease,松量,zh
+wearing ease,穿着松量,zh
+design ease,设计松量,zh
+negative ease,负松量,zh
+seam line,缝线,zh
+grainline,经纱线,zh
+center line,中心线,zh
+balance notch,平衡剪口,zh
+drill hole,定位孔,zh
+dart intake,省量,zh
+dart point,省尖,zh
+cut on fold,对折裁剪,zh
+bias cut,斜裁,zh
+on grain,顺丝绺,zh
+fabric grain,布纹方向,zh
+nap direction,毛向,zh
+directional print,方向性印花,zh
+one way print,单向印花,zh
+mirrored pair,镜像成对,zh
+left and right pair,左右成对,zh
+long sleeve tee,长袖 T 恤,zh
+short sleeve tee,短袖 T 恤,zh
+crop top,短款上衣,zh
+tube top,抹胸上衣,zh
+halter top,挂脖上衣,zh
+henley,亨利衫,zh
+rugby shirt,橄榄球衫,zh
+overshirt,外穿衬衫,zh
+chore jacket,工装夹克,zh
+pea coat,海军呢大衣,zh
+duffle coat,牛角扣大衣,zh
+raincoat,雨衣,zh
+ski jacket,滑雪夹克,zh
+fleece jacket,抓绒夹克,zh
+quilted jacket,绗缝夹克,zh
+suit jacket,西装上衣,zh
+suit pants,西裤,zh
+tailored trousers,西装裤,zh
+wide leg pants,阔腿裤,zh
+flare pants,喇叭裤,zh
+straight jeans,直筒牛仔裤,zh
+skinny jeans,紧身牛仔裤,zh
+mom jeans,妈妈牛仔裤,zh
+boyfriend jeans,男友风牛仔裤,zh
+denim skirt,牛仔裙,zh
+slip skirt,吊带裙,zh
+wrap skirt,裹身裙,zh
+cargo skirt,工装裙,zh
+easy fit,舒适版型,zh
+roomy fit,宽裕版型,zh
+fitted silhouette,合身廓形,zh
+semi fitted,半合身,zh
+relaxed silhouette,宽松廓形,zh
+oversized silhouette,超宽松廓形,zh
+long torso,长身型,zh
+petite fit,小码版型,zh
+nested pattern,套码纸样,zh
+digital pattern,电子纸样,zh
+pattern revision,纸样修订,zh
+seam allowance added,已加缝份,zh
+notches aligned,剪口对齐,zh
+grainline direction,丝绺方向,zh
+fold placement,折线位置,zh
+marker width,唛架宽度,zh
+marker length,唛架长度,zh
+cuttable width,可裁幅宽,zh
+maternity fit,孕妇版型,zh
+plus size fit,大码版型,zh
+unisex fit,中性版型,zh
+gender neutral fit,无性别版型,zh
+slim leg,修身裤腿,zh
+skinny leg,紧身裤腿,zh
+bootcut leg,靴型裤腿,zh
+flare leg,喇叭裤腿,zh
+barrel leg,桶形裤腿,zh
+carrot leg,胡萝卜裤腿,zh
+paperbag waist,纸袋腰,zh
+high waist,高腰,zh
+mini length,迷你长度,zh
+midi length,中长款,zh
+maxi length,长款,zh
+circle skirt,圆裙,zh
+tiered skirt,蛋糕裙,zh
+shift dress,直筒裙,zh
+sheath dress,修身连衣裙,zh
+sweater dress,针织连衣裙,zh
+crewneck sweatshirt,圆领卫衣,zh
+zip hoodie,拉链连帽卫衣,zh
+pullover hoodie,套头连帽卫衣,zh
+playsuit,连体短裤,zh
+standard fit,标准版型,zh
+modern fit,现代版型,zh
+easy straight fit,舒适直筒版型,zh
+boyfriend fit,男友版型,zh
+girlfriend fit,女友版型,zh
+slouchy fit,慵懒宽松版型,zh
+drop shoulder fit,落肩版型,zh
+cropped silhouette,短款廓形,zh
+longline silhouette,长款廓形,zh
+empire silhouette,高腰廓形,zh
+barrel silhouette,桶形廓形,zh
+balloon silhouette,气球廓形,zh
+tunic length,束腰外衣长度,zh
+hip length,臀部长度,zh
+thigh length,大腿长度,zh
+knee length,及膝长度,zh
+calf length,小腿长度,zh
+floor length,及地长度,zh
+capri length,七分长度,zh
+bermuda length,百慕大长度,zh
+short length,短款长度,zh
+boxer shorts,平角短裤,zh
+bike shorts,骑行短裤,zh
+cargo shorts,工装短裤,zh
+board shorts,冲浪短裤,zh
+swim trunks,泳裤,zh
+rash guard,防晒泳衣,zh
+sports bra,运动内衣,zh
+bralette,无钢圈文胸,zh
+flare leggings,微喇打底裤,zh
+yoga pants,瑜伽裤,zh
+sweatpants,卫裤,zh
+tailored shorts,西装短裤,zh
+utility vest,多袋马甲,zh
+shirt jacket,衬衫夹克,zh
+coach jacket,教练夹克,zh
+varsity jacket,棒球夹克,zh
+denim jacket,牛仔夹克,zh
+faux leather jacket,人造皮夹克,zh
+faux fur coat,人造毛皮大衣,zh
+overcoat,大衣,zh
+topcoat,薄大衣,zh
+button down shirt,扣领衬衫,zh
+camp shirt,古巴领衬衫,zh
+bowling shirt,保龄球衫,zh
+peasant blouse,田园风上衣,zh
+tunic top,长款上衣,zh
+wrap top,裹身上衣,zh
+smock dress,罩衫裙,zh
+tiered dress,蛋糕连衣裙,zh

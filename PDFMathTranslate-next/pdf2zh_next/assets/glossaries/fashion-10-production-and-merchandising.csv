@@ -153,3 +153,86 @@ trim eta,辅料预计到达时间,zh
 approval pending,待确认,zh
 risk item,风险项,zh
 escalation,升级处理,zh
+line loading,生产线排期,zh
+capacity planning,产能规划,zh
+production capacity,产能,zh
+finishing line,后整线,zh
+sewing room,车缝车间,zh
+finishing room,后整车间,zh
+packing room,包装车间,zh
+midline inspection,中期检验,zh
+PP meeting,产前会议,zh
+trial production,试产,zh
+bulk production start,大货开产,zh
+shipment date,出货日期,zh
+production tracking,生产跟踪,zh
+WIP status,在制品状态,zh
+efficiency rate,效率率,zh
+line efficiency,生产线效率,zh
+absenteeism,缺勤率,zh
+operator training,工人培训,zh
+sewing operator,车位工,zh
+line supervisor,组长,zh
+quality controller,质检员,zh
+merchandiser,跟单员,zh
+pattern maker,纸样师,zh
+shade band control,色档控制,zh
+fabric relaxation,松布,zh
+fabric spreading,铺布,zh
+fabric cutting,裁剪,zh
+bundling,分扎,zh
+numbering,编号,zh
+ticketing,挂票,zh
+embroidery input,送绣花,zh
+printing input,送印花,zh
+washing input,送洗水,zh
+finishing process,后整工序,zh
+pressing process,整烫工序,zh
+garment inspection,成衣检验,zh
+packing process,包装工序,zh
+vessel schedule,船期,zh
+delay notice,延期通知,zh
+corrective action plan,纠正措施计划,zh
+production hold,生产暂停,zh
+partial shipment,分批出货,zh
+production plan,生产计划,zh
+production milestone,生产节点,zh
+fabric in-house date,面料到厂日期,zh
+trims in-house date,辅料到厂日期,zh
+cutting start date,开裁日期,zh
+finishing start date,后整开始日期,zh
+packing start date,包装开始日期,zh
+final inspection date,最终检验日期,zh
+handover to warehouse,交仓,zh
+warehouse receipt,仓库收货,zh
+cutting output,裁剪产量,zh
+sewing output,车缝产量,zh
+finishing output,后整产量,zh
+packing output,包装产量,zh
+rework rate,返修率,zh
+defect rate,疵点率,zh
+pass rate,通过率,zh
+first pass yield,一次通过率,zh
+line setup,生产线设置,zh
+line trial,试线,zh
+feeding plan,投料计划,zh
+material feeding,投料,zh
+bundle flow,扎流,zh
+standard minute value,标准工时,zh
+takt time,节拍时间,zh
+subcontractor,外协厂,zh
+outsourcing,外发,zh
+wash factory,洗水厂,zh
+embroidery factory,绣花厂,zh
+print factory,印花厂,zh
+finishing factory,后整厂,zh
+customs document,报关文件,zh
+cut off date,截关日期,zh
+booking deadline,订舱截止日期,zh
+consolidator,拼柜仓,zh
+warehouse delivery,送仓,zh
+release note,放货单,zh
+inspection booking,验货预约,zh
+inspection result,验货结果,zh
+remediation plan,整改计划,zh
+root cause analysis,根因分析,zh

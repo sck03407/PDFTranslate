@@ -251,3 +251,79 @@ vendor manual,供应商手册,zh
 compliance requirement,合规要求,zh
 testing protocol,测试规范,zh
 inspection protocol,检验规范,zh
+product description,产品描述,zh
+garment description,成衣描述,zh
+size break,尺码断档,zh
+size ratio,尺码比例,zh
+lab dip reference,缸样参考,zh
+fabric code,面料编号,zh
+supplier code,供应商编号,zh
+mill name,布厂名称,zh
+trim supplier,辅料供应商,zh
+trim code,辅料编号,zh
+nominated supplier,指定供应商,zh
+placement instruction,位置说明,zh
+workmanship standard,做工标准,zh
+artwork file,图稿文件,zh
+print artwork,印花图稿,zh
+initial spec,初版规格,zh
+final spec,最终规格,zh
+revised spec,修订规格,zh
+duplicate sample,复样,zh
+showroom sample,展厅样,zh
+advertising sample,广告样,zh
+approval status,确认状态,zh
+pending approval,待确认,zh
+approved with comments,附意见确认,zh
+rejected sample,样品拒收,zh
+fit issue,试身问题,zh
+spec revision,规格修订,zh
+bulk comments,大货意见,zh
+risk assessment,风险评估,zh
+change log,变更记录,zh
+revision history,修订历史,zh
+deviation request,偏差申请,zh
+concession approval,让步接收确认,zh
+care instruction sheet,洗护说明页,zh
+material list,物料列表,zh
+fabric swatch card,面料色卡,zh
+tech sketch,款式工艺图,zh
+detail sketch,细节图,zh
+construction sketch,工艺结构图,zh
+measurement diagram,测量示意图,zh
+callout,标注,zh
+callout number,标注编号,zh
+comment sheet,评语表,zh
+PP sample approval,产前样确认,zh
+TOP sample approval,大货船头样确认,zh
+wash sample,洗水样,zh
+salesman sample request,销售样申请,zh
+bulk trim approval,大货辅料确认,zh
+color approval,颜色确认,zh
+carton approval,纸箱确认,zh
+testing approval,测试确认,zh
+quality standard,质量标准,zh
+inspection standard,检验标准,zh
+workmanship note,做工说明,zh
+tolerance chart,公差表,zh
+point of measure code,测量点代码,zh
+revised measurement,修订尺寸,zh
+sealed sample,封样,zh
+gold seal,金封,zh
+red seal,红封,zh
+black seal,黑封,zh
+customer comments,客户意见,zh
+vendor comments,供应商意见,zh
+factory comments,工厂意见,zh
+action required,需采取行动,zh
+status update,状态更新,zh
+open issue,未解决问题,zh
+resolved issue,已解决问题,zh
+pending issue,待处理问题,zh
+owner,负责人,zh
+due date,截止日期,zh
+target date,目标日期,zh
+sample quantity,样品数量,zh
+bulk quantity,大货数量,zh
+surcharge,附加费,zh
+FOB price,FOB 价格,zh
