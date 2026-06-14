@@ -127,3 +127,103 @@ mildew,霉斑,zh
 rust stain,锈渍,zh
 water stain,水渍,zh
 glue mark,胶印,zh
+ph value,pH 值,zh
+colorfastness to chlorinated water,耐氯水色牢度,zh
+colorfastness to sea water,耐海水色牢度,zh
+colorfastness to dry cleaning,耐干洗色牢度,zh
+colorfastness to ironing,耐熨烫色牢度,zh
+colorfastness to heat pressing,耐热压色牢度,zh
+phenolic yellowing,酚黄变,zh
+yellowing test,黄变测试,zh
+nickel release,镍释放,zh
+lead content,铅含量,zh
+cadmium content,镉含量,zh
+phthalates,邻苯二甲酸盐,zh
+restricted substance,限用物质,zh
+rsl,限用物质清单,zh
+mrsl,制造限用物质清单,zh
+fiber composition test,纤维成分测试,zh
+fabric weight test,克重测试,zh
+down content test,羽绒含量测试,zh
+fill power test,蓬松度测试,zh
+water repellency test,防泼水测试,zh
+spray test,喷淋测试,zh
+hydrostatic pressure test,静水压测试,zh
+breathability test,透气性测试,zh
+air permeability,透气量,zh
+water vapor transmission,透湿量,zh
+thermal resistance,热阻,zh
+abrasion resistance,耐磨性,zh
+martindale abrasion,马丁代尔耐磨,zh
+taber abrasion,泰伯耐磨,zh
+zipper durability,拉链耐用性,zh
+button attachment strength,纽扣附着强力,zh
+snap attachment strength,按扣附着强力,zh
+seam appearance,缝位外观,zh
+washed appearance,洗后外观,zh
+after care appearance,洗护后外观,zh
+residual shrinkage,残余缩水率,zh
+widthwise shrinkage,纬向缩水率,zh
+lengthwise shrinkage,经向缩水率,zh
+dimensional stability to washing,耐洗尺寸稳定性,zh
+dimensional stability to dry cleaning,耐干洗尺寸稳定性,zh
+abrasion test,耐磨测试,zh
+pilling resistance,抗起球性,zh
+snagging resistance,抗勾丝性,zh
+burst strength test,胀破强力测试,zh
+tensile strength test,拉伸强力测试,zh
+tear strength test,撕破强力测试,zh
+seam strength test,接缝强力测试,zh
+stretch and recovery test,拉伸回复测试,zh
+elastic recovery,弹性回复率,zh
+compression recovery,压缩回复率,zh
+wicking test,吸湿排汗测试,zh
+drying rate,干燥速率,zh
+water vapor permeability,透湿率,zh
+thermal insulation,保温性,zh
+down leakage test,钻绒测试,zh
+feather leakage,钻毛,zh
+colorfastness to ozone,耐臭氧色牢度,zh
+colorfastness to phenolic yellowing,耐酚黄变色牢度,zh
+antibacterial test,抗菌测试,zh
+uv protection test,防紫外线测试,zh
+flammability warning,燃烧警示,zh
+cord and drawstring safety,绳带安全,zh
+small parts test,小部件测试,zh
+sharp point test,尖点测试,zh
+sharp edge test,锐边测试,zh
+choking hazard,窒息危险,zh
+pull force test,拉力测试,zh
+torque test,扭力测试,zh
+commercial laundry test,商业洗涤测试,zh
+home laundering,家庭洗涤,zh
+dry cleaning test,干洗测试,zh
+appearance after laundering,洗涤后外观,zh
+pilling box test,起球箱测试,zh
+random tumble pilling,随机翻滚起球,zh
+ici pilling,ICI 起球测试,zh
+mace snagging,钉锤勾丝测试,zh
+hydrostatic head,静水压,zh
+colorfastness to hot pressing,耐热压色牢度,zh
+dimensional change to washing,水洗尺寸变化率,zh
+dimensional change to dry cleaning,干洗尺寸变化率,zh
+fabric stretch recovery,面料拉伸回复率,zh
+seam fatigue,接缝疲劳,zh
+seam bursting strength,接缝胀破强力,zh
+drawcord safety test,抽绳安全测试,zh
+nickel release test,镍释放测试,zh
+azo dye test,偶氮染料测试,zh
+formaldehyde test,甲醛测试,zh
+ph value test,pH 值测试,zh
+restricted substances list,限用物质清单,zh
+rsl test,RSL 测试,zh
+reach compliance,REACH 合规,zh
+cpsia compliance,CPSIA 合规,zh
+gb 18401,GB 18401,zh
+gb 31701,GB 31701,zh
+oeko tex standard 100,OEKO-TEX Standard 100,zh
+oeko-tex standard 100,OEKO-TEX Standard 100,zh
+moisture management test,湿气管理测试,zh
+air permeability test,透气性测试,zh
+hydrostatic pressure rating,静水压等级,zh
+feather leakage test,钻毛测试,zh

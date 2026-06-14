@@ -4,7 +4,7 @@
 
 # 服装术语来源与扩展建议
 
-当前分支内置的服装术语不再只是一个零散的 CSV，而是拆成了 9 个分类词包：
+当前分支内置的服装术语不再只是一个零散的 CSV，而是拆成了 12 个分类词包：
 
 - `fashion-01-garment-parts.csv`
 - `fashion-02-measurements.csv`
@@ -15,10 +15,13 @@
 - `fashion-07-bom-and-techpack.csv`
 - `fashion-08-washcare-and-testing.csv`
 - `fashion-09-trims-and-packaging.csv`
+- `fashion-10-production-and-merchandising.csv`
+- `fashion-11-prints-embroidery-and-labelling.csv`
+- `fashion-12-style-fit-and-silhouette.csv`
 
 这些词包会在启用“Use built-in fashion glossary”时自动加载；如果你另外提供 `--glossaries`，系统会把你的企业词表叠加进去。
 
-当前内置 EN->ZH 服装术语总量已扩充到 700+ 条，重点覆盖 tech pack、BOM、洗水单、包装资料、成分唛和常见测试语句。
+当前内置 EN->ZH 服装术语总量已扩充到 2300+ 条，重点覆盖 tech pack、BOM、洗水单、包装资料、成分唛、常见测试语句、生产跟单、印花绣花、唛标说明、款式品类、版型廓形、纸样打版、面料性能和合规测试。
 
 ## 为什么普通机器翻译 / 轻量非 LLM 路线更依赖术语包
 

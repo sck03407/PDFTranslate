@@ -98,6 +98,44 @@ ramie,苎麻,zh
 jute,黄麻,zh
 angora,安哥拉毛,zh
 recycled nylon,再生尼龙,zh
+cotton poplin,棉府绸,zh
+cotton twill,棉斜纹布,zh
+cotton canvas,棉帆布,zh
+cotton jersey,棉平纹针织布,zh
+poly cotton,涤棉,zh
+polyester cotton,涤棉,zh
+tc fabric,涤棉布,zh
+cvc fabric,CVC 布,zh
+tricot,经编布,zh
+warp knit,经编布,zh
+weft knit,纬编布,zh
+bird eye mesh,鸟眼网布,zh
+power mesh,弹力网布,zh
+scuba knit,空气层针织布,zh
+ponte knit,罗马布,zh
+micro ripstop,细格防撕裂布,zh
+slub jersey,竹节平纹布,zh
+burnout fabric,烂花布,zh
+melange,花灰,zh
+heather,花灰,zh
+yarn dyed fabric,色织布,zh
+piece dyed fabric,匹染布,zh
+space dyed yarn,段染纱,zh
+neppy yarn,粒结纱,zh
+filament yarn,长丝纱,zh
+staple yarn,短纤纱,zh
+core spun yarn,包芯纱,zh
+cotton spandex,棉氨纶,zh
+nylon spandex,尼龙氨纶,zh
+polyester spandex,涤纶氨纶,zh
+viscose spandex,粘胶氨纶,zh
+rayon spandex,人造丝氨纶,zh
+polyester fleece,涤纶抓绒,zh
+water resistant fabric,防泼水面料,zh
+waterproof breathable fabric,防水透气面料,zh
+down filling,羽绒填充,zh
+synthetic filling,化纤填充,zh
+primaloft,Primaloft 保暖棉,zh
 recycled polyamide,再生锦纶,zh
 recycled wool,再生羊毛,zh
 recycled down,再生羽绒,zh
@@ -121,3 +159,82 @@ polyester blend,涤纶混纺,zh
 linen blend,亚麻混纺,zh
 fabric composition,面料成分,zh
 fiber content,纤维成分,zh
+supima cotton,Supima 棉,zh
+pima cotton,匹马棉,zh
+bci cotton,BCI 棉,zh
+transitional cotton,转换期棉,zh
+regenerative cotton,再生农业棉,zh
+sea island cotton,海岛棉,zh
+cotton linen,棉麻,zh
+linen cotton,麻棉,zh
+cupro,铜氨纤维,zh
+triacetate,三醋酯纤维,zh
+ecovero viscose,ECOVERO 粘胶,zh
+livaeco viscose,Livaeco 粘胶,zh
+seacell,海藻纤维,zh
+mulesing free wool,无割皮羊毛,zh
+rws wool,RWS 羊毛,zh
+rds down,RDS 羽绒,zh
+gots cotton,GOTS 有机棉,zh
+repreve polyester,REPREVE 再生涤纶,zh
+coolmax,Coolmax 纤维,zh
+thermolite,Thermolite 保暖纤维,zh
+sorona,Sorona 纤维,zh
+double knit,双面针织布,zh
+ribbed fabric,罗纹布,zh
+ribbed knit,罗纹针织布,zh
+pointelle,镂空针织布,zh
+ottoman rib,横凸罗纹布,zh
+thermal knit,华夫格保暖针织布,zh
+brushed jersey,拉毛平纹布,zh
+loopback fleece,毛圈卫衣布,zh
+sweater knit,毛衫针织布,zh
+boucle,圈圈纱面料,zh
+tweed,粗花呢,zh
+houndstooth,千鸟格,zh
+herringbone,人字纹,zh
+gabardine,华达呢,zh
+bengaline,横棱纹布,zh
+faille,罗缎,zh
+charmeuse,素绉缎,zh
+crepe de chine,双绉,zh
+habotai,电力纺,zh
+pongee,春亚纺,zh
+sateen,贡缎,zh
+drill,斜纹卡其布,zh
+duck canvas,厚帆布,zh
+moleskin,磨毛厚棉布,zh
+faux shearling,仿羊羔毛,zh
+pile fleece,长毛绒,zh
+insulation,保暖填充,zh
+down alternative,仿羽绒填充,zh
+tencel lyocell,TENCEL 莱赛尔,zh
+lenzing modal,兰精莫代尔,zh
+bamboo fiber,竹纤维,zh
+soybean fiber,大豆纤维,zh
+milk fiber,牛奶纤维,zh
+polylactic acid,聚乳酸,zh
+pla fiber,PLA 纤维,zh
+recycled cashmere,再生羊绒,zh
+responsible down,责任羽绒,zh
+organic linen,有机亚麻,zh
+european flax linen,欧洲亚麻,zh
+linen viscose,亚麻粘胶,zh
+cotton modal,棉莫代尔,zh
+cotton polyester,棉涤,zh
+spacer fabric,间隔布,zh
+bonded fleece,复合抓绒,zh
+polar fleece,摇粒绒,zh
+microfleece,微摇粒绒,zh
+coral fleece,珊瑚绒,zh
+melange yarn,麻灰纱,zh
+brushed back fleece,背刷毛卫衣布,zh
+terry fleece,毛圈抓绒,zh
+wicking finish,吸湿排汗整理,zh
+moisture wicking,吸湿排汗,zh
+quick dry,速干,zh
+anti pilling finish,抗起球整理,zh
+anti static finish,抗静电整理,zh
+antibacterial finish,抗菌整理,zh
+uv protection fabric,防紫外线面料,zh
+wind resistant fabric,防风面料,zh

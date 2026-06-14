@@ -21,9 +21,22 @@ def test_builtin_fashion_glossary_path_exists():
 def test_builtin_fashion_glossary_paths_cover_glossary_pack():
     glossary_paths = get_builtin_fashion_glossary_paths()
 
-    assert len(glossary_paths) >= 4
+    assert len(glossary_paths) >= 12
+    assert any(
+        path.name == "fashion-12-style-fit-and-silhouette.csv"
+        for path in glossary_paths
+    )
     assert all(path.exists() for path in glossary_paths)
     assert {path.suffix for path in glossary_paths} == {".csv"}
+
+
+def test_builtin_fashion_glossary_pack_has_expanded_term_volume():
+    total_rows = sum(
+        len(load_glossary_rows(glossary_path))
+        for glossary_path in get_builtin_fashion_glossary_paths()
+    )
+
+    assert total_rows >= 2300
 
 
 def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
@@ -42,6 +55,35 @@ def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
         "zipper teeth": "链牙",
         "cord end": "绳尾扣",
         "wash care label": "洗唛",
+        "keyhole opening": "水滴形开口",
+        "front body length": "前身长",
+        "cotton poplin": "棉府绸",
+        "flat felled seam": "双折包缝",
+        "measurement out of tolerance": "尺寸超公差",
+        "wash at 30 degrees": "30 度水洗",
+        "time and action calendar": "生产进度表",
+        "hydrostatic pressure test": "静水压测试",
+        "self seal polybag": "自粘胶袋",
+        "line plan": "生产线计划",
+        "digital print": "数码印花",
+        "slim fit": "修身版型",
+        "graded pattern": "放码纸样",
+        "t-shirt": "T 恤",
+        "pima cotton": "匹马棉",
+        "bar tack reinforcement": "打枣加固",
+        "shipment sample approval": "船样确认",
+        "inside collar stand": "内领座",
+        "thigh 1 inch below crotch": "裆下 1 英寸大腿围",
+        "tencel lyocell": "TENCEL 莱赛尔",
+        "stitch in ditch": "落坑车缝",
+        "zipper not functioning": "拉链不顺",
+        "wash in laundry bag": "放入洗衣袋洗涤",
+        "approved color standard": "确认色样标准",
+        "azo dye test": "偶氮染料测试",
+        "rfid tag": "RFID 吊牌",
+        "time and action plan": "生产进度计划",
+        "rotary screen print": "圆网印花",
+        "cuttable width": "可裁幅宽",
     }
 
     for source, target in expected_terms.items():

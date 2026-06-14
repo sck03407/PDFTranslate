@@ -24,3 +24,132 @@ carton marking,外箱唛头,zh
 assortment ratio,配码比例,zh
 ex factory date,离厂日期,zh
 on board date,装船日期,zh
+line plan,生产线计划,zh
+capacity booking,产能预订,zh
+production schedule,生产排期,zh
+cutting date,裁剪日期,zh
+sewing start date,开车日期,zh
+packing date,包装日期,zh
+shipment window,出货窗口,zh
+delivery window,交货窗口,zh
+factory allocation,工厂分配,zh
+vendor allocation,供应商分配,zh
+material booking,物料预订,zh
+fabric booking,面料预订,zh
+trim booking,辅料预订,zh
+fabric in house date,面料到厂日期,zh
+trim in house date,辅料到厂日期,zh
+cutting ticket,裁剪单,zh
+bundle ticket,扎号票,zh
+bundle number,扎号,zh
+cut lot,裁剪批次,zh
+production lot,生产批次,zh
+sewing line,车缝线,zh
+line balancing,生产线平衡,zh
+hourly output,小时产量,zh
+daily output,日产量,zh
+production efficiency,生产效率,zh
+work in progress,在制品,zh
+wip,在制品,zh
+line inspection,生产线检验,zh
+end line inspection,尾道检验,zh
+finishing,后整,zh
+pressing,整烫,zh
+thread trimming,剪线,zh
+needle control,断针控制,zh
+metal free zone,无金属区,zh
+shipment booking,订舱,zh
+forwarder,货代,zh
+vessel date,船期,zh
+estimated time of departure,预计离港时间,zh
+etd,预计离港时间,zh
+estimated time of arrival,预计到港时间,zh
+eta,预计到港时间,zh
+commercial invoice,商业发票,zh
+packing declaration,包装声明,zh
+booking confirmation,订舱确认,zh
+sample room,样衣房,zh
+cutting room,裁剪车间,zh
+sewing workshop,车缝车间,zh
+finishing workshop,后整车间,zh
+packing section,包装区,zh
+production meeting,生产会议,zh
+line feeding,产线投料,zh
+material shortage,物料短缺,zh
+fabric shortage,面料短缺,zh
+trim shortage,辅料短缺,zh
+bottleneck operation,瓶颈工序,zh
+line output,产线产量,zh
+piece rate,计件工资,zh
+operator efficiency,员工效率,zh
+learning curve,学习曲线,zh
+first output,首件产出,zh
+inline audit,中期审核,zh
+roving qc,巡检 QC,zh
+pre final inspection,预尾期验货,zh
+final audit,最终审核,zh
+shipment sample approval,船样确认,zh
+order confirmation,订单确认,zh
+order amendment,订单修改,zh
+cancel date,取消日期,zh
+handover date,交接日期,zh
+fabric delivery date,面料交付日期,zh
+trim delivery date,辅料交付日期,zh
+pilot run approval,试产确认,zh
+bulk cut approval,大货裁剪确认,zh
+cutting approval,裁剪确认,zh
+sewing approval,车缝确认,zh
+packing approval,包装确认,zh
+shipping document,出货文件,zh
+bill of lading,提单,zh
+certificate of origin,原产地证,zh
+fumigation certificate,熏蒸证书,zh
+container loading,装柜,zh
+loading plan,装柜计划,zh
+cargo ready date,货好日期,zh
+booking cut off,订舱截单,zh
+si cut off,补料截单,zh
+time and action plan,生产进度计划,zh
+tna calendar,生产进度表,zh
+critical path,关键路径,zh
+sample tracking,样品追踪,zh
+fabric nomination,面料指定,zh
+trim nomination,辅料指定,zh
+mill booking,布厂排期,zh
+yarn booking,纱线预订,zh
+greige booking,胚布预订,zh
+lab dip submission,色样提交,zh
+lab dip approval,色样确认,zh
+strike off submission,印花色样提交,zh
+bulk fabric inspection,大货面料检验,zh
+fabric inspection report,面料检验报告,zh
+four point inspection,四分制检验,zh
+pre production meeting,产前会议,zh
+ppm,产前会议,zh
+size set approval,齐码样确认,zh
+cutting start,开始裁剪,zh
+sewing start,开始车缝,zh
+finishing start,开始后整,zh
+packing start,开始包装,zh
+ex factory,离厂,zh
+factory ex works,工厂交货,zh
+cargo handover,交货交接,zh
+vessel booking,船期订舱,zh
+air shipment,空运出货,zh
+sea shipment,海运出货,zh
+courier shipment,快递出货,zh
+shipment delay,出货延误,zh
+revised etd,更新预计离港时间,zh
+revised eta,更新预计到港时间,zh
+production status,生产状态,zh
+wip report,在制品报告,zh
+daily production report,每日生产报告,zh
+output target,产量目标,zh
+line capacity,产线产能,zh
+overtime plan,加班计划,zh
+material eta,物料预计到达时间,zh
+fabric eta,面料预计到达时间,zh
+trim eta,辅料预计到达时间,zh
+approval pending,待确认,zh
+risk item,风险项,zh
+escalation,升级处理,zh

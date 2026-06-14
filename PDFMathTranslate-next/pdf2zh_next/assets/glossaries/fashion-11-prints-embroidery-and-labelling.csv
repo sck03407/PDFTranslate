@@ -24,3 +24,114 @@ brand label,品牌标,zh
 country of origin label,产地标,zh
 warning label,警示标,zh
 composition label,成分标,zh
+digital print,数码印花,zh
+sublimation print,升华转印,zh
+pigment print,涂料印花,zh
+rubber print,胶浆印花,zh
+glitter print,闪粉印花,zh
+crack print,裂纹印花,zh
+flock print,植绒印花,zh
+reflective print,反光印花,zh
+silicone print,硅胶印花,zh
+emboss print,压花印花,zh
+deboss print,凹压印花,zh
+laser cut,激光切割,zh
+laser perforation,激光打孔,zh
+embroidered logo,绣花 Logo,zh
+3d embroidery,立体绣,zh
+chenille embroidery,毛巾绣,zh
+cord embroidery,绳绣,zh
+badge embroidery,章仔绣,zh
+embroidery backing,绣花底衬,zh
+embroidery thread,绣花线,zh
+print position,印花位置,zh
+embroidery position,绣花位置,zh
+artwork size,图案尺寸,zh
+artwork color,图案颜色,zh
+pantone color,潘通色号,zh
+pantone reference,潘通参考色,zh
+strike off approval,印花色样确认,zh
+labelling instruction,唛标说明,zh
+label layout,唛标排版,zh
+label artwork,唛标图稿,zh
+photo print,照片印花,zh
+foil transfer,烫金转印,zh
+metallic print,金属效果印花,zh
+gel print,啫喱印花,zh
+crack ink,裂纹浆,zh
+pvc print,PVC 印花,zh
+phthalate free print,无邻苯印花,zh
+reflective heat transfer,反光热转印,zh
+embroidered applique,贴布绣,zh
+chenille patch,毛巾绣章,zh
+tackle twill,贴布斜纹绣,zh
+satin stitch embroidery,缎面针迹绣,zh
+running stitch embroidery,平针绣,zh
+embroidery density,绣花密度,zh
+embroidery stitch count,绣花针数,zh
+thread break,断线,zh
+backing paper,绣花底纸,zh
+tear away backing,易撕底衬,zh
+cut away backing,剪裁底衬,zh
+soluble backing,水溶底衬,zh
+woven badge,织章,zh
+printed badge,印章,zh
+rubber badge,胶章,zh
+silicone badge,硅胶章,zh
+label fold,唛标折法,zh
+center fold label,中折唛,zh
+end fold label,端折唛,zh
+mitre fold label,斜角折唛,zh
+loop fold label,环折唛,zh
+label placement tolerance,唛标位置公差,zh
+barcode artwork,条码图稿,zh
+qr code label,二维码唛标,zh
+care symbol artwork,洗护符号图稿,zh
+country of origin artwork,产地图稿,zh
+heat transfer placement,热转印位置,zh
+rotary screen print,圆网印花,zh
+flat screen print,平网印花,zh
+digital sublimation,数码升华转印,zh
+transfer print,转印,zh
+heat transfer label,热转印唛,zh
+silicone heat transfer,硅胶热转印,zh
+reflective logo,反光 Logo,zh
+flock transfer,植绒转印,zh
+foil logo,烫金 Logo,zh
+puff logo,发泡 Logo,zh
+crackle print,裂纹印花,zh
+distressed print,做旧印花,zh
+burnout print,烂花印花,zh
+discharge ink,拔染浆,zh
+water based ink,水性浆,zh
+plastisol ink,胶浆,zh
+pigment ink,涂料浆,zh
+silicone ink,硅胶浆,zh
+print hand feel,印花手感,zh
+print strike off,印花色样,zh
+bulk print approval,大货印花确认,zh
+embroidery artwork,绣花图稿,zh
+embroidery sample,绣花样,zh
+embroidery placement,绣花位置,zh
+embroidery thread color,绣花线色,zh
+embroidery backing removal,绣花底衬清除,zh
+applique patch,贴布章,zh
+chenille logo,毛巾绣 Logo,zh
+woven patch,织章,zh
+rubber patch,胶章,zh
+leather patch,皮牌,zh
+silicone patch,硅胶章,zh
+metal badge,金属牌,zh
+embroidered badge,绣章,zh
+label position,唛标位置,zh
+neck label,领标,zh
+side seam label,侧缝唛,zh
+hem label,下摆唛,zh
+flag label,旗唛,zh
+care label fold,洗唛折法,zh
+main label artwork,主唛图稿,zh
+size label artwork,尺码唛图稿,zh
+hangtag artwork,吊牌图稿,zh
+barcode placement,条码位置,zh
+rfid label,RFID 标签,zh
+wash care symbol,洗护符号,zh

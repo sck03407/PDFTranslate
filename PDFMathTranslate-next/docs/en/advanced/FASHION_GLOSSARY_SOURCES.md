@@ -4,7 +4,7 @@
 
 # Fashion Glossary Sources
 
-This branch no longer relies on a single loose CSV for fashion terminology. The built-in terminology is split into 9 glossary packs:
+This branch no longer relies on a single loose CSV for fashion terminology. The built-in terminology is split into 12 glossary packs:
 
 - `fashion-01-garment-parts.csv`
 - `fashion-02-measurements.csv`
@@ -15,10 +15,13 @@ This branch no longer relies on a single loose CSV for fashion terminology. The 
 - `fashion-07-bom-and-techpack.csv`
 - `fashion-08-washcare-and-testing.csv`
 - `fashion-09-trims-and-packaging.csv`
+- `fashion-10-production-and-merchandising.csv`
+- `fashion-11-prints-embroidery-and-labelling.csv`
+- `fashion-12-style-fit-and-silhouette.csv`
 
 These packs are loaded automatically when `Use built-in fashion glossary` is enabled. If you also pass `--glossaries`, your customer or company glossary is layered on top of the built-in pack.
 
-The bundled EN->ZH fashion glossary now contains 700+ entries focused on common tech pack, BOM, wash-care, testing, and packaging samples.
+The bundled EN->ZH fashion glossary now contains 2300+ entries focused on common tech pack, BOM, wash-care, testing, packaging, production merchandising, print, embroidery, labelling, garment categories, fit, silhouette, pattern-making, fabric-performance, and compliance-testing samples.
 
 ## Why lightweight non-LLM workflows need a stronger glossary pack
 

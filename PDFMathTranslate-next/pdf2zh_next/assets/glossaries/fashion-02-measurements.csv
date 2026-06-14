@@ -54,3 +54,128 @@ pit to pit,胸宽,zh
 spi,每英寸针数,zh
 bom,物料清单,zh
 w/b,腰头,zh
+front body length,前身长,zh
+back body length,后身长,zh
+garment length,成衣长,zh
+total length,总长,zh
+neck circumference,领围,zh
+collar height,领高,zh
+collar stand height,领座高,zh
+across front,前胸宽,zh
+across back width,后背宽,zh
+armhole depth,袖窿深,zh
+sleeve opening circumference,袖口围,zh
+sleeve width,袖宽,zh
+elbow width,肘围,zh
+wrist opening,腕口围,zh
+waistband height,腰头高,zh
+waistband width,腰头宽,zh
+front rise including waistband,含腰头前裆长,zh
+back rise including waistband,含腰头后裆长,zh
+crotch depth,裆深,zh
+thigh width,大腿围,zh
+knee width,膝围,zh
+hem circumference,下摆围,zh
+skirt length,裙长,zh
+dress length,裙长,zh
+strap length,肩带长,zh
+strap width,肩带宽,zh
+pocket opening length,袋口长,zh
+placket length,门襟长,zh
+zipper length,拉链长,zh
+drawcord length,抽绳长,zh
+elastic length,松紧长度,zh
+relaxed measurement,自然量尺寸,zh
+stretched measurement,拉伸量尺寸,zh
+half measurement,半量尺寸,zh
+measurement method,测量方法,zh
+measure flat,平铺测量,zh
+measure along curve,沿曲线测量,zh
+measure straight,直线测量,zh
+out of tolerance,超出公差,zh
+within tolerance,在公差范围内,zh
+hps length,肩颈点长,zh
+hps to waist,肩颈点至腰,zh
+hps to bust point,肩颈点至胸点,zh
+front length from hps,前肩颈点衣长,zh
+back length from hps,后肩颈点衣长,zh
+center back neck to waist,后中领点至腰,zh
+shoulder to shoulder,肩点到肩点,zh
+shoulder slope,肩斜,zh
+shoulder drop,肩落差,zh
+front shoulder drop,前肩落差,zh
+neck rib height,领罗纹高,zh
+neck rib width,领罗纹宽,zh
+armhole curve,袖窿弧长,zh
+armhole circumference,袖窿围,zh
+sleeve cap height,袖山高,zh
+sleeve inseam,袖内长,zh
+sleeve inseam length,袖内长,zh
+underarm sleeve length,腋下袖长,zh
+chest width at armhole,袖窿位胸宽,zh
+garment width,成衣宽,zh
+hem width,下摆宽,zh
+sweep relaxed,自然下摆围,zh
+sweep stretched,拉伸下摆围,zh
+waistband relaxed,腰头自然量,zh
+waistband stretched,腰头拉伸量,zh
+hip at low point,低臀围,zh
+seat width,臀宽,zh
+front crotch length,前裆长,zh
+back crotch length,后裆长,zh
+crotch extension,裆部延伸量,zh
+outseam including waistband,含腰头外长,zh
+inseam length,内长,zh
+leg opening relaxed,脚口自然量,zh
+leg opening stretched,脚口拉伸量,zh
+front pocket opening,前袋口,zh
+back pocket opening,后袋口,zh
+strap drop,肩带垂长,zh
+hood width,帽宽,zh
+hood length,帽长,zh
+knee placement,膝位,zh
+thigh at crotch,裆下大腿围,zh
+waist to hem,腰至下摆,zh
+side seam length,侧缝长,zh
+neck drop,领深,zh
+hps to front hem,肩颈点至前下摆,zh
+hps to back hem,肩颈点至后下摆,zh
+front shoulder length,前肩长,zh
+back shoulder length,后肩长,zh
+shoulder seam length,肩缝长,zh
+neck opening width,领口宽,zh
+neck opening circumference,领口围,zh
+armhole drop,袖窿落差,zh
+front chest width,前胸宽,zh
+back chest width,后胸宽,zh
+waist placement,腰位,zh
+hip placement,臀位,zh
+calf width,小腿围,zh
+ankle opening,脚踝口围,zh
+bottom hem width,下摆宽,zh
+sleeve length from center back,后中量袖长,zh
+sleeve length from shoulder,肩点量袖长,zh
+sleeve length from neck point,领点量袖长,zh
+cuff height,袖口高,zh
+cuff width,袖口宽,zh
+cuff circumference,袖口围,zh
+placket width,门襟宽,zh
+zipper opening length,拉链开口长,zh
+pocket depth,袋深,zh
+pocket width,袋宽,zh
+pocket placement from side seam,袋位距侧缝,zh
+pocket placement from waistband,袋位距腰头,zh
+strap adjustment range,肩带调节范围,zh
+elastic relaxed length,松紧自然长度,zh
+elastic stretched length,松紧拉伸长度,zh
+drawcord finished length,抽绳成品长度,zh
+allowable tolerance,允许公差,zh
+tolerance plus,正公差,zh
+tolerance minus,负公差,zh
+shrinkage after wash,洗后缩水率,zh
+growth after wash,洗后伸长率,zh
+twist percentage,扭曲百分比,zh
+skew percentage,扭斜百分比,zh
+seat circumference,臀围,zh
+upper thigh,大腿上围,zh
+thigh 1 inch below crotch,裆下 1 英寸大腿围,zh

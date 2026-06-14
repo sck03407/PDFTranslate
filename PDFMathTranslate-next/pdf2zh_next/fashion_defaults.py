@@ -20,6 +20,7 @@ BUILTIN_FASHION_GLOSSARY_FILENAMES = (
     "fashion-09-trims-and-packaging.csv",
     "fashion-10-production-and-merchandising.csv",
     "fashion-11-prints-embroidery-and-labelling.csv",
+    "fashion-12-style-fit-and-silhouette.csv",
 )
 CUSTOMER_GLOSSARY_TEMPLATE_FILENAME = "fashion-customer-glossary-template.csv"
 CUSTOMER_GLOSSARY_HEADERS = ("source", "target", "tgt_lng")

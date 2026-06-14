@@ -49,3 +49,114 @@ rework,返工,zh
 repairable,可修复,zh
 non repairable,不可修复,zh
 needle detector test,验针测试,zh
+open stitch,开线,zh
+loose thread,线头,zh
+untrimmed thread,未剪线头,zh
+uneven stitch,线迹不均,zh
+crooked stitch,线迹歪斜,zh
+needle damage,针伤,zh
+fabric damage,面料损伤,zh
+abrasion,磨损,zh
+color bleeding,串色,zh
+color transfer,沾色,zh
+dye stain,染色污渍,zh
+print crack,印花开裂,zh
+print peeling,印花脱落,zh
+embroidery loose thread,绣花线头松脱,zh
+missing stitch,漏针,zh
+missing button,少扣,zh
+wrong label,错唛,zh
+wrong size label,错尺码唛,zh
+wrong care label,错洗唛,zh
+wrong color,颜色错误,zh
+wrong size,尺码错误,zh
+mixed size,混码,zh
+measurement out of tolerance,尺寸超公差,zh
+uneven hem,下摆不平,zh
+twisted leg,裤腿扭斜,zh
+twisted sleeve,袖子扭斜,zh
+poor pressing,整烫不良,zh
+shiny mark,烫亮痕,zh
+seam opening,缝口开裂,zh
+fraying,散口,zh
+pilling grade,起球等级,zh
+color shade lot,色差缸号,zh
+shade continuity,色差连续性,zh
+appearance defect,外观疵点,zh
+workmanship defect,工艺疵点,zh
+packing defect,包装疵点,zh
+labeling defect,标识疵点,zh
+critical measurement,关键尺寸,zh
+measurement discrepancy,尺寸差异,zh
+uneven color,颜色不均,zh
+color difference,色差,zh
+off shade,色光偏差,zh
+wrong shade,色号错误,zh
+shade mismatch,色差不匹配,zh
+fabric flaw,布疵,zh
+yarn defect,纱疵,zh
+missing yarn,缺纱,zh
+broken yarn,断纱,zh
+thick yarn,粗纱,zh
+barre,横档,zh
+needle line,针路,zh
+drop stitch,漏针,zh
+broken seam,爆缝,zh
+seam burst,爆缝,zh
+zipper not functioning,拉链不顺,zh
+uneven collar,领子不平,zh
+collar twisted,领子扭斜,zh
+pocket skewed,口袋歪斜,zh
+placket twisted,门襟扭斜,zh
+placket gaping,门襟张口,zh
+hem wavy,下摆波浪,zh
+side seam twisted,侧缝扭斜,zh
+leg length uneven,裤长不一致,zh
+sleeve length uneven,袖长不一致,zh
+label upside down,唛标倒置,zh
+care label missing,缺洗唛,zh
+wrong hangtag,错吊牌,zh
+barcode unreadable,条码不可读,zh
+mildew,霉斑,zh
+odor,异味,zh
+chemical odor,化学异味,zh
+loose rivet,铆钉松动,zh
+exposed metal,金属外露,zh
+print off position,印花位置偏差,zh
+embroidery off position,绣花位置偏差,zh
+shade lot mismatch,缸差不匹配,zh
+thin yarn,细纱,zh
+slub defect,竹节疵,zh
+hole at seam,缝位破洞,zh
+needle hole damage,针孔损伤,zh
+run off stitch,车线跑偏,zh
+roving stitch,线迹游走,zh
+pleat not aligned,褶位不对齐,zh
+stripe mismatch,条纹不对齐,zh
+check mismatch,格纹不对齐,zh
+off grain,丝缕歪斜,zh
+twisted garment,成衣扭曲,zh
+neckline wavy,领口波浪,zh
+collar uneven,领子不平,zh
+pocket uneven,口袋不平,zh
+button loose,纽扣松动,zh
+snap loose,按扣松动,zh
+zipper broken,拉链损坏,zh
+zipper wavy,拉链起波浪,zh
+teeth missing,链牙缺失,zh
+puller missing,拉头缺失,zh
+stitch density incorrect,针距密度不正确,zh
+wrong thread color,线色错误,zh
+label missing,缺唛,zh
+hangtag missing,缺吊牌,zh
+incorrect barcode,条码错误,zh
+poor folding,折叠不良,zh
+carton damaged,外箱破损,zh
+polybag damaged,胶袋破损,zh
+moisture damage,受潮损坏,zh
+mold,霉点,zh
+unacceptable odor,异味不可接受,zh
+sharp edge,锐边,zh
+metal contamination,金属污染,zh
+broken needle found,发现断针,zh
+irregular measurement,尺寸不规则,zh

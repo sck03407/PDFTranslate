@@ -98,6 +98,32 @@ lamination,贴膜,zh
 padding weight,填充克重,zh
 fill power,蓬松度,zh
 down proof,防钻绒,zh
+design sketch,设计草图,zh
+colorway code,配色代码,zh
+sample comments,样品评语,zh
+fit correction,版型修改,zh
+bulk fabric approval,大货面料确认,zh
+approved color standard,确认色样标准,zh
+garment construction,成衣工艺,zh
+workmanship notes,做工说明,zh
+seam detail,缝制细节,zh
+stitch detail,线迹细节,zh
+pom chart,测量点表,zh
+graded spec,放码尺寸表,zh
+tolerance column,公差栏,zh
+supplier reference,供应商参考号,zh
+vendor item number,供应商物料号,zh
+customer style number,客户款号,zh
+buyer style number,买家款号,zh
+carton packing method,装箱方式,zh
+ratio pack,配比装箱,zh
+open stock pack,散码装箱,zh
+prepack ratio,预包装配比,zh
+assortment detail,配码明细,zh
+label copy,唛标文案,zh
+wash care copy,洗护文案,zh
+ticketing instruction,价签说明,zh
+testing requirement,测试要求,zh
 anti pilling,抗起球,zh
 anti static,防静电,zh
 anti bacterial,抗菌,zh
@@ -131,3 +157,97 @@ operation bulletin,工序表,zh
 smv,标准工时,zh
 sam,动作分析表,zh
 needle policy,断针管理制度,zh
+product development,产品开发,zh
+style description,款式描述,zh
+style name,款名,zh
+style code,款号,zh
+colorway,配色,zh
+color name,颜色名称,zh
+size range,尺码范围,zh
+season,季节,zh
+collection,系列,zh
+buyer,买家,zh
+vendor,供应商,zh
+factory,工厂,zh
+supplier,供应商,zh
+country of origin,原产国,zh
+hs code,海关编码,zh
+sample request,样衣需求,zh
+sample submission,样衣提交,zh
+sample comment,样衣意见,zh
+fit approval,版型确认,zh
+wear test,试穿测试,zh
+proto approval,初样确认,zh
+sales sample approval,销售样确认,zh
+top sample,头件样,zh
+top approval,头件确认,zh
+fabric approval,面料确认,zh
+trim approval,辅料确认,zh
+lab dip approval,色样确认,zh
+artwork approval,图案确认,zh
+size specification,尺寸规格,zh
+measurement chart,尺寸表,zh
+pattern correction,纸样修正,zh
+grading,放码,zh
+marker,唛架,zh
+cutting instruction,裁剪说明,zh
+sewing operation,车缝工序,zh
+critical path,关键路径,zh
+time and action calendar,生产进度表,zh
+tna calendar,生产进度表,zh
+purchase order,采购订单,zh
+order quantity,订单数量,zh
+minimum order quantity,最小起订量,zh
+moq,最小起订量,zh
+delivery date,交货日期,zh
+ship date,出货日期,zh
+ex factory,离厂,zh
+fabric consumption,面料用量,zh
+trim consumption,辅料用量,zh
+wastage,损耗,zh
+yield,单耗,zh
+costing sheet,成本单,zh
+unit price,单价,zh
+sample yardage,样布用量,zh
+sample tag,样衣吊牌,zh
+development sample,开发样,zh
+photo sample,拍照样,zh
+wearer trial sample,试穿样,zh
+red seal sample,红封样,zh
+green seal sample,绿封样,zh
+black seal sample,黑封样,zh
+bulk shipment sample,大货船样,zh
+proto comments,初样意见,zh
+fit meeting,试身会议,zh
+pattern amendment,纸样修改,zh
+style sketch,款式图,zh
+technical sketch,技术款式图,zh
+flat sketch,平面款式图,zh
+color standard,颜色标准,zh
+approved lab dip,确认色样,zh
+bulk fabric standard,大货面料标准,zh
+trim sheet,辅料表,zh
+bill of labor,工序工价表,zh
+operation breakdown,工序分解,zh
+line layout,生产线布局,zh
+cutting marker,裁剪唛架,zh
+marker efficiency,唛架利用率,zh
+fabric width,布封,zh
+usable width,有效门幅,zh
+shrinkage allowance,缩水预留,zh
+fabric utilization,面料利用率,zh
+cost breakdown,成本明细,zh
+target price,目标价,zh
+quoted price,报价,zh
+landed cost,到岸成本,zh
+freight cost,运费成本,zh
+duty rate,关税税率,zh
+sample charge,样品费,zh
+fabric liability,面料责任库存,zh
+trim liability,辅料责任库存,zh
+excess fabric,多余面料,zh
+leftover trim,剩余辅料,zh
+vendor manual,供应商手册,zh
+compliance requirement,合规要求,zh
+testing protocol,测试规范,zh
+inspection protocol,检验规范,zh
