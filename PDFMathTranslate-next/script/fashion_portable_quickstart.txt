@@ -6,17 +6,23 @@ Recommended startup
 Double-click Start-Fashion.bat.
 It opens the GUI in the original custom workflow and preloads the fashion
 glossary resources for apparel documents.
-You can choose Ollama, OpenAI-compatible, SiliconFlow, SiliconFlowFree, and
-other built-in services directly from the Service dropdown.
-You can also choose CustomOpenAICompatible to add your own third-party
-OpenAI-compatible endpoint, model, and API key.
+The regular-user page only shows PDF upload, translation, preview, and
+download. The settings entry is hidden by default.
+Administrators can enable the settings entry in config\\config.v3.toml by
+editing config\\distribution.toml, setting show_settings_tab = true and
+settings_admin_password to their own password, then restart Start-Fashion.bat.
+From the unlocked Settings page, administrators can choose Ollama,
+OpenAI-compatible, SiliconFlow, SiliconFlowFree, CustomOpenAICompatible, and
+other built-in services.
 
 What each script does
 ---------------------
 Start-Fashion.bat
   Recommended launcher.
   It starts the GUI with no-watermark defaults, built-in fashion glossary
-  support, and the portable config folder under config\\config.v3.toml.
+  support, and the portable config folder under config\\.
+  config\\distribution.toml is the simple administrator file for settings entry,
+  password, LAN queue limits, QPS, and worker limits.
   If port 7860 is already occupied, the launcher now automatically falls back
   to the next available local port.
 
@@ -26,9 +32,9 @@ BABELDOC-BUILD-INFO.txt
 Custom terminology
 ------------------
 config\\fashion-customer-glossary-template.csv is preloaded by default.
-You can edit it directly in the GUI from the Customer Glossary Template table,
-or edit the CSV file in place to add your customer, brand, fabric composition,
-BOM, and wash-care specific terms.
+Administrators can edit it from the Settings page Customer Glossary Template
+table, or edit the CSV file in place to add customer, brand, fabric
+composition, BOM, and wash-care specific terms.
 
 Offline assets
 --------------

@@ -2,11 +2,11 @@
 
 [SiliconFlow](https://siliconflow.cn) 在这个定制分支中仍可作为付费 API 翻译服务使用。
 
-`SiliconFlowFree` 免费在线中转接口也继续保留在这个定制分支中，并且可以直接在 GUI 的服务下拉框中选择。
+`SiliconFlowFree` 免费在线中转接口也继续保留在这个定制分支中，管理员打开设置入口后可以在 GUI 的服务下拉框中选择。
 
 需要注意的是，`SiliconFlowFree` 仍属于免费中转路径，可用性和速率可能波动；如果你需要更稳定的正式生产环境，建议改用 `SiliconFlow` 付费 API。
 
-另外，这个分支已经增加了 `CustomOpenAICompatible` 服务入口。如果你有自己的第三方 OpenAI 兼容接口，也可以直接在 GUI 中填写：
+另外，这个分支已经增加了 `CustomOpenAICompatible` 服务入口。如果你有自己的第三方 OpenAI 兼容接口，也可以在管理员设置页中填写：
 
 - 自定义第三方服务名称
 - API 基础 URL
@@ -28,6 +28,8 @@ pdf2zh_next --siliconflow --siliconflow-model "Pro/deepseek-ai/DeepSeek-V3" --si
 ```
 
 #### Web 界面
+
+默认分发界面会隐藏设置入口；请先在 `config/distribution.toml` 中设置 `show_settings_tab = true`，或临时使用 `--show-settings-tab` / `PDF2ZH_SHOW_SETTINGS_TAB=true` 让管理员打开设置页。
 
 1. "翻译选项" - **"服务"** 下拉列表：选择 "SiliconFlow"
 2. "翻译选项" - **"SiliconFlow API 基础 URL"**：保持默认

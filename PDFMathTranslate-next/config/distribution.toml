@@ -1,0 +1,32 @@
+# PDFTranslate distribution settings
+# This file is intended for Windows portable and Docker administrators.
+# It overrides the auto-saved config.v3.toml, while command line arguments and
+# PDF2ZH_* environment variables still have higher priority.
+
+[gui_settings]
+brand_name = "PDFTranslate"
+brand_url = ""
+ui_lang = "zh"
+
+# Regular-user distribution mode. Set to true to show the settings entry.
+show_settings_tab = false
+settings_admin_password = ""
+
+# LAN safety defaults: one heavy PDF translation runs at a time; extra jobs wait.
+max_concurrent_jobs = 1
+max_queue_size = 8
+
+auto_cleanup_output_history = true
+output_history_retention_days = 7
+
+[translation]
+lang_in = "en"
+lang_out = "zh"
+qps = 4
+pool_max_workers = 4
+term_qps = 2
+term_pool_max_workers = 2
+
+[pdf]
+watermark_output_mode = "no_watermark"
+translate_table_text = true

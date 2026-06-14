@@ -24,6 +24,35 @@ powershell -ExecutionPolicy Bypass -File .\script\build_fashion_docker.ps1
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
+默认 WebUI 面向普通用户，只显示上传 PDF、翻译、预览和下载流程，不显示设置页入口。
+
+镜像默认使用 `/app/config/distribution.toml` 作为管理员分发配置。你可以把配置目录挂载到宿主机，只改这个文件来控制设置入口、密码、局域网并发、队列、QPS 和 worker 数：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdftranslate-config:/app/config `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+首次使用时，可以先从仓库的 `PDFMathTranslate-next/config/distribution.toml` 复制一份到 `E:\pdftranslate-config\distribution.toml`。
+
+如果你只是想临时打开设置页并用密码保护，也可以继续用环境变量覆盖：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -e PDF2ZH_SHOW_SETTINGS_TAB=true `
+  -e PDF2ZH_SETTINGS_ADMIN_PASSWORD="change-me" `
+  pdfmathtranslate-fashion:local
+```
+
+> [!TIP]
+>
+> 局域网多人共用时，默认 `max_concurrent_jobs = 1`，即同一时间只跑一个 PDF 翻译任务，其他用户请求排队。低配服务器建议保持这个值，并把 `qps`、`pool_max_workers` 控制在 2-4 左右，避免多个大文件同时处理导致卡死。
+> Docker 部署时也建议加宿主级资源限制，例如 `--cpus 2 --memory 4g --restart unless-stopped`。这样遇到超大 PDF 或异常任务时，风险更容易限制在容器内。
+
 如果你希望把 `pdf2zh_files` 输出目录挂载到宿主机：
 
 ```powershell

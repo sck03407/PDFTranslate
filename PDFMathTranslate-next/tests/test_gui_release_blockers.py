@@ -113,6 +113,29 @@ def test_startup_output_history_cleanup_uses_retention_days(monkeypatch, tmp_pat
     assert "older than 7 day(s)" in message
 
 
+def test_settings_entry_is_hidden_by_default(monkeypatch):
+    gui = _gui(monkeypatch)
+    default_settings = gui.CLIEnvSettingsModel()
+
+    assert gui._settings_entry_enabled(default_settings) is False
+    assert gui._settings_unlock_required(default_settings) is False
+
+
+def test_settings_entry_can_require_admin_password(monkeypatch):
+    gui = _gui(monkeypatch)
+    admin_settings = gui.CLIEnvSettingsModel(
+        gui_settings={
+            "show_settings_tab": True,
+            "settings_admin_password": "secret",
+        }
+    )
+
+    assert gui._settings_entry_enabled(admin_settings) is True
+    assert gui._settings_unlock_required(admin_settings) is True
+    assert gui.verify_settings_admin_password("secret", admin_settings) is True
+    assert gui.verify_settings_admin_password("wrong", admin_settings) is False
+
+
 def test_on_file_upload_empty_list_returns_all_declared_outputs(monkeypatch):
     gui = _gui(monkeypatch)
     state = _empty_state()

@@ -579,6 +579,9 @@ api_key = ""
 - `Custom System Prompt` 仅在 LLM/在线 API 模式下显示，默认填入服装行业 prompt；
 - `save automatically extracted glossary` 中文改为“保存自动抽取术语表”；
 - 增加提示：CSV 表头必须为 `source,target`。
+- 面向 Windows 便携包和 Docker 分发时，普通用户首页默认只显示上传 PDF、翻译、预览、下载流程；
+- 设置入口默认隐藏，管理员优先修改 `config/distribution.toml` 中的 `show_settings_tab = true` 显式开启；
+- 设置入口可通过 `settings_admin_password` 加密码；同一文件还可配置 `max_concurrent_jobs`、`max_queue_size`、`qps`、`pool_max_workers` 等局域网部署保护项，普通使用者不需要看到服务、API、品牌、术语表和高级 PDF 设置。
 
 注意：不要在页面上堆太多说明文字。术语 CSV 格式说明可以放到帮助文档或上传失败时提示。
 

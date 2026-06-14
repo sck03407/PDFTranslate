@@ -2,7 +2,7 @@
 
 [SiliconFlow](https://siliconflow.cn) can still be used as a paid API-based translation service in this customized branch.
 
-The free `SiliconFlowFree` relay path is also kept in this customized branch and remains selectable in the GUI service dropdown.
+The free `SiliconFlowFree` relay path is also kept in this customized branch and remains selectable from the administrator Settings page.
 
 Please note that `SiliconFlowFree` is still a free relay path, so availability and rate limits may fluctuate. For a more stable production workflow, prefer the paid `SiliconFlow` API.
 
@@ -19,6 +19,8 @@ pdf2zh_next --siliconflow --siliconflow-model "Pro/deepseek-ai/DeepSeek-V3" --si
 ```
 
 #### webui
+
+The distribution UI hides the settings entry by default; set `show_settings_tab = true` in `config/distribution.toml`, or temporarily start with `--show-settings-tab` / `PDF2ZH_SHOW_SETTINGS_TAB=true`, before configuring services as an administrator.
 
 1. "Translation Options" - **"Service"** dropdown list: Select "SiliconFlow"
 2. "Translation Options" - **"Base URL for SiliconFlow API"**: Keep default

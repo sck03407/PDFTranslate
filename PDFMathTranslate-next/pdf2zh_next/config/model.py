@@ -108,6 +108,22 @@ class GUISettings(BaseModel):
         default=DEFAULT_GUI_BRAND_URL,
         description="Custom brand link shown in the GUI header",
     )
+    show_settings_tab: bool = Field(
+        default=False,
+        description="Show the GUI settings entry for administrators",
+    )
+    settings_admin_password: str | None = Field(
+        default=None,
+        description="Password required to unlock the GUI settings page",
+    )
+    max_concurrent_jobs: int = Field(
+        default=1,
+        description="Maximum number of GUI translation jobs allowed to run at the same time",
+    )
+    max_queue_size: int | None = Field(
+        default=8,
+        description="Maximum number of GUI jobs waiting in the queue. Set to null for no queue limit",
+    )
     auto_cleanup_output_history: bool = Field(
         default=True,
         description="Automatically remove expired pdf2zh_files session directories when the GUI starts",
@@ -318,6 +334,13 @@ class SettingsModel(BaseModel):
             raise ValueError(
                 "output_history_retention_days must be greater than or equal to 1"
             )
+        if self.gui_settings.max_concurrent_jobs < 1:
+            raise ValueError("max_concurrent_jobs must be greater than or equal to 1")
+        if (
+            self.gui_settings.max_queue_size is not None
+            and self.gui_settings.max_queue_size < 1
+        ):
+            raise ValueError("max_queue_size must be greater than or equal to 1")
 
         if not self.translate_engine_settings:
             raise ValueError("Must provide a translation service")

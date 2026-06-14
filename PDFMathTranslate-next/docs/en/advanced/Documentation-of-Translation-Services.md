@@ -32,7 +32,7 @@ Currently supported Tier 1 translation engines include:
 
 Additional note:
 
-- `SiliconFlowFree` is still bundled in this customized branch and remains selectable in the GUI.
+- `SiliconFlowFree` is still bundled in this customized branch and remains selectable from the administrator Settings page.
 - It is best treated as a free trial or fallback path rather than a stable SLA-backed service.
 
 #### Tier 2 (Community Support)

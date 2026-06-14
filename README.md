@@ -18,6 +18,7 @@
   - 兼容 `UTF-8 BOM` 的 `config.v3.toml`；
   - 当 `7860` 端口被占用时，自动回退到下一个可用本地端口。
 - 对外项目名统一使用 `PDFTranslate`。
+- Windows 便携版与 Docker 部署默认隐藏设置入口，普通用户只看到上传 PDF、翻译、预览和下载首页；管理员优先修改 `config/distribution.toml` 来打开设置入口、设置密码、限制局域网并发和队列。
 - GitHub 仓库级配置已收口到根目录 `.github/`，当前仅保留手动发布工作流 `.github/workflows/fashion-release.yml`。
 - `2026-06-07` 首发前最终清理已完成：
   - 已移除 `PDFMathTranslate-next/.git` 与 `BabelDOC/.git`；
@@ -49,25 +50,33 @@
 ## 输出目录清理
 
 - `PDFMathTranslate-next` 的 WebUI 输出默认保存在 `pdf2zh_files/<session_id>/`。
+- 每次翻译都会使用独立 UUID 会话目录，多人局域网使用时输出文件不会因为文件名相同而互相覆盖。
+- 多人共用 Docker / 局域网服务时，主要风险不是文件冲突，而是 CPU、内存、OCR/PDF 解析、翻译接口并发被打满。默认分发配置建议 `max_concurrent_jobs = 1`，让任务排队执行；低配服务器再配合降低 `qps` 和 `pool_max_workers`。
 - 当前仓库已规划为一套共用策略：
-  - GUI 设置页提供 `清理 pdf2zh_files` 按钮；
+  - 管理员设置页提供 `清理 pdf2zh_files` 按钮；
   - 启动 GUI 时可自动清理 N 天前的历史会话目录；
   - Windows 本地运行与 Docker 容器挂载目录共用同一组配置项和清理逻辑。
 
 ### Docker 挂载示例
 
+推荐同时挂载管理员配置目录和翻译输出目录：
+
 ```powershell
 docker run -d `
   -p 7860:7860 `
+  -v E:\pdftranslate-config:/app/config `
   -v E:\pdf2zh-output:/app/pdf2zh_files `
   pdfmathtranslate-fashion:local
 ```
+
+首次使用时，可先把 [distribution.toml](/E:/PDFTranslate/PDFMathTranslate-next/config/distribution.toml) 放到 `E:\pdftranslate-config\distribution.toml`。之后管理员只需要改这个文件，就能控制是否显示设置页、设置页密码、局域网并发队列、QPS 和 worker 数。
 
 如果你希望在容器启动时也自动清理历史输出，可额外传入：
 
 ```powershell
 docker run -d `
   -p 7860:7860 `
+  -v E:\pdftranslate-config:/app/config `
   -v E:\pdf2zh-output:/app/pdf2zh_files `
   -e PDF2ZH_AUTO_CLEANUP_OUTPUT_HISTORY=true `
   -e PDF2ZH_OUTPUT_HISTORY_RETENTION_DAYS=7 `

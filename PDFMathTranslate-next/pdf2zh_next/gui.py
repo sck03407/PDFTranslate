@@ -1,6 +1,8 @@
 import asyncio
 import cgi
 import csv
+import hmac
+import inspect
 import io
 import logging
 import socket
@@ -172,6 +174,32 @@ def _build_brand_markdown(brand_name: str | None, brand_url: str | None) -> str:
     if resolved_url:
         return f"# [{resolved_name}]({resolved_url})"
     return f"# {resolved_name}"
+
+
+def _settings_entry_enabled(current_settings: CLIEnvSettingsModel) -> bool:
+    return bool(current_settings.gui_settings.show_settings_tab)
+
+
+def _settings_admin_password(current_settings: CLIEnvSettingsModel) -> str:
+    return (current_settings.gui_settings.settings_admin_password or "").strip()
+
+
+def _settings_unlock_required(current_settings: CLIEnvSettingsModel) -> bool:
+    return _settings_entry_enabled(current_settings) and bool(
+        _settings_admin_password(current_settings)
+    )
+
+
+def verify_settings_admin_password(
+    candidate_password: str | None,
+    current_settings: CLIEnvSettingsModel | None = None,
+) -> bool:
+    if current_settings is None:
+        current_settings = settings
+    expected_password = _settings_admin_password(current_settings)
+    if not expected_password:
+        return True
+    return hmac.compare_digest(candidate_password or "", expected_password)
 
 
 def _ensure_output_history_root_dir() -> Path:
@@ -539,6 +567,8 @@ if default_gui_glossaries:
 
 
 disable_gui_sensitive_input = settings.gui_settings.disable_gui_sensitive_input
+settings_entry_visible = _settings_entry_enabled(settings)
+settings_password_required = _settings_unlock_required(settings)
 startup_output_history_cleanup_message: str | None = None
 
 
@@ -2601,6 +2631,10 @@ custom_css = """
         padding-left: 20px !important;            /* 左侧留白 */
         padding-right: 0 !important;              /* 右侧不留白，让内容自然延伸 */
     }
+    .settings-login-container {
+        max-width: min(420px, 90vw) !important;
+        margin: 32px auto 0 auto !important;
+    }
 
     /* 上传文件列表：左侧留白，避免列表项贴左边 */
     .uploaded-files-list {
@@ -2709,7 +2743,12 @@ with gr.Blocks(
         FASHION_GLOSSARY_SUPPORT_INDEX_MAP.clear()
         with gr.Row(elem_classes=["tab-main-row"], equal_height=True):
             # 左侧侧边栏
-            with gr.Column(scale=0, min_width=70, elem_classes=["sidebar-nav"]):
+            with gr.Column(
+                scale=0,
+                min_width=70,
+                elem_classes=["sidebar-nav"],
+                visible=settings_entry_visible,
+            ):
                 btn_main_tab = gr.Button("🚀", variant="primary", elem_classes=["sidebar-btn"])
                 btn_settings_tab = gr.Button("⚙️", variant="secondary", elem_classes=["sidebar-btn"])
 
@@ -2821,6 +2860,22 @@ with gr.Blocks(
                                 visible=True,
                                 elem_classes=["pdf-preview-fixed"],
                             )
+
+                with gr.Group(
+                    visible=False,
+                    elem_classes=["settings-login-container"],
+                ) as tab_settings_login:
+                    gr.Markdown(_("## Settings"), elem_classes=["tab-title"])
+                    gr.Markdown(_("Enter admin password to unlock settings."))
+                    settings_admin_password_input = gr.Textbox(
+                        label=_("Admin Password"),
+                        type="password",
+                    )
+                    settings_admin_unlock_btn = gr.Button(
+                        _("Unlock Settings"),
+                        variant="primary",
+                    )
+                    settings_admin_status = gr.Markdown(visible=False)
 
                 # 其余高级配置都移动到设置页
                 with gr.Group(visible=False, elem_classes=["settings-container"]) as tab_settings:
@@ -3601,23 +3656,74 @@ with gr.Blocks(
                 gr.update(variant="secondary"),
                 gr.update(visible=True),
                 gr.update(visible=False),
+                gr.update(visible=False),
             )
 
         def _show_settings_tab():
+            show_login = settings_password_required
             return (
                 gr.update(variant="secondary"),
                 gr.update(variant="primary"),
                 gr.update(visible=False),
-                gr.update(visible=True),
+                gr.update(visible=show_login),
+                gr.update(visible=not show_login),
             )
 
         btn_main_tab.click(
             _show_main_tab,
-            outputs=[btn_main_tab, btn_settings_tab, tab_main, tab_settings],
+            outputs=[
+                btn_main_tab,
+                btn_settings_tab,
+                tab_main,
+                tab_settings_login,
+                tab_settings,
+            ],
         )
         btn_settings_tab.click(
             _show_settings_tab,
-            outputs=[btn_main_tab, btn_settings_tab, tab_main, tab_settings],
+            outputs=[
+                btn_main_tab,
+                btn_settings_tab,
+                tab_main,
+                tab_settings_login,
+                tab_settings,
+            ],
+        )
+
+        def unlock_settings_tab(admin_password):
+            if verify_settings_admin_password(admin_password):
+                return (
+                    gr.update(value=""),
+                    gr.update(value="", visible=False),
+                    gr.update(visible=False),
+                    gr.update(visible=True),
+                )
+            return (
+                gr.update(),
+                gr.update(value=_("Invalid admin password."), visible=True),
+                gr.update(visible=True),
+                gr.update(visible=False),
+            )
+
+        settings_admin_unlock_btn.click(
+            unlock_settings_tab,
+            inputs=[settings_admin_password_input],
+            outputs=[
+                settings_admin_password_input,
+                settings_admin_status,
+                tab_settings_login,
+                tab_settings,
+            ],
+        )
+        settings_admin_password_input.submit(
+            unlock_settings_tab,
+            inputs=[settings_admin_password_input],
+            outputs=[
+                settings_admin_password_input,
+                settings_admin_status,
+                tab_settings_login,
+                tab_settings,
+            ],
         )
 
         # Event handlers
@@ -4838,6 +4944,31 @@ def _resolve_launch_port(preferred_port: int, max_attempts: int = 20) -> int:
     return preferred_port
 
 
+def _enable_gui_queue() -> None:
+    max_concurrent_jobs = max(1, int(settings.gui_settings.max_concurrent_jobs))
+    max_queue_size = settings.gui_settings.max_queue_size
+    if max_queue_size is not None:
+        max_queue_size = max(1, int(max_queue_size))
+    queue_signature = inspect.signature(demo.queue)
+    queue_parameters = queue_signature.parameters
+    queue_kwargs = {}
+
+    if "default_concurrency_limit" in queue_parameters:
+        queue_kwargs["default_concurrency_limit"] = max_concurrent_jobs
+    elif "concurrency_count" in queue_parameters:
+        queue_kwargs["concurrency_count"] = max_concurrent_jobs
+
+    if max_queue_size is not None and "max_size" in queue_parameters:
+        queue_kwargs["max_size"] = int(max_queue_size)
+
+    demo.queue(**queue_kwargs)
+    logger.info(
+        "GUI queue enabled: max_concurrent_jobs=%s, max_queue_size=%s",
+        max_concurrent_jobs,
+        max_queue_size,
+    )
+
+
 def setup_gui(
     share: bool = False,
     auth_file: str | None = None,
@@ -4876,6 +5007,8 @@ def setup_gui(
             f"Port {server_port} is already in use. "
             f"Falling back to http://127.0.0.1:{resolved_server_port}/"
         )
+
+    _enable_gui_queue()
 
     if not auth_file or not user_list:
         try:

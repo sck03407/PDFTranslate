@@ -26,6 +26,30 @@ There are several methods to open the WebUI interface. If you are using **Window
 
     Drop the PDF file into the window and click `Translate`.
 
+By default, the WebUI is regular-user focused and only shows PDF upload, translation, preview, and download. The settings entry is hidden.
+
+Administrators who need to adjust services, branding, glossaries, advanced PDF options, or LAN concurrency limits should prefer editing `distribution.toml` in the config directory:
+
+```toml
+[gui_settings]
+show_settings_tab = true
+settings_admin_password = "change-me"
+max_concurrent_jobs = 1
+max_queue_size = 8
+
+[translation]
+qps = 4
+pool_max_workers = 4
+```
+
+You can also expose the settings page temporarily at startup:
+
+```bash
+pdf2zh_next --gui --show-settings-tab --settings-admin-password "change-me"
+```
+
+Or use environment variables: `PDF2ZH_SHOW_SETTINGS_TAB=true` and `PDF2ZH_SETTINGS_ADMIN_PASSWORD=change-me`.
+
 5. If you deploy PDFMathTranslate with docker, and you are using ollama as PDFMathTranslate's backend LLM, you should fill "Ollama host" with
 
    ```bash

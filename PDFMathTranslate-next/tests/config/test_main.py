@@ -459,6 +459,75 @@ class TestConfigManager:
             assert cm.settings.translation.qps == 20  # from user config
             assert cm.settings.report_interval == 1.0  # from env var
 
+    def test_distribution_config_overrides_default_config(
+        self,
+        clean_env: None,
+        monkeypatch: pytest.MonkeyPatch,
+        temp_config_dir: Path,
+    ):
+        """Distribution config should override auto-saved default config."""
+        cm = ConfigManager()
+        default_config = temp_config_dir / "config.v3.toml"
+        distribution_config = temp_config_dir / "distribution.toml"
+
+        cm._write_toml_file(
+            default_config,
+            {
+                "gui_settings": {
+                    "show_settings_tab": False,
+                    "max_concurrent_jobs": 4,
+                },
+                "translation": {"qps": 4},
+            },
+        )
+        cm._write_toml_file(
+            distribution_config,
+            {
+                "gui_settings": {
+                    "show_settings_tab": True,
+                    "settings_admin_password": "secret",
+                    "max_concurrent_jobs": 1,
+                },
+                "translation": {"qps": 2},
+            },
+        )
+
+        monkeypatch.setattr(cm, "_default_config_file_path", default_config)
+        with (
+            patch("pdf2zh_next.config.main.DISTRIBUTION_CONFIG_FILE", distribution_config),
+            patch("argparse.ArgumentParser.parse_args", return_value=Namespace()),
+        ):
+            settings = cm.load_cli_config_for_gui()
+
+        assert settings.gui_settings.show_settings_tab is True
+        assert settings.gui_settings.settings_admin_password == "secret"
+        assert settings.gui_settings.max_concurrent_jobs == 1
+        assert settings.translation.qps == 2
+
+    def test_environment_overrides_distribution_config(
+        self,
+        clean_env: None,
+        monkeypatch: pytest.MonkeyPatch,
+        temp_config_dir: Path,
+    ):
+        """Temporary env overrides remain stronger than distribution config."""
+        cm = ConfigManager()
+        default_config = temp_config_dir / "config.v3.toml"
+        distribution_config = temp_config_dir / "distribution.toml"
+
+        cm._write_toml_file(default_config, {"gui_settings": {"show_settings_tab": False}})
+        cm._write_toml_file(distribution_config, {"gui_settings": {"show_settings_tab": True}})
+        monkeypatch.setenv("PDF2ZH_SHOW_SETTINGS_TAB", "false")
+        monkeypatch.setattr(cm, "_default_config_file_path", default_config)
+
+        with (
+            patch("pdf2zh_next.config.main.DISTRIBUTION_CONFIG_FILE", distribution_config),
+            patch("argparse.ArgumentParser.parse_args", return_value=Namespace()),
+        ):
+            settings = cm.load_cli_config_for_gui()
+
+        assert settings.gui_settings.show_settings_tab is False
+
     def test_ensure_config_dir(self, temp_config_dir: Path):
         """Test configuration directory creation"""
         cm = ConfigManager()

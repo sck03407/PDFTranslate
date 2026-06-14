@@ -23,6 +23,7 @@ from pdf2zh_next.config.model import SettingsModel
 from pdf2zh_next.config.translate_engine_model import TRANSLATION_ENGINE_METADATA
 from pdf2zh_next.const import DEFAULT_CONFIG_DIR
 from pdf2zh_next.const import DEFAULT_CONFIG_FILE
+from pdf2zh_next.const import DISTRIBUTION_CONFIG_FILE
 from pdf2zh_next.const import VERSION_DEFAULT_CONFIG_FILE
 from pdf2zh_next.const import WRITE_TEMP_CONFIG_FILE
 
@@ -586,12 +587,22 @@ class ConfigManager:
         default_config_path = (
             self._default_config_file_path.resolve() if default_config_file else None
         )
+        distribution_config_file = self._read_toml_file(DISTRIBUTION_CONFIG_FILE)
+        distribution_config_path = (
+            DISTRIBUTION_CONFIG_FILE.resolve() if distribution_config_file else None
+        )
 
         if not self.test_config(default_config_file):
             default_config_file = {}
             default_config_path = None
             log.error(
                 f"Error in test_config: {self._default_config_file_path}, skip it"
+            )
+        if not self.test_config(distribution_config_file):
+            distribution_config_file = {}
+            distribution_config_path = None
+            log.error(
+                f"Error in test_config: {DISTRIBUTION_CONFIG_FILE}, skip it"
             )
 
         # Merge all settings by priority
@@ -601,8 +612,8 @@ class ConfigManager:
                 env_vars,
             ]
         )
-        config_from_file_dicts = []
         user_config_path: Path | None = None
+        user_config: dict = {}
         if "config_file" in merged_args:
             user_config_path = Path(merged_args["config_file"]).expanduser().resolve()
             user_config = self._read_toml_file(user_config_path)
@@ -612,32 +623,41 @@ class ConfigManager:
                 )
                 user_config = {}
 
-            config_from_file_dicts.append(copy.deepcopy(user_config))
             del merged_args["config_file"]
             merged_args = self.merge_settings(
-                [merged_args, user_config, default_config_file]
+                [
+                    merged_args,
+                    distribution_config_file,
+                    user_config,
+                    default_config_file,
+                ]
             )
         else:
-            merged_args = self.merge_settings([merged_args, default_config_file])
+            merged_args = self.merge_settings(
+                [merged_args, distribution_config_file, default_config_file]
+            )
         # Create settings model from merged dictionary
         self._update_version_default_config()
+        config_from_file_dicts = []
+        config_from_file_dicts.append(copy.deepcopy(distribution_config_file))
+        config_from_file_dicts.append(copy.deepcopy(user_config))
         config_from_file_dicts.append(copy.deepcopy(default_config_file))
         config_from_file_args = self.merge_settings(config_from_file_dicts)
+
+        effective_config_path = (
+            user_config_path or distribution_config_path or default_config_path
+        )
 
         self.config_cli_settings = self._build_model_from_args(
             CLIEnvSettingsModel, config_from_file_args
         )
         self.config_cli_settings.config_file = (
-            str(user_config_path or default_config_path)
-            if (user_config_path or default_config_path) is not None
-            else None
+            str(effective_config_path) if effective_config_path is not None else None
         )
 
         cli_settings = self._build_model_from_args(CLIEnvSettingsModel, merged_args)
         cli_settings.config_file = (
-            str(user_config_path or default_config_path)
-            if (user_config_path or default_config_path) is not None
-            else None
+            str(effective_config_path) if effective_config_path is not None else None
         )
         if validate:
             cli_settings.validate_settings()

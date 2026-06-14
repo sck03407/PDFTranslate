@@ -24,6 +24,35 @@ This creates a local image tag named `pdfmathtranslate-fashion:local` by default
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
+By default, the WebUI is regular-user focused and only shows PDF upload, translation, preview, and download. The settings entry is hidden.
+
+The image uses `/app/config/distribution.toml` as the administrator distribution config. You can mount a host config directory and edit only this file to control the settings entry, password, LAN concurrency, queue size, QPS, and worker counts:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -v E:\pdftranslate-config:/app/config `
+  -v E:\pdf2zh-output:/app/pdf2zh_files `
+  pdfmathtranslate-fashion:local
+```
+
+For first use, copy `PDFMathTranslate-next/config/distribution.toml` from this repository to `E:\pdftranslate-config\distribution.toml`.
+
+For a temporary administrator run that exposes the settings entry and protects it with a password, environment variables still work:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -e PDF2ZH_SHOW_SETTINGS_TAB=true `
+  -e PDF2ZH_SETTINGS_ADMIN_PASSWORD="change-me" `
+  pdfmathtranslate-fashion:local
+```
+
+> [!TIP]
+>
+> For shared LAN use, the default `max_concurrent_jobs = 1` runs only one PDF translation job at a time and queues extra users. Keep this value on low-resource servers, and keep `qps` / `pool_max_workers` around 2-4 to reduce the chance of overload.
+> For Docker deployment, also consider host-level resource limits such as `--cpus 2 --memory 4g --restart unless-stopped`. This keeps oversized PDFs or abnormal jobs more contained inside the container.
+
 To persist the `pdf2zh_files` output directory on the host:
 
 ```powershell

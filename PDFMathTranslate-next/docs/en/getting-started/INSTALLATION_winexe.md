@@ -66,4 +66,6 @@
 >   - `Start-Fashion.bat`: recommended entry point that opens the original custom workflow with the fashion glossary resources preloaded
 >   - `README-Fashion-Portable.txt`: quick-start notes for desktop users
 >   - `BABELDOC-BUILD-INFO.txt`: records which BabelDOC source and version were packaged
-> - This portable folder defaults to the `PDFTranslate` GUI brand and is intended for double-click use on ordinary Windows office PCs.
+> - This portable folder defaults to the `PDFTranslate` GUI brand and hides the settings entry by default, so regular users only see PDF upload, translation, preview, and download.
+> - To open the settings page as an administrator or tune LAN concurrency, queue size, QPS, and worker counts, edit `config\\distribution.toml` first. Set `show_settings_tab = true`, set `settings_admin_password = "change-me"` to your own password, then restart the program.
+> - `distribution.toml` overrides GUI auto-saved `config.v3.toml`, so it is the better fixed-policy file for distribution.

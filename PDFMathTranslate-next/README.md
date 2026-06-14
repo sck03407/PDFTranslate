@@ -59,15 +59,16 @@ For different use cases, we provide distinct methods to use our program. Check o
 This repository includes a fashion-document customization that keeps the existing BabelDOC layout reconstruction pipeline intact while improving apparel-focused defaults:
 
 - `No Watermark` is now the default PDF output mode.
-- `PDFTranslate` is the default GUI brand and can be changed from the Settings page with `Brand Name` and `Brand Link`.
+- `PDFTranslate` is the default GUI brand and can be changed by administrators from the Settings page with `Brand Name` and `Brand Link`.
 - A bundled English-to-Chinese fashion glossary pack is automatically included for supported workflows unless you disable it.
 - A starter customer glossary template is auto-layered in the GUI defaults for supported workflows and can be edited in place.
 - The built-in pack now covers garment parts, measurements, fabrics, trims, BOM / tech pack wording, QC, care-label wording, testing, and packaging terms, with more than 700 EN->ZH entries in total.
 - A bundled fashion translation system prompt is automatically included for LLM-capable workflows unless you disable it.
 - `SiliconFlowFree` remains available in the GUI as a free online relay option, alongside the paid `SiliconFlow` API workflow.
-- The original custom workflow is kept as the only GUI workflow mode. You can switch services directly in `Service`, including Ollama and other built-in local / online connectors already provided by the upstream project.
+- The original custom workflow is kept as the only GUI workflow mode. Administrators can switch services in the Settings page or config file, including Ollama and other built-in local / online connectors already provided by the upstream project.
 - The GUI now includes a `Clean pdf2zh_files` action, and startup can automatically remove session folders older than a configurable number of days.
 - Windows local runs and Docker container runs now share the same output-history cleanup strategy through the same settings and environment variables.
+- The settings entry is hidden by default for Windows and Docker distribution. Administrators can enable it, set a password, and tune LAN queue / QPS limits from `config/distribution.toml`.
 - Portable builds now tolerate `UTF-8 BOM` in `config.v3.toml`.
 - If local port `7860` is already occupied, the GUI now automatically falls forward to the next available local port.
 

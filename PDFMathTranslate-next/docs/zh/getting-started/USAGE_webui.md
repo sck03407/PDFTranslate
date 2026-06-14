@@ -26,6 +26,30 @@
 
     将 `PDF` 文件拖入窗口并点击 `Translate`。
 
+默认 WebUI 面向普通用户，首页只保留上传 PDF、翻译、预览和下载流程，不显示设置入口。
+
+管理员如需调整服务、品牌、术语表、高级 PDF 参数或局域网并发限制，推荐修改配置目录中的 `distribution.toml`，例如：
+
+```toml
+[gui_settings]
+show_settings_tab = true
+settings_admin_password = "change-me"
+max_concurrent_jobs = 1
+max_queue_size = 8
+
+[translation]
+qps = 4
+pool_max_workers = 4
+```
+
+也可以在启动时临时加入：
+
+```bash
+pdf2zh_next --gui --show-settings-tab --settings-admin-password "change-me"
+```
+
+或者使用环境变量：`PDF2ZH_SHOW_SETTINGS_TAB=true` 和 `PDF2ZH_SETTINGS_ADMIN_PASSWORD=change-me`。
+
 5. 如果您通过 docker 部署 PDFMathTranslate，并使用 ollama 作为 PDFMathTranslate 的后端 `LLM`，则应在 "Ollama host" 中填写
 
    ```bash

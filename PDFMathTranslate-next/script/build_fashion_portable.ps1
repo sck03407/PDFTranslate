@@ -257,6 +257,7 @@ Remove-Item Env:XDG_CONFIG_HOME -ErrorAction SilentlyContinue
 Write-Host "==> Copying profile configs"
 Copy-Item -Path (Join-Path $RepoRoot "examples\fashion-online-high-quality.toml") -Destination (Join-Path $ConfigDir "fashion-online-high-quality.toml") -Force
 Copy-Item -Path (Join-Path $RepoRoot "examples\fashion-customer-glossary-template.csv") -Destination (Join-Path $ConfigDir "fashion-customer-glossary-template.csv") -Force
+Copy-Item -Path (Join-Path $RepoRoot "config\distribution.toml") -Destination (Join-Path $ConfigDir "distribution.toml") -Force
 Copy-Item -Path (Join-Path $RepoRoot "script\fashion_portable_quickstart.txt") -Destination (Join-Path $OutputDir "README-Fashion-Portable.txt") -Force
 
 $BuildInfo = @"
@@ -292,6 +293,8 @@ translate_table_text = true
 brand_name = "PDFTranslate"
 brand_url = ""
 ui_lang = "zh"
+show_settings_tab = false
+settings_admin_password = ""
 '@
 Write-Utf8NoBomFile -Path (Join-Path $ConfigDir "config.v3.toml") -Content $DefaultConfig
 
@@ -306,8 +309,8 @@ set "XDG_CONFIG_HOME=%~dp0data\xdg-config"
 echo.
 echo PDFTranslate Portable
 echo.
-echo Default startup keeps the original custom workflow and preloads the fashion glossaries.
-echo Choose any built-in service such as Ollama, OpenAI-compatible, SiliconFlow or others in the GUI.
+echo Default startup shows the simple PDF translation page.
+echo Administrators can edit config\distribution.toml to unlock settings or tune LAN concurrency.
 echo.
 "%~dp0runtime\python.exe" -m pdf2zh_next.main --gui
 '@

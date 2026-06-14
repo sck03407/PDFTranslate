@@ -11,6 +11,12 @@ DEFAULT_CONFIG_DIR = Path(
 ).expanduser()
 DEFAULT_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / f"config.v{__config_file_version__}.toml"
+DISTRIBUTION_CONFIG_FILE = Path(
+    os.getenv(
+        "PDF2ZH_DISTRIBUTION_CONFIG_FILE",
+        str(DEFAULT_CONFIG_DIR / "distribution.toml"),
+    )
+).expanduser()
 WRITE_TEMP_CONFIG_FILE = (
     DEFAULT_CONFIG_DIR / f"config.v{__config_file_version__}.temp.toml"
 )

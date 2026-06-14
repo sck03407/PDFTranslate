@@ -97,6 +97,10 @@ In the following table, we list all advanced options for reference:
 | `--ui-lang`                     | UI language                            | `pdf2zh_next --gui --ui-lang zh`                |
 | `--brand-name`                  | GUI header brand name                  | `pdf2zh_next --gui --brand-name "PDFTranslate"` |
 | `--brand-url`                   | GUI header brand link                  | `pdf2zh_next --gui --brand-url "https://example.com"` |
+| `--show-settings-tab`           | Show the administrator settings entry. Hidden by default so regular users only see upload, translate, preview, and download. | `pdf2zh_next --gui --show-settings-tab` |
+| `--settings-admin-password`      | Require an administrator password before opening the settings page. Effective when the settings entry is shown. | `pdf2zh_next --gui --show-settings-tab --settings-admin-password "change-me"` |
+| `--max-concurrent-jobs`          | Number of WebUI translation jobs allowed to run at the same time. Keep `1` for low-resource LAN servers. | `pdf2zh_next --gui --max-concurrent-jobs 1` |
+| `--max-queue-size`               | Maximum number of WebUI jobs waiting in the queue. Gradio rejects new requests after the queue is full. | `pdf2zh_next --gui --max-queue-size 8` |
 
 [⬆️ Back to top](#toc)
 
@@ -117,7 +121,7 @@ Default behavior:
 GUI and CLI behavior:
 
 - The original custom workflow is kept as the only GUI workflow mode.
-- You can choose upstream-built local or online services directly in `Service`, including `Ollama`, `OpenAICompatible`, `SiliconFlow`, `SiliconFlowFree`, and others already shipped by the project.
+- Regular users see only PDF upload, translation, preview, and download by default. Administrators can switch `Service` from the Settings page or config file, including `Ollama`, `OpenAICompatible`, `SiliconFlow`, `SiliconFlowFree`, and others already shipped by the project.
 - The built-in fashion glossary and customer glossary template continue to layer on top of supported services automatically.
 
 Starter files:
@@ -292,7 +296,9 @@ There are multiple ways to modify and import the configuration file.
 >
 > Higher-ranked modifications will override lower-ranked ones.
 >
-> **cli/gui > env > user config file > default config file**
+> **cli/gui > env > distribution config file > user config file > default config file**
+
+For Windows portable and Docker distribution, prefer editing `distribution.toml` in the config directory. It is the lightweight administrator override file for settings visibility, settings password, LAN concurrency / queue limits, QPS, and worker limits; GUI auto-saved `config.v3.toml` will not override it.
 
 - Modifying Configuration via **Command Line Arguments**
 

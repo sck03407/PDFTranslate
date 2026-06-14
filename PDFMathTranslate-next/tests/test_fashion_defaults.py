@@ -26,6 +26,41 @@ def test_builtin_fashion_glossary_paths_cover_glossary_pack():
     assert {path.suffix for path in glossary_paths} == {".csv"}
 
 
+def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
+    glossary_terms: dict[str, set[str]] = {}
+
+    for glossary_path in get_builtin_fashion_glossary_paths():
+        for source, target, _target_language in load_glossary_rows(glossary_path):
+            glossary_terms.setdefault(source, set()).add(target)
+
+    expected_terms = {
+        "front bodice": "前片",
+        "under collar": "下领",
+        "fabric composition": "面料成分",
+        "polyurethane": "聚氨酯",
+        "recycled nylon": "再生尼龙",
+        "zipper teeth": "链牙",
+        "cord end": "绳尾扣",
+        "wash care label": "洗唛",
+    }
+
+    for source, target in expected_terms.items():
+        assert target in glossary_terms.get(source, set())
+
+
+def test_builtin_fashion_glossary_files_have_unique_sources():
+    for glossary_path in get_builtin_fashion_glossary_paths():
+        sources = [
+            source.strip().lower()
+            for source, _target, _target_language in load_glossary_rows(glossary_path)
+        ]
+        duplicate_sources = {
+            source for source in sources if sources.count(source) > 1
+        }
+
+        assert duplicate_sources == set(), glossary_path.name
+
+
 def test_bundled_customer_glossary_template_exists():
     glossary_path = get_bundled_customer_glossary_template_path()
 
