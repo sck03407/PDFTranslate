@@ -121,6 +121,13 @@ def test_settings_entry_is_hidden_by_default(monkeypatch):
     assert gui._settings_unlock_required(default_settings) is False
 
 
+def test_hidden_settings_sidebar_css_keeps_gradio_hide_class(monkeypatch):
+    gui = _gui(monkeypatch)
+
+    assert ".sidebar-nav.hide" in gui.custom_css
+    assert "display: none !important" in gui.custom_css
+
+
 def test_settings_entry_can_require_admin_password(monkeypatch):
     gui = _gui(monkeypatch)
     admin_settings = gui.CLIEnvSettingsModel(

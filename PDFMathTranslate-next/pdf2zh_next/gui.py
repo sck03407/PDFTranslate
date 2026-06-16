@@ -2321,6 +2321,10 @@ custom_css = """
         box-shadow: var(--block-shadow);
     }
 
+    .sidebar-nav.hide {
+        display: none !important;
+    }
+
     .sidebar-btn {
         width: 44px;
         height: 44px;
