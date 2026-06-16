@@ -3,6 +3,9 @@
 # It overrides the auto-saved config.v3.toml, while command line arguments and
 # PDF2ZH_* environment variables still have higher priority.
 
+# Default translator for regular-user distribution mode.
+siliconflowfree = true
+
 [gui_settings]
 brand_name = "PDFTranslate"
 brand_url = ""

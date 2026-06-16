@@ -243,16 +243,36 @@ if ($null -eq $OfflineAssetZip) {
 }
 
 Write-Host "==> Restoring offline assets into portable data directory"
+$PreviousPortableEnv = @{
+    PDF2ZH_CONFIG_DIR = $env:PDF2ZH_CONFIG_DIR
+    BABELDOC_CACHE_DIR = $env:BABELDOC_CACHE_DIR
+    HOME = $env:HOME
+    USERPROFILE = $env:USERPROFILE
+    XDG_CACHE_HOME = $env:XDG_CACHE_HOME
+    XDG_DATA_HOME = $env:XDG_DATA_HOME
+    XDG_CONFIG_HOME = $env:XDG_CONFIG_HOME
+}
 $env:PDF2ZH_CONFIG_DIR = $ConfigDir
+$env:BABELDOC_CACHE_DIR = Join-Path $DataDir "babeldoc-cache"
+$env:HOME = Join-Path $DataDir "home"
+$env:USERPROFILE = Join-Path $DataDir "home"
 $env:XDG_CACHE_HOME = Join-Path $DataDir "xdg-cache"
 $env:XDG_DATA_HOME = Join-Path $DataDir "xdg-data"
 $env:XDG_CONFIG_HOME = Join-Path $DataDir "xdg-config"
-& $BuildPython -m babeldoc.main --restore-offline-assets $OfflineAssetZip.FullName
-Remove-Item -Force $OfflineAssetZip.FullName
-Remove-Item Env:PDF2ZH_CONFIG_DIR -ErrorAction SilentlyContinue
-Remove-Item Env:XDG_CACHE_HOME -ErrorAction SilentlyContinue
-Remove-Item Env:XDG_DATA_HOME -ErrorAction SilentlyContinue
-Remove-Item Env:XDG_CONFIG_HOME -ErrorAction SilentlyContinue
+try {
+    & $BuildPython -m babeldoc.main --restore-offline-assets $OfflineAssetZip.FullName
+    Remove-Item -Force $OfflineAssetZip.FullName
+}
+finally {
+    foreach ($Name in $PreviousPortableEnv.Keys) {
+        if ($null -eq $PreviousPortableEnv[$Name]) {
+            Remove-Item -Path "Env:$Name" -ErrorAction SilentlyContinue
+        }
+        else {
+            Set-Item -Path "Env:$Name" -Value $PreviousPortableEnv[$Name]
+        }
+    }
+}
 
 Write-Host "==> Copying profile configs"
 Copy-Item -Path (Join-Path $RepoRoot "examples\fashion-online-high-quality.toml") -Destination (Join-Path $ConfigDir "fashion-online-high-quality.toml") -Force
@@ -272,6 +292,8 @@ Python embed version: $PythonVersion
 Set-Content -Path (Join-Path $OutputDir "BABELDOC-BUILD-INFO.txt") -Value $BuildInfo -Encoding Ascii
 
 $DefaultConfig = @'
+siliconflowfree = true
+
 [basic]
 gui = false
 
@@ -303,6 +325,9 @@ $Launcher = @'
 setlocal
 cd /d "%~dp0"
 set "PDF2ZH_CONFIG_DIR=%~dp0config"
+set "BABELDOC_CACHE_DIR=%~dp0data\babeldoc-cache"
+set "HOME=%~dp0data\home"
+set "USERPROFILE=%~dp0data\home"
 set "XDG_CACHE_HOME=%~dp0data\xdg-cache"
 set "XDG_DATA_HOME=%~dp0data\xdg-data"
 set "XDG_CONFIG_HOME=%~dp0data\xdg-config"

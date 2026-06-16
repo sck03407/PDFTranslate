@@ -2914,7 +2914,7 @@ with gr.Blocks(
                         service = gr.Dropdown(
                             label=_("Service"),
                             choices=available_services,
-                            value=default_gui_service,
+                            value=selected_gui_service,
                         )
 
                         __gui_service_arg_names = []

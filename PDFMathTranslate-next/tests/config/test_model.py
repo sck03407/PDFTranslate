@@ -87,16 +87,25 @@ class TestGUISettings:
 
         settings = CLIEnvSettingsModel().to_settings_model_for_gui()
 
-        assert settings.translate_engine_settings.translate_engine_type == "Google"
-        assert "No translation engine selected, using Google" not in caplog.text
+        assert (
+            settings.translate_engine_settings.translate_engine_type
+            == "SiliconFlowFree"
+        )
+        assert (
+            "No translation engine selected, using SiliconFlowFree"
+            not in caplog.text
+        )
 
     def test_standard_conversion_keeps_default_engine_warning(self, caplog):
         caplog.set_level("WARNING")
 
         settings = CLIEnvSettingsModel().to_settings_model()
 
-        assert settings.translate_engine_settings.translate_engine_type == "Google"
-        assert "No translation engine selected, using Google" in caplog.text
+        assert (
+            settings.translate_engine_settings.translate_engine_type
+            == "SiliconFlowFree"
+        )
+        assert "No translation engine selected, using SiliconFlowFree" in caplog.text
 
     def test_custom_values(self, tmp_path):
         """Test setting custom values"""
@@ -401,7 +410,10 @@ class TestCLIEnvSettingsModel:
         # Test missing translation service falls back to default free engine
         settings = CLIEnvSettingsModel()
         settings.validate_settings()
-        assert settings.to_settings_model().translate_engine_settings.translate_engine_type == "Google"
+        assert (
+            settings.to_settings_model().translate_engine_settings.translate_engine_type
+            == "SiliconFlowFree"
+        )
 
         # Test missing OpenAI API key
         settings = CLIEnvSettingsModel(openai=True)

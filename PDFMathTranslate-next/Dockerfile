@@ -6,6 +6,12 @@ EXPOSE 7860
 
 ENV PYTHONUNBUFFERED=1
 ENV PDF2ZH_CONFIG_DIR=/app/config
+ENV BABELDOC_CACHE_DIR=/app/data/babeldoc-cache
+ENV HOME=/app/data/home
+ENV USERPROFILE=/app/data/home
+ENV XDG_CACHE_HOME=/app/data/xdg-cache
+ENV XDG_DATA_HOME=/app/data/xdg-data
+ENV XDG_CONFIG_HOME=/app/data/xdg-config
 ARG BABELDOC_SOURCE=stable
 ARG BABELDOC_GIT_REF=
 ARG BABELDOC_STABLE_REF=v0.6.3
@@ -42,5 +48,7 @@ RUN set -eux; \
     uv pip install --system --no-cache --compile-bytecode "$BABELDOC_INSTALL_TARGET"; \
     uv pip install --system --no-cache .; \
     babeldoc --version
+RUN mkdir -p "$BABELDOC_CACHE_DIR" "$HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" && \
+    babeldoc --warmup
 RUN pdf2zh --version
 CMD ["pdf2zh", "--gui"]

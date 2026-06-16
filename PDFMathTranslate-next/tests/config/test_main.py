@@ -473,6 +473,7 @@ class TestConfigManager:
         cm._write_toml_file(
             default_config,
             {
+                "google": True,
                 "gui_settings": {
                     "show_settings_tab": False,
                     "max_concurrent_jobs": 4,
@@ -483,6 +484,7 @@ class TestConfigManager:
         cm._write_toml_file(
             distribution_config,
             {
+                "siliconflowfree": True,
                 "gui_settings": {
                     "show_settings_tab": True,
                     "settings_admin_password": "secret",
@@ -503,6 +505,8 @@ class TestConfigManager:
         assert settings.gui_settings.settings_admin_password == "secret"
         assert settings.gui_settings.max_concurrent_jobs == 1
         assert settings.translation.qps == 2
+        assert settings.siliconflowfree is True
+        assert settings.google is False
 
     def test_environment_overrides_distribution_config(
         self,

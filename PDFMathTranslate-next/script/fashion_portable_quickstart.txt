@@ -20,9 +20,12 @@ What each script does
 Start-Fashion.bat
   Recommended launcher.
   It starts the GUI with no-watermark defaults, built-in fashion glossary
-  support, and the portable config folder under config\\.
+  support, SiliconFlowFree as the default translator, and the portable config
+  folder under config\\.
   config\\distribution.toml is the simple administrator file for settings entry,
   password, LAN queue limits, QPS, and worker limits.
+  BabelDOC models, fonts, cmaps, tiktoken cache, and generated files are kept
+  under data\\ instead of the Windows user profile.
   If port 7860 is already occupied, the launcher now automatically falls back
   to the next available local port.
 
@@ -41,3 +44,5 @@ Offline assets
 The portable package now restores the required offline BabelDOC assets during
 build, so you should not see a loose offline_assets_*.zip file in the final
 desktop folder.
+The restored assets live under data\\ and are reused after copying the whole
+portable folder to another Windows machine.

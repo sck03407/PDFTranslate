@@ -1088,7 +1088,7 @@ TRANSLATION_ENGINE_SETTING_TYPE: TypeAlias = (
 NOT_SUPPORTED_TRANSLATION_ENGINE_SETTING_TYPE: TypeAlias = NoneType
 
 # 默认翻译引擎
-_DEFAULT_TRANSLATION_ENGINE = GoogleSettings
+_DEFAULT_TRANSLATION_ENGINE = SiliconFlowFreeSettings
 
 # The following is magic code,
 # if you need to modify it,

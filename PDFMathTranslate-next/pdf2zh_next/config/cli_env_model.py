@@ -106,8 +106,13 @@ def _to_settings_model(
                 translate_engine_settings = metadata.setting_model_type()
             break
     else:
+        default_engine_name = _DEFAULT_TRANSLATION_ENGINE.model_fields[
+            "translate_engine_type"
+        ].default
         if warn_on_default_engine:
-            logger.warning("No translation engine selected, using Google")
+            logger.warning(
+                "No translation engine selected, using %s", default_engine_name
+            )
         translate_engine_settings = _DEFAULT_TRANSLATION_ENGINE()
 
     # Term extraction engine (optional)
