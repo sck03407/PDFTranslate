@@ -1,3 +1,14 @@
+FROM node:20-bookworm-slim AS frontend
+
+WORKDIR /src
+
+COPY web/package*.json ./web/
+RUN cd web && npm ci
+
+COPY web ./web
+COPY pdf2zh_next ./pdf2zh_next
+RUN cd web && npm run build
+
 FROM python:3.13.3-slim-bookworm
 
 WORKDIR /app
@@ -12,6 +23,11 @@ ENV USERPROFILE=/app/data/home
 ENV XDG_CACHE_HOME=/app/data/xdg-cache
 ENV XDG_DATA_HOME=/app/data/xdg-data
 ENV XDG_CONFIG_HOME=/app/data/xdg-config
+ENV PDF2ZH_REQUIRE_GUI_LOGIN=true
+ENV PDF2ZH_USER_USERNAME=user
+ENV PDF2ZH_USER_PASSWORD=pdftranslate
+ENV PDF2ZH_ADMIN_USERNAME=admin
+ENV PDF2ZH_ADMIN_PASSWORD=admin
 ARG BABELDOC_SOURCE=stable
 ARG BABELDOC_GIT_REF=
 ARG BABELDOC_STABLE_REF=v0.6.3
@@ -32,6 +48,7 @@ COPY pyproject.toml .
 RUN uv pip install --system --no-cache -r pyproject.toml && babeldoc --version
 
 COPY . .
+COPY --from=frontend /src/pdf2zh_next/web_frontend ./pdf2zh_next/web_frontend
 
 RUN set -eux; \
     case "$BABELDOC_SOURCE" in \

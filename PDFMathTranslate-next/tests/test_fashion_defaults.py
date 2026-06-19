@@ -36,7 +36,7 @@ def test_builtin_fashion_glossary_pack_has_expanded_term_volume():
         for glossary_path in get_builtin_fashion_glossary_paths()
     )
 
-    assert total_rows >= 3300
+    assert total_rows >= 3700
 
 
 def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
@@ -96,6 +96,18 @@ def test_builtin_fashion_glossary_pack_contains_core_apparel_terms():
         "root cause analysis": "根因分析",
         "rhinestone transfer": "烫钻转印",
         "shacket": "衬衫式夹克",
+        "zip fly shield": "拉链里挡",
+        "hip 8 inches below waist": "腰下 8 英寸臀围",
+        "nylon taslan": "塔丝隆尼龙",
+        "bar tack at belt loop": "裤袢打枣",
+        "sharp point exposed": "尖锐物外露",
+        "wash before wear": "穿着前洗涤",
+        "style variant": "款式变体",
+        "gb 31701 compliance": "GB 31701 合规",
+        "moisture barrier bag": "防潮袋",
+        "bottleneck process": "瓶颈工序",
+        "hangtag seal": "吊牌封签",
+        "quiet luxury": "静奢风",
     }
 
     for source, target in expected_terms.items():

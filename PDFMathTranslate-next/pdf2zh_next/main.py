@@ -88,11 +88,10 @@ async def main() -> int:
     babeldoc.assets.assets.warmup()
 
     if settings.basic.gui:
-        from pdf2zh_next.gui import setup_gui
+        from pdf2zh_next.http_api import setup_fastapi_gui
 
-        setup_gui(
-            auth_file=settings.gui_settings.auth_file,
-            welcome_page=settings.gui_settings.welcome_page,
+        await setup_fastapi_gui(
+            settings=settings,
             server_port=settings.gui_settings.server_port,
         )
         return 0

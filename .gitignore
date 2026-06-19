@@ -36,6 +36,9 @@ PDFMathTranslate-next/gradio_files/
 PDFMathTranslate-next/tmp/
 PDFMathTranslate-next/.gradio/
 PDFMathTranslate-next/.build_fashion_python.zip
+PDFMathTranslate-next/web/node_modules/
+PDFMathTranslate-next/web/.vite/
+PDFMathTranslate-next/src-tauri/target/
 
 # BabelDOC local caches
 BabelDOC/.venv/

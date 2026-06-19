@@ -475,7 +475,6 @@ class TestConfigManager:
             {
                 "google": True,
                 "gui_settings": {
-                    "show_settings_tab": False,
                     "max_concurrent_jobs": 4,
                 },
                 "translation": {"qps": 4},
@@ -486,8 +485,6 @@ class TestConfigManager:
             {
                 "siliconflowfree": True,
                 "gui_settings": {
-                    "show_settings_tab": True,
-                    "settings_admin_password": "secret",
                     "max_concurrent_jobs": 1,
                 },
                 "translation": {"qps": 2},
@@ -501,8 +498,6 @@ class TestConfigManager:
         ):
             settings = cm.load_cli_config_for_gui()
 
-        assert settings.gui_settings.show_settings_tab is True
-        assert settings.gui_settings.settings_admin_password == "secret"
         assert settings.gui_settings.max_concurrent_jobs == 1
         assert settings.translation.qps == 2
         assert settings.siliconflowfree is True
@@ -519,9 +514,9 @@ class TestConfigManager:
         default_config = temp_config_dir / "config.v3.toml"
         distribution_config = temp_config_dir / "distribution.toml"
 
-        cm._write_toml_file(default_config, {"gui_settings": {"show_settings_tab": False}})
-        cm._write_toml_file(distribution_config, {"gui_settings": {"show_settings_tab": True}})
-        monkeypatch.setenv("PDF2ZH_SHOW_SETTINGS_TAB", "false")
+        cm._write_toml_file(default_config, {"gui_settings": {"max_concurrent_jobs": 4}})
+        cm._write_toml_file(distribution_config, {"gui_settings": {"max_concurrent_jobs": 1}})
+        monkeypatch.setenv("PDF2ZH_MAX_CONCURRENT_JOBS", "3")
         monkeypatch.setattr(cm, "_default_config_file_path", default_config)
 
         with (
@@ -530,7 +525,39 @@ class TestConfigManager:
         ):
             settings = cm.load_cli_config_for_gui()
 
-        assert settings.gui_settings.show_settings_tab is False
+        assert settings.gui_settings.max_concurrent_jobs == 3
+
+    def test_environment_can_enable_gui_login_roles(
+        self,
+        clean_env: None,
+        monkeypatch: pytest.MonkeyPatch,
+        temp_config_dir: Path,
+    ):
+        """Docker-style environment variables should enable GUI login roles."""
+        cm = ConfigManager()
+        default_config = temp_config_dir / "config.v3.toml"
+        distribution_config = temp_config_dir / "distribution.toml"
+
+        cm._write_toml_file(default_config, {"siliconflowfree": True})
+        cm._write_toml_file(distribution_config, {})
+        monkeypatch.setenv("PDF2ZH_REQUIRE_GUI_LOGIN", "true")
+        monkeypatch.setenv("PDF2ZH_USER_USERNAME", "worker")
+        monkeypatch.setenv("PDF2ZH_USER_PASSWORD", "worker-pass")
+        monkeypatch.setenv("PDF2ZH_ADMIN_USERNAME", "manager")
+        monkeypatch.setenv("PDF2ZH_ADMIN_PASSWORD", "manager-pass")
+        monkeypatch.setattr(cm, "_default_config_file_path", default_config)
+
+        with (
+            patch("pdf2zh_next.config.main.DISTRIBUTION_CONFIG_FILE", distribution_config),
+            patch("argparse.ArgumentParser.parse_args", return_value=Namespace()),
+        ):
+            settings = cm.load_cli_config_for_gui()
+
+        assert settings.gui_settings.require_gui_login is True
+        assert settings.gui_settings.user_username == "worker"
+        assert settings.gui_settings.user_password == "worker-pass"
+        assert settings.gui_settings.admin_username == "manager"
+        assert settings.gui_settings.admin_password == "manager-pass"
 
     def test_ensure_config_dir(self, temp_config_dir: Path):
         """Test configuration directory creation"""

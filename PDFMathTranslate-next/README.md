@@ -59,16 +59,17 @@ For different use cases, we provide distinct methods to use our program. Check o
 This repository includes a fashion-document customization that keeps the existing BabelDOC layout reconstruction pipeline intact while improving apparel-focused defaults:
 
 - `No Watermark` is now the default PDF output mode.
-- `PDFTranslate` is the default GUI brand and can be changed by administrators from the Settings page with `Brand Name` and `Brand Link`.
+- `PDFTranslate` is the default GUI brand and can be changed by administrators from the React Settings page.
 - A bundled English-to-Chinese fashion glossary pack is automatically included for supported workflows unless you disable it.
-- A starter customer glossary template is auto-layered in the GUI defaults for supported workflows and can be edited in place.
-- The built-in pack now covers garment parts, measurements, fabrics, trims, BOM / tech pack wording, QC, care-label wording, testing, and packaging terms, with more than 700 EN->ZH entries in total.
+- A starter customer glossary template is auto-layered in WebUI jobs for supported workflows and can be edited by administrators.
+- The built-in pack now covers garment parts, measurements, fabrics, trims, BOM / tech pack wording, QC, care-label wording, testing, production, print, embroidery, labelling, style, fit, and packaging terms, with more than 3700 EN->ZH entries in total.
 - A bundled fashion translation system prompt is automatically included for LLM-capable workflows unless you disable it.
-- `SiliconFlowFree` remains available in the GUI as a free online relay option, alongside the paid `SiliconFlow` API workflow.
-- The original custom workflow is kept as the only GUI workflow mode. Administrators can switch services in the Settings page or config file, including Ollama and other built-in local / online connectors already provided by the upstream project.
-- The GUI now includes a `Clean pdf2zh_files` action, and startup can automatically remove session folders older than a configurable number of days.
-- Windows local runs and Docker container runs now share the same output-history cleanup strategy through the same settings and environment variables.
-- The settings entry is hidden by default for Windows and Docker distribution. Administrators can enable it, set a password, and tune LAN queue / QPS limits from `config/distribution.toml`.
+- `SiliconFlowFree` remains available as a free online relay option, alongside the paid `SiliconFlow` API workflow.
+- `pdf2zh --gui` starts a FastAPI backend with a React/Vite frontend. The old Gradio runtime path has been removed.
+- The same WebUI build is used by local runs, Docker, and the Tauri desktop shell.
+- The optional Tauri desktop shell starts a local backend from `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` on `PATH`; the Windows portable package remains the self-contained offline desktop distribution.
+- Administrators can clean `pdf2zh_files` history from the Settings page, and startup can automatically remove session folders older than a configurable number of days.
+- Docker enables username/password login by default: regular users only see translation and download workflows, while administrators can see the Settings page and tune LAN queue / QPS limits.
 - Portable builds now tolerate `UTF-8 BOM` in `config.v3.toml`.
 - If local port `7860` is already occupied, the GUI now automatically falls forward to the next available local port.
 
@@ -128,7 +129,7 @@ docker run -d `
   pdfmathtranslate-fashion:local
 ```
 
-And a root-level GitHub Actions manual workflow at `../.github/workflows/fashion-release.yml` that can build a Windows portable zip and publish a GHCR Docker image from either the local-stable BabelDOC line or the latest `funstory-ai/BabelDOC` source.
+And a root-level GitHub Actions manual workflow at `../.github/workflows/fashion-release.yml` that can build a Windows portable zip, Tauri desktop bundles for Windows/macOS/Linux, and a GHCR Docker image from either the local-stable BabelDOC line or the latest `funstory-ai/BabelDOC` source.
 
 <h2 id="usage">Advanced Options</h2>
 
@@ -159,8 +160,6 @@ If you don't know what code to use to translate to the language you need, check 
 - PDF Library: [PyMuPDF](https://github.com/pymupdf/PyMuPDF)
 
 - PDF Parsing: [Pdfminer.six](https://github.com/pdfminer/pdfminer.six)
-
-- PDF Preview: [Gradio PDF](https://github.com/freddyaboulton/gradio-pdf)
 
 - Layout Parsing: [DocLayout-YOLO](https://github.com/opendatalab/DocLayout-YOLO)
 

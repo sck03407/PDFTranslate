@@ -97,10 +97,13 @@ In the following table, we list all advanced options for reference:
 | `--ui-lang`                     | UI language                            | `pdf2zh_next --gui --ui-lang zh`                |
 | `--brand-name`                  | GUI header brand name                  | `pdf2zh_next --gui --brand-name "PDFTranslate"` |
 | `--brand-url`                   | GUI header brand link                  | `pdf2zh_next --gui --brand-url "https://example.com"` |
-| `--show-settings-tab`           | Show the administrator settings entry. Hidden by default so regular users only see upload, translate, preview, and download. | `pdf2zh_next --gui --show-settings-tab` |
-| `--settings-admin-password`      | Require an administrator password before opening the settings page. Effective when the settings entry is shown. | `pdf2zh_next --gui --show-settings-tab --settings-admin-password "change-me"` |
+| `--require-gui-login`            | Require username/password login before opening the WebUI. Enabled by default in the Docker image. | `pdf2zh_next --gui --require-gui-login --user-password "user-pass" --admin-password "admin-pass"` |
+| `--user-username`                | Regular-user login name. Regular users cannot see the settings entry. | `pdf2zh_next --gui --user-username worker` |
+| `--user-password`                | Regular-user login password | `pdf2zh_next --gui --user-password "change-me"` |
+| `--admin-username`               | Administrator login name. Administrators can see the settings entry. | `pdf2zh_next --gui --admin-username manager` |
+| `--admin-password`               | Administrator login password | `pdf2zh_next --gui --admin-password "change-me"` |
 | `--max-concurrent-jobs`          | Number of WebUI translation jobs allowed to run at the same time. Keep `1` for low-resource LAN servers. | `pdf2zh_next --gui --max-concurrent-jobs 1` |
-| `--max-queue-size`               | Maximum number of WebUI jobs waiting in the queue. Gradio rejects new requests after the queue is full. | `pdf2zh_next --gui --max-queue-size 8` |
+| `--max-queue-size`               | Maximum number of WebUI jobs waiting in the queue. New requests are rejected after the queue is full. | `pdf2zh_next --gui --max-queue-size 8` |
 
 [⬆️ Back to top](#toc)
 
@@ -116,12 +119,12 @@ Default behavior:
 - Supported services automatically include the built-in fashion glossary pack.
 - LLM-capable services also inherit the built-in fashion translation prompt.
 - The built-in terminology is organized as classified glossary packs for garment parts, measurements, materials, construction, QC, care labels, BOM / tech pack wording, testing, packaging, production merchandising, print, embroidery, labelling, fit, silhouette, and pattern making.
-- The bundled EN->ZH apparel glossary now contains 3300+ entries for common tech pack, BOM, detailed garment parts, measurements/POM, wash-care, packaging, production merchandising, print, embroidery, fit, pattern-making, fabric-performance, delivery workflow, and compliance-testing samples.
+- The bundled EN->ZH apparel glossary now contains 3700+ entries for common tech pack, BOM, detailed garment parts, measurements/POM, wash-care, packaging, production merchandising, print, embroidery, fit, pattern-making, fabric-performance, delivery workflow, and compliance-testing samples.
 
 GUI and CLI behavior:
 
-- The original custom workflow is kept as the only GUI workflow mode.
-- Regular users see only PDF upload, translation, preview, and download by default. Administrators can switch `Service` from the Settings page or config file, including `Ollama`, `OpenAICompatible`, `SiliconFlow`, `SiliconFlowFree`, and others already shipped by the project.
+- `pdf2zh_next --gui` starts the FastAPI backend and React/Vite frontend. The old Gradio runtime path has been removed.
+- Regular users see only PDF upload, translation status, and download by default. Administrators can tune core runtime settings, customer glossary template, and output-history cleanup in the React Settings page.
 - The built-in fashion glossary and customer glossary template continue to layer on top of supported services automatically.
 
 Starter files:
@@ -137,7 +140,7 @@ Notes:
 - See [Fashion Glossary Sources](./FASHION_GLOSSARY_SOURCES.md) for the built-in glossary-pack structure and public reference sources.
 - For Windows portable delivery, run `script/build_fashion_portable.ps1`. It defaults to the sibling local `..\BabelDOC` checkout so you can keep packaging on stable `v0.6.3`, and it also supports `-BabelDOCSource github-latest` or `-BabelDOCSource github-ref -BabelDOCGitRef <ref>` when you want a newer upstream source build.
 - For Docker delivery, run `script/build_fashion_docker.ps1`. The Docker image uses the same BabelDOC source-selection modes.
-- For GitHub releases, use the root-level `.github/workflows/fashion-release.yml`. It can publish a portable zip plus a GHCR Docker image from either the stable local line or the latest upstream `funstory-ai/BabelDOC` source.
+- For GitHub releases, use the root-level `.github/workflows/fashion-release.yml`. It can publish a portable zip, Tauri desktop bundles, and a GHCR Docker image from either the stable local line or the latest upstream `funstory-ai/BabelDOC` source.
 
 [⬆️ Back to top](#toc)
 
@@ -298,7 +301,7 @@ There are multiple ways to modify and import the configuration file.
 >
 > **cli/gui > env > distribution config file > user config file > default config file**
 
-For Windows portable and Docker distribution, prefer editing `distribution.toml` in the config directory. It is the lightweight administrator override file for settings visibility, settings password, LAN concurrency / queue limits, QPS, and worker limits; GUI auto-saved `config.v3.toml` will not override it.
+For Windows portable and Docker distribution, prefer editing `distribution.toml` in the config directory. It is the lightweight administrator override file for login accounts, LAN concurrency / queue limits, QPS, and worker limits; GUI auto-saved `config.v3.toml` will not override it.
 
 - Modifying Configuration via **Command Line Arguments**
 

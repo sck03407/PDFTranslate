@@ -50,7 +50,7 @@ Please see below.
 
 ## Error launching GUI using 0.0.0.0
 - **Issue**:  
-Using proxy software in global mode may prevent Gradio from starting properly in some environments.
+Using proxy software in global mode may prevent the local WebUI from reaching `127.0.0.1` or `localhost`.
 
 - **Solution**:  
 Use rule mode

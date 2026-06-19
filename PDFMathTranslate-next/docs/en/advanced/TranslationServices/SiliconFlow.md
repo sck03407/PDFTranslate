@@ -20,7 +20,7 @@ pdf2zh_next --siliconflow --siliconflow-model "Pro/deepseek-ai/DeepSeek-V3" --si
 
 #### webui
 
-The distribution UI hides the settings entry by default; set `show_settings_tab = true` in `config/distribution.toml`, or temporarily start with `--show-settings-tab` / `PDF2ZH_SHOW_SETTINGS_TAB=true`, before configuring services as an administrator.
+For Docker or shared deployments, log in with the administrator account before opening the Settings page. You can also edit `config/distribution.toml` directly for SiliconFlow-related parameters and concurrency limits.
 
 1. "Translation Options" - **"Service"** dropdown list: Select "SiliconFlow"
 2. "Translation Options" - **"Base URL for SiliconFlow API"**: Keep default

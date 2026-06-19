@@ -81,6 +81,11 @@ class TestGUISettings:
         assert settings.gui_settings.brand_url == ""
         assert settings.gui_settings.auto_cleanup_output_history is True
         assert settings.gui_settings.output_history_retention_days == 7
+        assert settings.gui_settings.require_gui_login is False
+        assert settings.gui_settings.user_username == "user"
+        assert settings.gui_settings.user_password is None
+        assert settings.gui_settings.admin_username == "admin"
+        assert settings.gui_settings.admin_password is None
 
     def test_gui_conversion_skips_default_engine_warning(self, caplog):
         caplog.set_level("WARNING")

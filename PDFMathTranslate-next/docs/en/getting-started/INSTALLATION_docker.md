@@ -24,9 +24,26 @@ This creates a local image tag named `pdfmathtranslate-fashion:local` by default
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
-By default, the WebUI is regular-user focused and only shows PDF upload, translation, preview, and download. The settings entry is hidden.
+The Docker image enables login by default:
 
-The image uses `/app/config/distribution.toml` as the administrator distribution config. You can mount a host config directory and edit only this file to control the settings entry, password, LAN concurrency, queue size, QPS, and worker counts:
+- Regular user: `user` / `pdftranslate`; can only see PDF upload, translation, preview, and download.
+- Administrator: `admin` / `admin`; can see the settings entry and change settings after login.
+
+Inside the container, `pdf2zh --gui` starts the FastAPI backend and React/Vite frontend. Regular users cannot see the settings entry, and the backend also rejects regular-user access to settings, customer glossary template, and output-history cleanup APIs.
+
+Change the default passwords on first deployment:
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -e PDF2ZH_USER_USERNAME="worker" `
+  -e PDF2ZH_USER_PASSWORD="change-user-password" `
+  -e PDF2ZH_ADMIN_USERNAME="manager" `
+  -e PDF2ZH_ADMIN_PASSWORD="change-admin-password" `
+  pdfmathtranslate-fashion:local
+```
+
+The image uses `/app/config/distribution.toml` as the administrator distribution config. You can mount a host config directory and edit only this file to control login accounts, LAN concurrency, queue size, QPS, and worker counts:
 
 ```powershell
 docker run -d `
@@ -38,15 +55,16 @@ docker run -d `
 
 For first use, copy `PDFMathTranslate-next/config/distribution.toml` from this repository to `E:\pdftranslate-config\distribution.toml`.
 
-For a temporary administrator run that exposes the settings entry and protects it with a password, environment variables still work:
+To temporarily disable Docker login:
 
 ```powershell
 docker run -d `
   -p 7860:7860 `
-  -e PDF2ZH_SHOW_SETTINGS_TAB=true `
-  -e PDF2ZH_SETTINGS_ADMIN_PASSWORD="change-me" `
+  -e PDF2ZH_REQUIRE_GUI_LOGIN=false `
   pdfmathtranslate-fashion:local
 ```
+
+When account login is disabled, the WebUI behaves as a single-user administrator session. Only use this mode in trusted local environments.
 
 > [!TIP]
 >
@@ -95,7 +113,7 @@ http://localhost:7860/
 >
 > - For a local Docker build that stays on your stable BabelDOC line, run `script/build_fashion_docker.ps1`.
 > - To build from the latest upstream `funstory-ai/BabelDOC` source, run `script/build_fashion_docker.ps1 -BabelDOCSource github-latest`.
-> - To publish a Docker image and a Windows portable zip from GitHub Actions, use the root-level `.github/workflows/fashion-release.yml`.
+> - To publish a Docker image, Windows portable zip, and Tauri desktop bundles from GitHub Actions, use the root-level `.github/workflows/fashion-release.yml`.
 <!--
 If you later publish official cloud deployment templates for this repository,
 replace this comment block with your own Heroku/Render/Zeabur/Koyeb links.

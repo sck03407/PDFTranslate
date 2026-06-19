@@ -11,9 +11,12 @@ brand_name = "PDFTranslate"
 brand_url = ""
 ui_lang = "zh"
 
-# Regular-user distribution mode. Set to true to show the settings entry.
-show_settings_tab = false
-settings_admin_password = ""
+# Optional GUI login. Docker enables this through environment variables by default.
+require_gui_login = false
+user_username = "user"
+user_password = ""
+admin_username = "admin"
+admin_password = ""
 
 # LAN safety defaults: one heavy PDF translation runs at a time; extra jobs wait.
 max_concurrent_jobs = 1

@@ -236,3 +236,23 @@ inspection booking,验货预约,zh
 inspection result,验货结果,zh
 remediation plan,整改计划,zh
 root cause analysis,根因分析,zh
+purchase order,采购订单,zh
+sales order,销售订单,zh
+proforma invoice,形式发票,zh
+shipping mark,唛头,zh
+cut date,开裁日期,zh
+sewing completion date,车缝完成日期,zh
+delay reason,延误原因,zh
+capacity plan,产能计划,zh
+pilot run,试产,zh
+bulk cutting,大货裁剪,zh
+bulk sewing,大货车缝,zh
+bulk packing,大货包装,zh
+production output,生产产量,zh
+efficiency report,效率报告,zh
+bottleneck process,瓶颈工序,zh
+reject rate,拒收率,zh
+shortage report,短缺报告,zh
+fabric delay,面料延误,zh
+inspection hold,验货暂缓,zh
+shipment hold,出货暂缓,zh

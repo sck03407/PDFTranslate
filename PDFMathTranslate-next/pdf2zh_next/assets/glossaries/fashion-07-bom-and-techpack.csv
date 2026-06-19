@@ -327,3 +327,38 @@ sample quantity,样品数量,zh
 bulk quantity,大货数量,zh
 surcharge,附加费,zh
 FOB price,FOB 价格,zh
+style master,主款资料,zh
+style option,款式选项,zh
+style variant,款式变体,zh
+colorway option,配色选项,zh
+grade table,放码表,zh
+construction page,工艺页,zh
+trim page,辅料页,zh
+packaging page,包装页,zh
+label page,唛标页,zh
+artwork page,图稿页,zh
+comment resolution,评语回复,zh
+lab dip request,色样申请,zh
+strike off request,印花样申请,zh
+label approval,唛标确认,zh
+packaging approval,包装确认,zh
+wash standard,洗水标准,zh
+approved shade band,确认色差范围,zh
+approved handfeel,确认手感,zh
+approved fit sample,确认试身样,zh
+fit sample comments,试身样评语,zh
+PP meeting,产前会,zh
+production handover,生产交接,zh
+factory allocation,工厂分配,zh
+vendor allocation,供应商分配,zh
+nominated trim,指定辅料,zh
+substitute material,替代材料,zh
+alternate trim,替代辅料,zh
+consumption summary,用量汇总,zh
+wastage allowance,损耗率,zh
+cutting ratio,裁剪配比,zh
+order ratio,订单配比,zh
+packing ratio,包装配比,zh
+case pack ratio,箱装配比,zh
+size run,尺码套,zh
+sample set,样衣套,zh

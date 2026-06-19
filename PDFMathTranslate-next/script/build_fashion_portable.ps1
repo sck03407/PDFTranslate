@@ -315,8 +315,11 @@ translate_table_text = true
 brand_name = "PDFTranslate"
 brand_url = ""
 ui_lang = "zh"
-show_settings_tab = false
-settings_admin_password = ""
+require_gui_login = false
+user_username = "user"
+user_password = ""
+admin_username = "admin"
+admin_password = ""
 '@
 Write-Utf8NoBomFile -Path (Join-Path $ConfigDir "config.v3.toml") -Content $DefaultConfig
 

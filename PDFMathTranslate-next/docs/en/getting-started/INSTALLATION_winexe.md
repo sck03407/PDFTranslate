@@ -63,9 +63,9 @@
 > - If you want to package from the latest upstream BabelDOC source instead, run `script/build_fashion_portable.ps1 -BabelDOCSource github-latest`.
 > - If you want a specific upstream commit, branch, or tag, run `script/build_fashion_portable.ps1 -BabelDOCSource github-ref -BabelDOCGitRef <ref>`.
 > - The generated portable folder includes:
->   - `Start-Fashion.bat`: recommended entry point that opens the original custom workflow with the fashion glossary resources preloaded
+>   - `Start-Fashion.bat`: recommended entry point that opens the FastAPI + React WebUI with the fashion glossary resources preloaded
 >   - `README-Fashion-Portable.txt`: quick-start notes for desktop users
 >   - `BABELDOC-BUILD-INFO.txt`: records which BabelDOC source and version were packaged
-> - This portable folder defaults to the `PDFTranslate` GUI brand and hides the settings entry by default, so regular users only see PDF upload, translation, preview, and download.
-> - To open the settings page as an administrator or tune LAN concurrency, queue size, QPS, and worker counts, edit `config\\distribution.toml` first. Set `show_settings_tab = true`, set `settings_admin_password = "change-me"` to your own password, then restart the program.
+> - This portable folder defaults to the `PDFTranslate` GUI brand. Without account login it behaves as a single-user administrator session; after account login is enabled, regular users only see PDF upload, translation status, and download, while administrators see the Settings page.
+> - To enable account login or tune LAN concurrency, queue size, QPS, and worker counts, edit `config\\distribution.toml` first. Set `require_gui_login = true`, configure regular-user and administrator passwords, then restart the program.
 > - `distribution.toml` overrides GUI auto-saved `config.v3.toml`, so it is the better fixed-policy file for distribution.

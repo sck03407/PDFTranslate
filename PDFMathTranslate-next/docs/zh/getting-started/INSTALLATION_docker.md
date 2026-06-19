@@ -24,9 +24,26 @@ powershell -ExecutionPolicy Bypass -File .\script\build_fashion_docker.ps1
 docker run -d -p 7860:7860 pdfmathtranslate-fashion:local
 ```
 
-默认 WebUI 面向普通用户，只显示上传 PDF、翻译、预览和下载流程，不显示设置页入口。
+Docker 镜像默认开启登录：
 
-镜像默认使用 `/app/config/distribution.toml` 作为管理员分发配置。你可以把配置目录挂载到宿主机，只改这个文件来控制设置入口、密码、局域网并发、队列、QPS 和 worker 数：
+- 普通用户：`user` / `pdftranslate`，只能看到上传 PDF、翻译、预览和下载流程。
+- 管理员：`admin` / `admin`，登录后可看到设置入口并修改设置。
+
+容器中的 `pdf2zh --gui` 默认启动 FastAPI 后端和 React/Vite 前端。普通用户看不到设置入口，后端也会拒绝普通用户访问设置、客户术语模板和输出历史清理接口。
+
+首次部署请立即改默认密码，例如：
+
+```powershell
+docker run -d `
+  -p 7860:7860 `
+  -e PDF2ZH_USER_USERNAME="worker" `
+  -e PDF2ZH_USER_PASSWORD="change-user-password" `
+  -e PDF2ZH_ADMIN_USERNAME="manager" `
+  -e PDF2ZH_ADMIN_PASSWORD="change-admin-password" `
+  pdfmathtranslate-fashion:local
+```
+
+镜像默认使用 `/app/config/distribution.toml` 作为管理员分发配置。你可以把配置目录挂载到宿主机，只改这个文件来控制登录账号、局域网并发、队列、QPS 和 worker 数：
 
 ```powershell
 docker run -d `
@@ -38,15 +55,16 @@ docker run -d `
 
 首次使用时，可以先从仓库的 `PDFMathTranslate-next/config/distribution.toml` 复制一份到 `E:\pdftranslate-config\distribution.toml`。
 
-如果你只是想临时打开设置页并用密码保护，也可以继续用环境变量覆盖：
+如果你希望临时关闭 Docker 登录，可以覆盖：
 
 ```powershell
 docker run -d `
   -p 7860:7860 `
-  -e PDF2ZH_SHOW_SETTINGS_TAB=true `
-  -e PDF2ZH_SETTINGS_ADMIN_PASSWORD="change-me" `
+  -e PDF2ZH_REQUIRE_GUI_LOGIN=false `
   pdfmathtranslate-fashion:local
 ```
+
+不启用账号登录时，WebUI 会按单机管理员模式运行；只有可信本机环境才建议这样部署。
 
 > [!TIP]
 >
@@ -95,7 +113,7 @@ http://localhost:7860/
 >
 > - 如果你希望在本地构建并继续保持稳定的 BabelDOC 版本线，可执行 `script/build_fashion_docker.ps1`。
 > - 如果你希望直接基于 `funstory-ai/BabelDOC` 最新源码构建 Docker 镜像，可执行 `script/build_fashion_docker.ps1 -BabelDOCSource github-latest`。
-> - 如果你希望通过 GitHub Actions 同时发布 Docker 镜像和 Windows 便携包，可使用仓库根目录的 `.github/workflows/fashion-release.yml`。
+> - 如果你希望通过 GitHub Actions 同时发布 Docker 镜像、Windows 便携包和 Tauri 桌面包，可使用仓库根目录的 `.github/workflows/fashion-release.yml`。
 <!--
 如果你后续为当前仓库提供官方云部署模板，再把这里替换成你自己的
 Heroku / Render / Zeabur / Koyeb 链接，不要继续指回上游仓库。

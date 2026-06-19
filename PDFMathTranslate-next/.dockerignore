@@ -11,6 +11,9 @@ gradio_files
 tmp
 gui/gradio_files
 gui/tmp
+web/node_modules
+web/.vite
+src-tauri/target
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

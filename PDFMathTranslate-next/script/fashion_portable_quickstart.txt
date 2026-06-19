@@ -4,26 +4,21 @@ PDFTranslate Portable Quick Start
 Recommended startup
 -------------------
 Double-click Start-Fashion.bat.
-It opens the GUI in the original custom workflow and preloads the fashion
-glossary resources for apparel documents.
-The regular-user page only shows PDF upload, translation, preview, and
-download. The settings entry is hidden by default.
-Administrators can enable the settings entry in config\\config.v3.toml by
-editing config\\distribution.toml, setting show_settings_tab = true and
-settings_admin_password to their own password, then restart Start-Fashion.bat.
-From the unlocked Settings page, administrators can choose Ollama,
-OpenAI-compatible, SiliconFlow, SiliconFlowFree, CustomOpenAICompatible, and
-other built-in services.
+It opens the FastAPI + React WebUI and preloads the fashion glossary resources
+for apparel documents. If GUI login is enabled, regular users only see PDF
+upload, translation, status, and download. Administrators see the Settings page
+after logging in with the admin account configured in config\\distribution.toml
+or PDF2ZH_* environment variables.
 
 What each script does
 ---------------------
 Start-Fashion.bat
   Recommended launcher.
-  It starts the GUI with no-watermark defaults, built-in fashion glossary
+  It starts the WebUI with no-watermark defaults, built-in fashion glossary
   support, SiliconFlowFree as the default translator, and the portable config
   folder under config\\.
-  config\\distribution.toml is the simple administrator file for settings entry,
-  password, LAN queue limits, QPS, and worker limits.
+  config\\distribution.toml is the simple administrator file for GUI login,
+  LAN queue limits, QPS, and worker limits.
   BabelDOC models, fonts, cmaps, tiktoken cache, and generated files are kept
   under data\\ instead of the Windows user profile.
   If port 7860 is already occupied, the launcher now automatically falls back
@@ -35,9 +30,9 @@ BABELDOC-BUILD-INFO.txt
 Custom terminology
 ------------------
 config\\fashion-customer-glossary-template.csv is preloaded by default.
-Administrators can edit it from the Settings page Customer Glossary Template
-table, or edit the CSV file in place to add customer, brand, fabric
-composition, BOM, and wash-care specific terms.
+Administrators can edit the CSV file in place to add customer, brand, fabric
+composition, BOM, and wash-care specific terms. The React Settings page also
+includes a Customer Glossary Template editor for admin users.
 
 Offline assets
 --------------

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PDFTranslate",
+  "version": "0.1.0",
+  "identifier": "com.pdftranslate.desktop",
+  "build": {
+    "devUrl": "http://127.0.0.1:5173",
+    "frontendDist": "../pdf2zh_next/web_frontend"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "PDFTranslate",
+        "width": 1280,
+        "height": 820,
+        "minWidth": 960,
+        "minHeight": 680,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data: blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:* http://localhost:*"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all"
+  }
+}

@@ -29,7 +29,7 @@ pdf2zh_next --siliconflow --siliconflow-model "Pro/deepseek-ai/DeepSeek-V3" --si
 
 #### Web 界面
 
-默认分发界面会隐藏设置入口；请先在 `config/distribution.toml` 中设置 `show_settings_tab = true`，或临时使用 `--show-settings-tab` / `PDF2ZH_SHOW_SETTINGS_TAB=true` 让管理员打开设置页。
+Docker 或多人部署时，请使用管理员账号登录后进入设置页；也可以直接编辑 `config/distribution.toml` 配置 SiliconFlow 相关参数和并发限制。
 
 1. "翻译选项" - **"服务"** 下拉列表：选择 "SiliconFlow"
 2. "翻译选项" - **"SiliconFlow API 基础 URL"**：保持默认

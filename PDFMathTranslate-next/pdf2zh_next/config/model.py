@@ -108,13 +108,25 @@ class GUISettings(BaseModel):
         default=DEFAULT_GUI_BRAND_URL,
         description="Custom brand link shown in the GUI header",
     )
-    show_settings_tab: bool = Field(
+    require_gui_login: bool = Field(
         default=False,
-        description="Show the GUI settings entry for administrators",
+        description="Require username and password login before opening the GUI",
     )
-    settings_admin_password: str | None = Field(
+    user_username: str = Field(
+        default="user",
+        description="Regular GUI username",
+    )
+    user_password: str | None = Field(
         default=None,
-        description="Password required to unlock the GUI settings page",
+        description="Regular GUI password",
+    )
+    admin_username: str = Field(
+        default="admin",
+        description="Administrator GUI username",
+    )
+    admin_password: str | None = Field(
+        default=None,
+        description="Administrator GUI password",
     )
     max_concurrent_jobs: int = Field(
         default=1,
@@ -341,6 +353,20 @@ class SettingsModel(BaseModel):
             and self.gui_settings.max_queue_size < 1
         ):
             raise ValueError("max_queue_size must be greater than or equal to 1")
+        if self.gui_settings.require_gui_login:
+            if not self.gui_settings.user_username.strip():
+                raise ValueError("user_username is required when GUI login is enabled")
+            if not (self.gui_settings.user_password or "").strip():
+                raise ValueError("user_password is required when GUI login is enabled")
+            if not self.gui_settings.admin_username.strip():
+                raise ValueError("admin_username is required when GUI login is enabled")
+            if not (self.gui_settings.admin_password or "").strip():
+                raise ValueError("admin_password is required when GUI login is enabled")
+            if (
+                self.gui_settings.user_username.strip()
+                == self.gui_settings.admin_username.strip()
+            ):
+                raise ValueError("user_username and admin_username must be different")
 
         if not self.translate_engine_settings:
             raise ValueError("Must provide a translation service")

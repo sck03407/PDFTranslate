@@ -98,10 +98,13 @@
 | `--ui-lang`                     | UI 语言                            | `pdf2zh_next --gui --ui-lang zh`                |
 | `--brand-name`                  | GUI 顶部品牌名称                     | `pdf2zh_next --gui --brand-name "PDFTranslate"` |
 | `--brand-url`                   | GUI 顶部品牌跳转链接                 | `pdf2zh_next --gui --brand-url "https://example.com"` |
-| `--show-settings-tab`           | 显示管理员设置入口；默认隐藏，普通用户只看到上传、翻译、预览和下载首页 | `pdf2zh_next --gui --show-settings-tab` |
-| `--settings-admin-password`      | 为设置页配置管理员密码；仅在显示设置入口时生效 | `pdf2zh_next --gui --show-settings-tab --settings-admin-password "change-me"` |
+| `--require-gui-login`            | 进入 WebUI 前要求账号密码登录；Docker 镜像默认启用 | `pdf2zh_next --gui --require-gui-login --user-password "user-pass" --admin-password "admin-pass"` |
+| `--user-username`                | 普通用户登录名；普通用户不能看到设置入口 | `pdf2zh_next --gui --user-username worker` |
+| `--user-password`                | 普通用户登录密码 | `pdf2zh_next --gui --user-password "change-me"` |
+| `--admin-username`               | 管理员登录名；管理员可看到设置入口 | `pdf2zh_next --gui --admin-username manager` |
+| `--admin-password`               | 管理员登录密码 | `pdf2zh_next --gui --admin-password "change-me"` |
 | `--max-concurrent-jobs`          | WebUI 同时运行的翻译任务数；局域网低配服务器建议保持 `1` | `pdf2zh_next --gui --max-concurrent-jobs 1` |
-| `--max-queue-size`               | WebUI 等待队列最大任务数；超过后 Gradio 会拒绝新请求 | `pdf2zh_next --gui --max-queue-size 8` |
+| `--max-queue-size`               | WebUI 等待队列最大任务数；超过后会拒绝新请求 | `pdf2zh_next --gui --max-queue-size 8` |
 
 [⬆️ 返回顶部](#toc)
 
@@ -116,13 +119,13 @@
 - 默认输出为 `no_watermark`，即不再生成带顶部遮挡水印的 PDF。
 - 对支持的翻译引擎，默认启用内置服装术语表；对支持 LLM 的翻译引擎，同时默认启用服装翻译提示词。
 - 内置术语不再只是单个 CSV，而是按“部位 / 测量 / 面料 / 工艺 / 质检 / 洗护 / BOM / tech pack / 包装 / 测试 / 生产跟单 / 印绣花 / 版型纸样”拆分成分类词包，便于持续维护。
-- 当前内置 EN->ZH 服装术语总量已扩充到 3300+ 条，覆盖常见 tech pack、BOM、服装部件细分、尺寸/POM、洗水单、包装资料、生产跟单、印绣花、版型纸样、面料性能、交期流程和合规测试高频词。
+- 当前内置 EN->ZH 服装术语总量已扩充到 3700+ 条，覆盖常见 tech pack、BOM、服装部件细分、尺寸/POM、洗水单、包装资料、生产跟单、印绣花、版型纸样、面料性能、交期流程和合规测试高频词。
 - 复杂表格相关的 `translate_table_text` 仍保持启用，尽量保留现有表格/结构质量。
 
 GUI 与 CLI 行为：
 
-- 保留原来的“自定义”工作流，不再额外提供“服装低成本本地翻译”和“服装高质量在线翻译”两个预设入口。
-- 普通用户默认只看到上传 PDF、翻译、预览和下载首页；管理员可在设置页或配置文件中切换 `Service`，例如 `Ollama`、`OpenAICompatible`、`SiliconFlow`、`SiliconFlowFree` 等。
+- `pdf2zh_next --gui` 默认启动 FastAPI 后端和 React/Vite 前端；旧 Gradio 运行路径已移除。
+- 普通用户默认只看到上传 PDF、翻译状态和下载首页；管理员可在 React 设置页调整核心运行设置、客户术语模板和输出历史清理。
 - 内置服装术语表与客户术语模板会继续自动叠加到支持的服务上。
 
 命令行示例配置：
@@ -144,7 +147,7 @@ pdf2zh_next --config-file examples/fashion-online-high-quality.toml example.pdf
 - GUI 默认品牌名为 `PDFTranslate`，管理员可在设置页或配置文件中通过 `brand_name` / `brand_url` 自定义。
 - 如需生成 Windows 绿色便携目录，可执行 `script/build_fashion_portable.ps1`。它默认优先使用本地同级 `..\BabelDOC` 稳定源码，可继续固定在 `v0.6.3`；如需直接使用上游最新源码，可加 `-BabelDOCSource github-latest`，如需指定某个分支 / 标签 / 提交，可加 `-BabelDOCSource github-ref -BabelDOCGitRef <ref>`。
 - 如需生成 Docker 容器，可执行 `script/build_fashion_docker.ps1`，容器构建也支持同样的 BabelDOC 选源方式。
-- 如需在 GitHub 上自动发布 Windows 便携包和 GHCR Docker 镜像，可使用仓库根目录的 `.github/workflows/fashion-release.yml` 手动触发工作流。
+- 如需在 GitHub 上自动发布 Windows 便携包、Tauri 桌面包和 GHCR Docker 镜像，可使用仓库根目录的 `.github/workflows/fashion-release.yml` 手动触发工作流。
 
 [⬆️ 返回顶部](#toc)
 
@@ -304,7 +307,7 @@ pdf2zh_next example.pdf --custom-system-prompt "/no_think You are a professional
 >
 > **cli/gui > env > 分发配置文件 > 用户配置文件 > 默认配置文件**
 
-面向 Windows 便携版和 Docker 分发时，推荐优先修改配置目录中的 `distribution.toml`。它是管理员用的轻量配置覆盖层，适合放置是否显示设置页、设置页密码、局域网并发/队列、QPS 和 worker 限制等策略；GUI 自动保存的 `config.v3.toml` 不会覆盖它。
+面向 Windows 便携版和 Docker 分发时，推荐优先修改配置目录中的 `distribution.toml`。它是管理员用的轻量配置覆盖层，适合放置登录账号、局域网并发/队列、QPS 和 worker 限制等策略；GUI 自动保存的 `config.v3.toml` 不会覆盖它。
 
 - 通过 **命令行参数** 修改配置
 

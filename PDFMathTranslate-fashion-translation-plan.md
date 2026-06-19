@@ -38,7 +38,7 @@
 `PDFMathTranslate-next` 是面向最终用户的 PDF 翻译应用层项目。它提供：
 
 - 命令行入口：`pdf2zh`、`pdf2zh2`、`pdf2zh_next`；
-- Gradio WebUI；
+- FastAPI + React/Vite WebUI；
 - 多翻译引擎配置；
 - 配置文件、环境变量、GUI 参数聚合；
 - 对 BabelDOC 的高级封装。
@@ -94,8 +94,8 @@
 5. 最大风险在翻译质量治理，不在技术接入  
    PDF 翻译工具本身可行；真正需要长期打磨的是术语库、同义词合并、上下文规则、质检样本和人工审核流程。
 
-6. 当前项目是 Python 技术栈  
-   `PDFMathTranslate-next` 主要使用 Python 开发，WebUI 使用 Gradio。它不是传统前后端分离网站，而是 Python 程序启动后提供一个本地或局域网网页界面。
+6. 当前项目核心仍是 Python 技术栈  
+   `PDFMathTranslate-next` 主要使用 Python 开发，新的 WebUI 采用 FastAPI 后端 + React/Vite 前端。它保留 Python/BabelDOC 翻译核心，同时把界面层改成更适合 Docker、多用户和桌面壳的前后端分离结构。
 
 7. WebUI 本身对服务器要求不高  
    如果使用在线 API 翻译，电脑或服务器主要承担 PDF 解析、排版重建、文件读写、少量 OCR/表格处理，真正的大模型推理由在线服务承担。普通办公电脑可以跑，但大文件、扫描件、多用户并发会明显增加 CPU、内存和等待时间。
@@ -115,7 +115,7 @@
 
 ```text
 Python 程序
-  -> Gradio WebUI / CLI
+  -> FastAPI API / React-Vite WebUI / CLI
   -> PDFMathTranslate-next 配置与翻译器适配
   -> BabelDOC PDF 解析、翻译、重排
   -> 在线 API 或本地模型服务
@@ -579,11 +579,30 @@ api_key = ""
 - `Custom System Prompt` 仅在 LLM/在线 API 模式下显示，默认填入服装行业 prompt；
 - `save automatically extracted glossary` 中文改为“保存自动抽取术语表”；
 - 增加提示：CSV 表头必须为 `source,target`。
-- 面向 Windows 便携包和 Docker 分发时，普通用户首页默认只显示上传 PDF、翻译、预览、下载流程；
-- 设置入口默认隐藏，管理员优先修改 `config/distribution.toml` 中的 `show_settings_tab = true` 显式开启；
-- 设置入口可通过 `settings_admin_password` 加密码；同一文件还可配置 `max_concurrent_jobs`、`max_queue_size`、`qps`、`pool_max_workers` 等局域网部署保护项，普通使用者不需要看到服务、API、品牌、术语表和高级 PDF 设置。
+- 面向 Windows 便携包和 Docker 分发时，普通用户首页默认只显示上传 PDF、翻译、任务状态、下载流程；
+- Docker 容器模式默认启用 `require_gui_login`：普通用户账号只进入翻译首页，管理员账号才显示设置入口；后端也必须拒绝普通用户访问设置、客户术语模板和输出历史清理接口；
+- 默认账号密码必须支持通过 `PDF2ZH_USER_USERNAME`、`PDF2ZH_USER_PASSWORD`、`PDF2ZH_ADMIN_USERNAME`、`PDF2ZH_ADMIN_PASSWORD` 或 `distribution.toml` 覆盖；
+- `distribution.toml` 继续配置 `max_concurrent_jobs`、`max_queue_size`、`qps`、`pool_max_workers` 等局域网部署保护项。
 
 注意：不要在页面上堆太多说明文字。术语 CSV 格式说明可以放到帮助文档或上传失败时提示。
+
+### 7.5 GUI 架构演进建议
+
+当前最终 GUI 架构建议一次性收敛为 FastAPI 后端 + React/Vite 前端 + Tauri 桌面壳。FastAPI 和 React/Vite 不是二选一：FastAPI 负责 API、任务、权限和配置，React/Vite 负责浏览器界面，Tauri 负责 Windows/macOS/Linux 桌面分发，Docker 直接服务同一套 FastAPI + 前端构建产物。
+
+1. 后端服务层
+   将翻译任务、配置读取、术语库管理、账号角色、输出历史、任务队列封装到 Python/FastAPI 服务中，继续调用现有 `high_level.py` 和 BabelDOC，不改 BabelDOC 内部。
+
+2. 独立前端
+   使用 React/Vite 做 Web 前端，实现上传、任务列表、进度、下载、管理员设置、客户术语模板维护、输出历史清理和角色权限。Docker、浏览器和 Tauri 桌面端复用同一套构建产物。
+
+3. 桌面跨平台壳
+   使用 Tauri 包一层本地 Web 前端，启动或连接本地 Python/FastAPI 服务。这样核心翻译逻辑不重写，桌面端体验和多平台分发比 Gradio 更可控。
+
+4. GitHub 分发
+   GitHub Actions 同时构建 Windows 便携包、Tauri 桌面包和 Docker 镜像；Docker 镜像默认启用普通用户/管理员登录，管理员才能进入设置页。
+
+当前决策是不再保留 Gradio 兼容入口，避免维护两套 GUI 造成长期升级负担。
 
 ## 8. 实施阶段计划
 
