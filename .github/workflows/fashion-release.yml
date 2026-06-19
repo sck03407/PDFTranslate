@@ -162,10 +162,11 @@ jobs:
             patchelf
 
       - name: Build Tauri desktop app
-        working-directory: ./PDFMathTranslate-next/web
+        working-directory: ./PDFMathTranslate-next
         run: |
-          npm ci
-          npm run tauri:build
+          npm ci --prefix ./web
+          npm run --prefix ./web build
+          npm exec --prefix ./web -- tauri build
 
       - name: Upload Tauri desktop artifact
         uses: actions/upload-artifact@v6
