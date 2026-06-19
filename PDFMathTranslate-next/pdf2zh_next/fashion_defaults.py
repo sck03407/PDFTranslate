@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import csv
 import io
+import os
 from pathlib import Path
 
 import chardet
-
-from pdf2zh_next.const import DEFAULT_CONFIG_DIR
 
 BUILTIN_FASHION_GLOSSARY_FILENAMES = (
     "fashion-01-garment-parts.csv",
@@ -25,6 +24,7 @@ BUILTIN_FASHION_GLOSSARY_FILENAMES = (
 CUSTOMER_GLOSSARY_TEMPLATE_FILENAME = "fashion-customer-glossary-template.csv"
 CUSTOMER_GLOSSARY_HEADERS = ("source", "target", "tgt_lng")
 DEFAULT_CUSTOMER_GLOSSARY_TARGET_LANGUAGE = "zh"
+CUSTOMER_GLOSSARY_DIR_ENV = "PDF2ZH_CUSTOMER_GLOSSARY_DIR"
 
 
 FASHION_SYSTEM_PROMPT = """
@@ -64,6 +64,18 @@ def get_builtin_fashion_glossary_path() -> Path:
 
 def get_bundled_customer_glossary_template_path() -> Path:
     return get_builtin_fashion_glossary_dir() / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
+
+
+def get_customer_glossary_dir() -> Path:
+    glossary_dir = os.getenv(CUSTOMER_GLOSSARY_DIR_ENV)
+    if glossary_dir:
+        return Path(glossary_dir).expanduser()
+
+    config_dir = os.getenv("PDF2ZH_CONFIG_DIR")
+    if config_dir:
+        return Path(config_dir).expanduser()
+
+    return (Path.cwd() / "config").resolve()
 
 
 def _decode_glossary_bytes(content: bytes) -> str:
@@ -161,7 +173,7 @@ def restore_customer_glossary_template_rows() -> tuple[Path, list[list[str]]]:
 
 
 def ensure_default_customer_glossary_template() -> Path:
-    target_path = DEFAULT_CONFIG_DIR / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
+    target_path = get_customer_glossary_dir() / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
     source_rows = load_glossary_rows(get_bundled_customer_glossary_template_path())
     if target_path.exists():
         try:

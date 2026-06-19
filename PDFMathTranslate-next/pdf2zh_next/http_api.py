@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import csv
 import json
 import logging
 import secrets
@@ -10,6 +11,7 @@ import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+from typing import get_args
 
 import uvicorn
 from fastapi import Depends
@@ -31,8 +33,13 @@ from fastapi.security import HTTPBasicCredentials
 from pydantic import BaseModel
 from pydantic import Field
 
+from pdf2zh_next.config.main import ConfigManager
 from pdf2zh_next.config.model import SettingsModel
+from pdf2zh_next.config.translate_engine_model import GUI_PASSWORD_FIELDS
+from pdf2zh_next.config.translate_engine_model import TRANSLATION_ENGINE_METADATA
 from pdf2zh_next.config.translate_engine_model import TRANSLATION_ENGINE_METADATA_MAP
+from pdf2zh_next.const import DEFAULT_CONFIG_DIR
+from pdf2zh_next.const import DEFAULT_CONFIG_FILE
 from pdf2zh_next.fashion_defaults import combine_glossary_files
 from pdf2zh_next.fashion_defaults import ensure_default_customer_glossary_template
 from pdf2zh_next.fashion_defaults import get_builtin_fashion_glossary_paths
@@ -49,6 +56,7 @@ logger = logging.getLogger(__name__)
 WEB_FRONTEND_DIR = Path(__file__).resolve().parent / "web_frontend"
 INDEX_HTML = WEB_FRONTEND_DIR / "index.html"
 SESSION_COOKIE_NAME = "pdftranslate_session"
+GUI_USERS_FILENAME = "gui-users.csv"
 
 security = HTTPBasic(auto_error=False)
 
@@ -67,11 +75,24 @@ class RuntimeSettingsUpdate(BaseModel):
     gui_settings: dict[str, Any] = Field(default_factory=dict)
     translation: dict[str, Any] = Field(default_factory=dict)
     pdf: dict[str, Any] = Field(default_factory=dict)
+    translate_engine: str | None = None
+    translate_engine_settings: dict[str, Any] = Field(default_factory=dict)
 
 
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+
+class PasswordChangeRequest(BaseModel):
+    current_password: str = ""
+    new_password: str
+
+
+class ManagedUserUpdate(BaseModel):
+    username: str
+    password: str | None = None
+    role: str = "user"
 
 
 class CustomerGlossaryUpdate(BaseModel):
@@ -123,36 +144,50 @@ def _clean_auth_value(value: str | None) -> str:
     return (value or "").strip()
 
 
-def _parse_auth_file(auth_file: str | None) -> dict[str, str]:
+def _resolve_auth_file_path(
+    auth_file: str | None,
+    *,
+    config_file: str | None = None,
+) -> Path | None:
     if not auth_file:
-        return {}
+        return None
     path = Path(auth_file).expanduser()
+    if path.is_absolute():
+        return path
+    if config_file:
+        return Path(config_file).expanduser().resolve().parent / path
+    return DEFAULT_CONFIG_DIR / path
+
+
+def _parse_auth_file(
+    auth_file: str | None,
+    *,
+    config_file: str | None = None,
+) -> dict[str, tuple[str, str | None]]:
+    path = _resolve_auth_file_path(auth_file, config_file=config_file)
+    if path is None:
+        return {}
     if not path.exists():
         logger.warning("Configured auth file does not exist: %s", path)
         return {}
 
-    users: dict[str, str] = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip() or line.lstrip().startswith("#"):
+    users: dict[str, tuple[str, str | None]] = {}
+    for row in csv.reader(path.read_text(encoding="utf-8").splitlines()):
+        if not row:
             continue
-        parts = [part.strip() for part in line.split(",")[:2]]
-        if len(parts) != 2 or not parts[0] or not parts[1]:
+        if str(row[0]).lstrip().startswith("#"):
             continue
-        users[parts[0]] = parts[1]
+        parts = [str(part).strip() for part in row[:3]]
+        if len(parts) < 2 or not parts[0] or not parts[1]:
+            continue
+        role = parts[2] if len(parts) >= 3 and parts[2] in {"admin", "user"} else None
+        users[parts[0]] = (parts[1], role)
     return users
 
 
 def _build_auth_users(settings: SettingsModel) -> dict[str, tuple[str, str]]:
     users: dict[str, tuple[str, str]] = {}
     gui_settings = settings.gui_settings
-
-    for username, password in _parse_auth_file(gui_settings.auth_file).items():
-        role = (
-            "admin"
-            if username == _clean_auth_value(gui_settings.admin_username)
-            else "user"
-        )
-        users[username] = (password, role)
 
     if gui_settings.require_gui_login:
         regular_username = _clean_auth_value(gui_settings.user_username)
@@ -163,6 +198,17 @@ def _build_auth_users(settings: SettingsModel) -> dict[str, tuple[str, str]]:
             users[regular_username] = (regular_password, "user")
         if admin_username and admin_password:
             users[admin_username] = (admin_password, "admin")
+
+    for username, (password, configured_role) in _parse_auth_file(
+        gui_settings.auth_file,
+        config_file=settings.config_file,
+    ).items():
+        role = configured_role or (
+            "admin"
+            if username == _clean_auth_value(gui_settings.admin_username)
+            else "user"
+        )
+        users[username] = (password, role)
 
     return users
 
@@ -175,7 +221,6 @@ def _unauthorized() -> HTTPException:
     return HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Authentication required",
-        headers={"WWW-Authenticate": "Basic"},
     )
 
 
@@ -224,6 +269,7 @@ def _make_current_user_dependency(settings: SettingsModel):
     current_user.sessions = sessions
     current_user.authenticate = authenticate
     current_user.auth_required = auth_required
+    current_user.auth_users = auth_users
 
     return current_user
 
@@ -432,6 +478,271 @@ def _count_queued_jobs(jobs: dict[str, TranslationJob]) -> int:
     return sum(1 for job in jobs.values() if job.status == "queued")
 
 
+def _annotation_includes(annotation: Any, target: type) -> bool:
+    if annotation is target:
+        return True
+    return any(_annotation_includes(arg, target) for arg in get_args(annotation))
+
+
+def _field_allows_none(annotation: Any) -> bool:
+    if annotation is None or annotation is type(None):
+        return True
+    return any(_field_allows_none(arg) for arg in get_args(annotation))
+
+
+def _engine_field_input_type(field_name: str, field: Any) -> str:
+    if field_name in GUI_PASSWORD_FIELDS:
+        return "password"
+    annotation = field.annotation
+    if _annotation_includes(annotation, bool):
+        return "checkbox"
+    if _annotation_includes(annotation, int) or _annotation_includes(annotation, float):
+        return "number"
+    return "text"
+
+
+def _engine_field_choices(field: Any) -> list[dict[str, Any]] | None:
+    gui_extra = (field.json_schema_extra or {}).get("gui", {})
+    choices = gui_extra.get("choices")
+    if not choices:
+        return None
+
+    normalized_choices = []
+    for choice in choices:
+        if isinstance(choice, (list, tuple)) and len(choice) == 2:
+            label, value = choice
+        else:
+            label = value = choice
+        normalized_choices.append({"label": str(label), "value": _serialize_value(value)})
+    return normalized_choices
+
+
+def _translation_engine_fields(settings: SettingsModel, engine_name: str) -> list[dict[str, Any]]:
+    metadata = TRANSLATION_ENGINE_METADATA_MAP[engine_name]
+    if _selected_engine_name(settings) == engine_name and settings.translate_engine_settings:
+        detail_settings = settings.translate_engine_settings
+    else:
+        detail_settings = metadata.setting_model_type()
+
+    fields = []
+    for field_name, field in metadata.setting_model_type.model_fields.items():
+        if field_name in {"translate_engine_type", "support_llm"}:
+            continue
+        value = getattr(detail_settings, field_name)
+        is_password = field_name in GUI_PASSWORD_FIELDS
+        fields.append(
+            {
+                "name": field_name,
+                "label": field.description or field_name.replace("_", " "),
+                "input_type": _engine_field_input_type(field_name, field),
+                "value": "" if is_password else _serialize_value(value),
+                "secret": is_password,
+                "has_value": bool(value) if is_password else False,
+                "choices": _engine_field_choices(field),
+            }
+        )
+    return fields
+
+
+def _translation_engine_options(settings: SettingsModel) -> list[dict[str, Any]]:
+    return [
+        {
+            "name": metadata.translate_engine_type,
+            "support_llm": metadata.support_llm,
+            "fields": _translation_engine_fields(
+                settings,
+                metadata.translate_engine_type,
+            ),
+        }
+        for metadata in TRANSLATION_ENGINE_METADATA
+    ]
+
+
+def _coerce_engine_value(field: Any, value: Any) -> Any:
+    if value == "" and _field_allows_none(field.annotation):
+        return None
+    return value
+
+
+def _apply_translation_engine_update(
+    settings: SettingsModel,
+    engine_name: str | None,
+    engine_values: dict[str, Any],
+) -> None:
+    if engine_name is None and not engine_values:
+        return
+
+    selected_engine = engine_name or _selected_engine_name(settings)
+    if not selected_engine or selected_engine not in TRANSLATION_ENGINE_METADATA_MAP:
+        raise HTTPException(status_code=400, detail="Unsupported translation engine")
+
+    metadata = TRANSLATION_ENGINE_METADATA_MAP[selected_engine]
+    model_type = metadata.setting_model_type
+    current_settings = (
+        settings.translate_engine_settings
+        if _selected_engine_name(settings) == selected_engine
+        else None
+    )
+    merged_values = model_type().model_dump()
+    if current_settings is not None:
+        merged_values.update(current_settings.model_dump())
+
+    for field_name, value in engine_values.items():
+        if field_name not in model_type.model_fields:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported translation engine field: {field_name}",
+            )
+        if field_name in {"translate_engine_type", "support_llm"}:
+            continue
+        if (
+            field_name in GUI_PASSWORD_FIELDS
+            and value in (None, "")
+            and current_settings is not None
+        ):
+            continue
+        merged_values[field_name] = _coerce_engine_value(
+            model_type.model_fields[field_name],
+            value,
+        )
+
+    merged_values["translate_engine_type"] = selected_engine
+    settings.translate_engine_settings = model_type(**merged_values)
+
+
+def _list_managed_users(auth_users: dict[str, tuple[str, str]]) -> list[dict[str, str]]:
+    return [
+        {"username": username, "role": role}
+        for username, (_password, role) in sorted(auth_users.items())
+    ]
+
+
+def _require_valid_managed_user(update: ManagedUserUpdate) -> tuple[str, str]:
+    username = _clean_auth_value(update.username)
+    role = _clean_auth_value(update.role or "user")
+    if not username:
+        raise HTTPException(status_code=400, detail="Username is required")
+    if role not in {"admin", "user"}:
+        raise HTTPException(status_code=400, detail="Role must be admin or user")
+    return username, role
+
+
+def _ensure_another_admin(
+    auth_users: dict[str, tuple[str, str]],
+    username: str,
+) -> None:
+    for candidate_username, (_password, role) in auth_users.items():
+        if candidate_username != username and role == "admin":
+            return
+    raise HTTPException(status_code=400, detail="At least one administrator is required")
+
+
+def _sync_primary_gui_credentials(
+    settings: SettingsModel,
+    username: str,
+    password: str | None,
+    role: str,
+) -> None:
+    if password is None:
+        return
+    if role == "admin" and username == settings.gui_settings.admin_username:
+        settings.gui_settings.admin_password = password
+    if role == "user" and username == settings.gui_settings.user_username:
+        settings.gui_settings.user_password = password
+
+
+def _refresh_user_sessions(
+    sessions: dict[str, ApiUser],
+    username: str,
+    role: str | None,
+) -> None:
+    for token, session_user in list(sessions.items()):
+        if session_user.username != username:
+            continue
+        if role is None:
+            sessions.pop(token, None)
+        else:
+            sessions[token] = ApiUser(
+                username=username,
+                role=role,
+                authenticated=True,
+            )
+
+
+def _runtime_config_content(settings: SettingsModel) -> dict[str, Any]:
+    content = settings.model_dump(
+        mode="json",
+        exclude={
+            "config_file",
+            "translate_engine_settings",
+            "term_extraction_engine_settings",
+        },
+    )
+    content["basic"]["input_files"] = []
+
+    selected_engine = _selected_engine_name(settings)
+    for metadata in TRANSLATION_ENGINE_METADATA:
+        content[metadata.cli_flag_name] = metadata.translate_engine_type == selected_engine
+        if (
+            metadata.cli_detail_field_name
+            and settings.translate_engine_settings
+            and metadata.translate_engine_type == selected_engine
+        ):
+            content[metadata.cli_detail_field_name] = (
+                settings.translate_engine_settings.model_dump(mode="json")
+            )
+
+    return content
+
+
+def _runtime_config_file(settings: SettingsModel) -> Path:
+    config_file = _clean_auth_value(settings.config_file)
+    if config_file:
+        return Path(config_file).expanduser()
+    return DEFAULT_CONFIG_FILE
+
+
+def _persist_runtime_config(settings: SettingsModel) -> None:
+    config_file = _runtime_config_file(settings)
+    config_file.parent.mkdir(parents=True, exist_ok=True)
+    content = _runtime_config_content(settings)
+    manager = ConfigManager()
+    temp_config_file = config_file.with_name(f"{config_file.name}.temp")
+    manager._write_toml_file(temp_config_file, content)
+    temp_config_file.replace(config_file)
+
+
+def _managed_users_file(settings: SettingsModel) -> Path:
+    auth_file = _resolve_auth_file_path(
+        settings.gui_settings.auth_file,
+        config_file=settings.config_file,
+    )
+    if auth_file is not None:
+        return auth_file
+    return _runtime_config_file(settings).parent / GUI_USERS_FILENAME
+
+
+def _persist_managed_users(
+    settings: SettingsModel,
+    auth_users: dict[str, tuple[str, str]],
+) -> None:
+    user_file = _managed_users_file(settings)
+    user_file.parent.mkdir(parents=True, exist_ok=True)
+    with user_file.open("w", encoding="utf-8", newline="") as file:
+        file.write("# username,password,role\n")
+        writer = csv.writer(file, lineterminator="\n")
+        for username, (password, role) in sorted(auth_users.items()):
+            writer.writerow([username, password, role])
+    try:
+        if user_file.resolve().parent == _runtime_config_file(settings).parent.resolve():
+            settings.gui_settings.auth_file = user_file.name
+        else:
+            settings.gui_settings.auth_file = str(user_file)
+    except OSError:
+        settings.gui_settings.auth_file = str(user_file)
+    _persist_runtime_config(settings)
+
+
 def _settings_snapshot(settings: SettingsModel) -> dict[str, Any]:
     return {
         "gui_settings": {
@@ -450,25 +761,50 @@ def _settings_snapshot(settings: SettingsModel) -> dict[str, Any]:
             "lang_out": settings.translation.lang_out,
             "qps": settings.translation.qps,
             "pool_max_workers": settings.translation.pool_max_workers,
+            "term_qps": settings.translation.term_qps,
+            "term_pool_max_workers": settings.translation.term_pool_max_workers,
+            "ignore_cache": settings.translation.ignore_cache,
+            "custom_system_prompt": settings.translation.custom_system_prompt,
+            "glossaries": settings.translation.glossaries,
+            "rpc_doclayout": settings.translation.rpc_doclayout,
             "disable_builtin_fashion_glossary": settings.translation.disable_builtin_fashion_glossary,
             "disable_builtin_fashion_prompt": settings.translation.disable_builtin_fashion_prompt,
             "save_auto_extracted_glossary": settings.translation.save_auto_extracted_glossary,
             "no_auto_extract_glossary": settings.translation.no_auto_extract_glossary,
             "min_text_length": settings.translation.min_text_length,
+            "primary_font_family": settings.translation.primary_font_family,
         },
         "pdf": {
             "watermark_output_mode": settings.pdf.watermark_output_mode,
             "no_mono": settings.pdf.no_mono,
             "no_dual": settings.pdf.no_dual,
+            "dual_translate_first": settings.pdf.dual_translate_first,
+            "use_alternating_pages_dual": settings.pdf.use_alternating_pages_dual,
             "translate_table_text": settings.pdf.translate_table_text,
             "skip_scanned_detection": settings.pdf.skip_scanned_detection,
             "max_pages_per_part": settings.pdf.max_pages_per_part,
+            "skip_clean": settings.pdf.skip_clean,
+            "disable_rich_text_translate": settings.pdf.disable_rich_text_translate,
+            "enhance_compatibility": settings.pdf.enhance_compatibility,
+            "split_short_lines": settings.pdf.split_short_lines,
+            "short_line_split_factor": settings.pdf.short_line_split_factor,
+            "ocr_workaround": settings.pdf.ocr_workaround,
+            "auto_enable_ocr_workaround": settings.pdf.auto_enable_ocr_workaround,
+            "only_include_translated_page": settings.pdf.only_include_translated_page,
+            "formular_font_pattern": settings.pdf.formular_font_pattern,
+            "formular_char_pattern": settings.pdf.formular_char_pattern,
+            "no_merge_alternating_line_numbers": settings.pdf.no_merge_alternating_line_numbers,
+            "no_remove_non_formula_lines": settings.pdf.no_remove_non_formula_lines,
+            "non_formula_line_iou_threshold": settings.pdf.non_formula_line_iou_threshold,
+            "figure_table_protection_threshold": settings.pdf.figure_table_protection_threshold,
+            "skip_formula_offset_calculation": settings.pdf.skip_formula_offset_calculation,
         },
         "translate_engine": (
             settings.translate_engine_settings.translate_engine_type
             if settings.translate_engine_settings
             else None
         ),
+        "translation_engines": _translation_engine_options(settings),
     }
 
 
@@ -506,11 +842,18 @@ def _apply_runtime_settings_update(
             "lang_out",
             "qps",
             "pool_max_workers",
+            "term_qps",
+            "term_pool_max_workers",
+            "ignore_cache",
+            "custom_system_prompt",
+            "glossaries",
+            "rpc_doclayout",
             "disable_builtin_fashion_glossary",
             "disable_builtin_fashion_prompt",
             "save_auto_extracted_glossary",
             "no_auto_extract_glossary",
             "min_text_length",
+            "primary_font_family",
         },
     )
     _set_allowed_fields(
@@ -520,10 +863,32 @@ def _apply_runtime_settings_update(
             "watermark_output_mode",
             "no_mono",
             "no_dual",
+            "dual_translate_first",
+            "use_alternating_pages_dual",
             "translate_table_text",
             "skip_scanned_detection",
             "max_pages_per_part",
+            "skip_clean",
+            "disable_rich_text_translate",
+            "enhance_compatibility",
+            "split_short_lines",
+            "short_line_split_factor",
+            "ocr_workaround",
+            "auto_enable_ocr_workaround",
+            "only_include_translated_page",
+            "formular_font_pattern",
+            "formular_char_pattern",
+            "no_merge_alternating_line_numbers",
+            "no_remove_non_formula_lines",
+            "non_formula_line_iou_threshold",
+            "figure_table_protection_threshold",
+            "skip_formula_offset_calculation",
         },
+    )
+    _apply_translation_engine_update(
+        settings,
+        update.translate_engine,
+        update.translate_engine_settings,
     )
 
     settings.gui_settings.max_concurrent_jobs = max(
@@ -541,9 +906,25 @@ def _apply_runtime_settings_update(
             0,
             int(settings.translation.pool_max_workers),
         )
+    if settings.translation.term_qps is not None:
+        settings.translation.term_qps = max(0, int(settings.translation.term_qps))
+    if settings.translation.term_pool_max_workers is not None:
+        settings.translation.term_pool_max_workers = max(
+            0,
+            int(settings.translation.term_pool_max_workers),
+        )
     settings.translation.min_text_length = max(
         0,
         int(settings.translation.min_text_length),
+    )
+    if settings.pdf.max_pages_per_part is not None:
+        settings.pdf.max_pages_per_part = max(1, int(settings.pdf.max_pages_per_part))
+    settings.pdf.short_line_split_factor = float(settings.pdf.short_line_split_factor)
+    settings.pdf.non_formula_line_iou_threshold = float(
+        settings.pdf.non_formula_line_iou_threshold,
+    )
+    settings.pdf.figure_table_protection_threshold = float(
+        settings.pdf.figure_table_protection_threshold,
     )
 
 
@@ -678,10 +1059,92 @@ def create_app(
     ):
         _require_admin(user)
         _apply_runtime_settings_update(settings, update)
+        _persist_runtime_config(settings)
         app.state.translation_semaphore = asyncio.Semaphore(
             max(1, int(settings.gui_settings.max_concurrent_jobs))
         )
         return _settings_snapshot(settings)
+
+    @app.get("/api/users")
+    async def list_users(user: ApiUser = Depends(current_user)):
+        _require_admin(user)
+        return {
+            "auth_required": app.state.auth_required,
+            "users": _list_managed_users(current_user.auth_users),
+        }
+
+    @app.post("/api/users")
+    async def save_user(
+        update: ManagedUserUpdate,
+        user: ApiUser = Depends(current_user),
+    ):
+        _require_admin(user)
+        username, role = _require_valid_managed_user(update)
+        existing = current_user.auth_users.get(username)
+        if existing is None and not _clean_auth_value(update.password):
+            raise HTTPException(
+                status_code=400,
+                detail="Password is required for a new user",
+            )
+        password = _clean_auth_value(update.password) or (
+            existing[0] if existing else ""
+        )
+        if existing and existing[1] == "admin" and role != "admin":
+            _ensure_another_admin(current_user.auth_users, username)
+
+        current_user.auth_users[username] = (password, role)
+        _sync_primary_gui_credentials(settings, username, password, role)
+        _refresh_user_sessions(current_user.sessions, username, role)
+        _persist_managed_users(settings, current_user.auth_users)
+        return {
+            "auth_required": app.state.auth_required,
+            "users": _list_managed_users(current_user.auth_users),
+        }
+
+    @app.delete("/api/users/{username}")
+    async def delete_user(username: str, user: ApiUser = Depends(current_user)):
+        _require_admin(user)
+        username = _clean_auth_value(username)
+        existing = current_user.auth_users.get(username)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        if existing[1] == "admin":
+            _ensure_another_admin(current_user.auth_users, username)
+        current_user.auth_users.pop(username, None)
+        _refresh_user_sessions(current_user.sessions, username, None)
+        _persist_managed_users(settings, current_user.auth_users)
+        return {
+            "auth_required": app.state.auth_required,
+            "users": _list_managed_users(current_user.auth_users),
+        }
+
+    @app.post("/api/users/change-password")
+    async def change_password(
+        request: PasswordChangeRequest,
+        user: ApiUser = Depends(current_user),
+    ):
+        if not user.username:
+            raise HTTPException(
+                status_code=400,
+                detail="Password changes require a logged-in user",
+            )
+        existing = current_user.auth_users.get(user.username)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        if not secrets.compare_digest(
+            request.current_password or "",
+            existing[0],
+        ):
+            raise HTTPException(status_code=400, detail="Current password is invalid")
+        new_password = _clean_auth_value(request.new_password)
+        if not new_password:
+            raise HTTPException(status_code=400, detail="New password is required")
+
+        current_user.auth_users[user.username] = (new_password, user.role)
+        _sync_primary_gui_credentials(settings, user.username, new_password, user.role)
+        _refresh_user_sessions(current_user.sessions, user.username, user.role)
+        _persist_managed_users(settings, current_user.auth_users)
+        return {"user": ApiUser(username=user.username, role=user.role, authenticated=True).model_dump()}
 
     @app.post("/api/output-history/cleanup")
     async def cleanup_output_history(

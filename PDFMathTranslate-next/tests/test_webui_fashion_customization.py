@@ -5,6 +5,7 @@ from pathlib import Path
 from pdf2zh_next.config.cli_env_model import CLIEnvSettingsModel
 from pdf2zh_next.fashion_defaults import combine_glossary_files
 from pdf2zh_next.fashion_defaults import ensure_default_customer_glossary_template
+from pdf2zh_next.fashion_defaults import get_customer_glossary_dir
 from pdf2zh_next.fashion_defaults import load_customer_glossary_template_rows
 from pdf2zh_next.fashion_defaults import save_customer_glossary_template_rows
 from pdf2zh_next.http_api import _build_job_settings
@@ -97,7 +98,7 @@ def test_customer_glossary_template_roundtrip(tmp_path: Path, monkeypatch):
         "source,target,tgt_lng\nmock neck,高领,zh\n",
         encoding="utf-8",
     )
-    monkeypatch.setattr("pdf2zh_next.fashion_defaults.DEFAULT_CONFIG_DIR", tmp_path)
+    monkeypatch.setenv("PDF2ZH_CUSTOMER_GLOSSARY_DIR", str(tmp_path))
     monkeypatch.setattr(
         "pdf2zh_next.fashion_defaults.get_bundled_customer_glossary_template_path",
         lambda: source,
@@ -110,3 +111,14 @@ def test_customer_glossary_template_roundtrip(tmp_path: Path, monkeypatch):
 
     assert saved_path == target
     assert load_customer_glossary_template_rows() == rows
+
+
+def test_customer_glossary_dir_prefers_runtime_config_dir(
+    tmp_path: Path,
+    monkeypatch,
+):
+    config_dir = tmp_path / "config"
+    monkeypatch.delenv("PDF2ZH_CUSTOMER_GLOSSARY_DIR", raising=False)
+    monkeypatch.setenv("PDF2ZH_CONFIG_DIR", str(config_dir))
+
+    assert get_customer_glossary_dir() == config_dir

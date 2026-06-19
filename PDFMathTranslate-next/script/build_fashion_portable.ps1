@@ -15,6 +15,7 @@ $OutputDir = [System.IO.Path]::GetFullPath($OutputDir)
 $RuntimeDir = Join-Path $OutputDir "runtime"
 $ConfigDir = Join-Path $OutputDir "config"
 $DataDir = Join-Path $OutputDir "data"
+$OutputFilesDir = Join-Path $OutputDir "pdf2zh_files"
 $AssetsDir = Join-Path $OutputDir "assets"
 $BuildEnv = Join-Path $RepoRoot ".build_fashion_env"
 $EmbedZip = Join-Path $RepoRoot ".build_fashion_python.zip"
@@ -200,7 +201,7 @@ if (Test-Path -LiteralPath $PortableZip) {
     Remove-Item -LiteralPath $PortableZip -Force
 }
 
-New-Item -ItemType Directory -Path $RuntimeDir, $ConfigDir, $DataDir, $AssetsDir | Out-Null
+New-Item -ItemType Directory -Path $RuntimeDir, $ConfigDir, $DataDir, $OutputFilesDir, $AssetsDir | Out-Null
 
 Write-Host "==> Creating build venv"
 & $BuildPythonInterpreter -m venv $BuildEnv
@@ -244,7 +245,11 @@ if ($null -eq $OfflineAssetZip) {
 
 Write-Host "==> Restoring offline assets into portable data directory"
 $PreviousPortableEnv = @{
+    PDF2ZH_RUNTIME_DIR = $env:PDF2ZH_RUNTIME_DIR
+    PDF2ZH_DATA_DIR = $env:PDF2ZH_DATA_DIR
     PDF2ZH_CONFIG_DIR = $env:PDF2ZH_CONFIG_DIR
+    PDF2ZH_OUTPUT_DIR = $env:PDF2ZH_OUTPUT_DIR
+    PDF2ZH_CUSTOMER_GLOSSARY_DIR = $env:PDF2ZH_CUSTOMER_GLOSSARY_DIR
     BABELDOC_CACHE_DIR = $env:BABELDOC_CACHE_DIR
     HOME = $env:HOME
     USERPROFILE = $env:USERPROFILE
@@ -252,7 +257,11 @@ $PreviousPortableEnv = @{
     XDG_DATA_HOME = $env:XDG_DATA_HOME
     XDG_CONFIG_HOME = $env:XDG_CONFIG_HOME
 }
+$env:PDF2ZH_RUNTIME_DIR = $OutputDir
+$env:PDF2ZH_DATA_DIR = $DataDir
 $env:PDF2ZH_CONFIG_DIR = $ConfigDir
+$env:PDF2ZH_OUTPUT_DIR = Join-Path $OutputDir "pdf2zh_files"
+$env:PDF2ZH_CUSTOMER_GLOSSARY_DIR = $ConfigDir
 $env:BABELDOC_CACHE_DIR = Join-Path $DataDir "babeldoc-cache"
 $env:HOME = Join-Path $DataDir "home"
 $env:USERPROFILE = Join-Path $DataDir "home"
@@ -327,7 +336,11 @@ $Launcher = @'
 @echo off
 setlocal
 cd /d "%~dp0"
+set "PDF2ZH_RUNTIME_DIR=%~dp0"
+set "PDF2ZH_DATA_DIR=%~dp0data"
 set "PDF2ZH_CONFIG_DIR=%~dp0config"
+set "PDF2ZH_OUTPUT_DIR=%~dp0pdf2zh_files"
+set "PDF2ZH_CUSTOMER_GLOSSARY_DIR=%~dp0config"
 set "BABELDOC_CACHE_DIR=%~dp0data\babeldoc-cache"
 set "HOME=%~dp0data\home"
 set "USERPROFILE=%~dp0data\home"

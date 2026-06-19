@@ -6,8 +6,12 @@ import os
 from pathlib import Path
 
 # Constants for configuration paths
+DEFAULT_RUNTIME_DIR = Path(os.getenv("PDF2ZH_RUNTIME_DIR", os.getcwd())).expanduser()
+DEFAULT_DATA_DIR = Path(
+    os.getenv("PDF2ZH_DATA_DIR", str(DEFAULT_RUNTIME_DIR / "data")),
+).expanduser()
 DEFAULT_CONFIG_DIR = Path(
-    os.getenv("PDF2ZH_CONFIG_DIR", "~/.config/pdf2zh")
+    os.getenv("PDF2ZH_CONFIG_DIR", str(DEFAULT_RUNTIME_DIR / "config"))
 ).expanduser()
 DEFAULT_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / f"config.v{__config_file_version__}.toml"

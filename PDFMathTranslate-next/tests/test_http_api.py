@@ -5,10 +5,21 @@ import time
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from fastapi.testclient import TestClient
 
 from pdf2zh_next.config.cli_env_model import CLIEnvSettingsModel
 from pdf2zh_next.http_api import create_app
+
+
+@pytest.fixture(autouse=True)
+def isolated_runtime_config(tmp_path: Path, monkeypatch):
+    config_dir = tmp_path / "config"
+    monkeypatch.setattr("pdf2zh_next.http_api.DEFAULT_CONFIG_DIR", config_dir)
+    monkeypatch.setattr(
+        "pdf2zh_next.http_api.DEFAULT_CONFIG_FILE",
+        config_dir / "config.v3.toml",
+    )
 
 
 def _settings(**gui_overrides):
@@ -29,7 +40,9 @@ def test_fastapi_gui_requires_login_and_hides_settings_from_regular_user():
 
     with TestClient(app) as client:
         assert client.get("/").status_code == 200
-        assert client.get("/api/session").status_code == 401
+        anonymous_session = client.get("/api/session")
+        assert anonymous_session.status_code == 401
+        assert "www-authenticate" not in anonymous_session.headers
 
         login_response = client.post(
             "/api/login",
@@ -41,6 +54,9 @@ def test_fastapi_gui_requires_login_and_hides_settings_from_regular_user():
         assert cookie_session.status_code == 200
         assert cookie_session.json()["user"]["role"] == "user"
         assert cookie_session.json()["settings_visible"] is False
+        logout_response = client.post("/api/logout")
+        assert logout_response.status_code == 200
+        assert client.get("/api/session").status_code == 401
 
         user_session = client.get(
             "/api/session",
@@ -114,6 +130,81 @@ def test_fastapi_gui_admin_can_patch_runtime_settings():
     assert payload["pdf"]["translate_table_text"] is False
 
 
+def test_fastapi_gui_admin_can_switch_translation_engine_settings():
+    app = create_app(_settings())
+
+    with TestClient(app) as client:
+        response = client.patch(
+            "/api/settings",
+            auth=("manager", "manager-pass"),
+            json={
+                "translate_engine": "OpenAICompatible",
+                "translate_engine_settings": {
+                    "openai_compatible_model": "qwen-plus",
+                    "openai_compatible_base_url": "https://example.test/v1",
+                    "openai_compatible_api_key": "secret-key",
+                    "openai_compatible_temperature": "0.2",
+                    "openai_compatible_send_temperature": True,
+                },
+            },
+        )
+        readback = client.get(
+            "/api/settings",
+            auth=("manager", "manager-pass"),
+        )
+
+    assert response.status_code == 200
+    assert response.json()["translate_engine"] == "OpenAICompatible"
+    engine = next(
+        item
+        for item in readback.json()["translation_engines"]
+        if item["name"] == "OpenAICompatible"
+    )
+    fields = {field["name"]: field for field in engine["fields"]}
+    assert fields["openai_compatible_model"]["value"] == "qwen-plus"
+    assert fields["openai_compatible_api_key"]["value"] == ""
+    assert fields["openai_compatible_api_key"]["has_value"] is True
+
+
+def test_fastapi_gui_admin_can_manage_users_and_change_password():
+    app = create_app(_settings())
+
+    with TestClient(app) as client:
+        created = client.post(
+            "/api/users",
+            auth=("manager", "manager-pass"),
+            json={"username": "alice", "password": "alice-pass", "role": "user"},
+        )
+        alice_session = client.get("/api/session", auth=("alice", "alice-pass"))
+        changed = client.post(
+            "/api/users/change-password",
+            auth=("manager", "manager-pass"),
+            json={
+                "current_password": "manager-pass",
+                "new_password": "new-manager-pass",
+            },
+        )
+        old_admin = client.get("/api/session", auth=("manager", "manager-pass"))
+        new_admin = client.get("/api/session", auth=("manager", "new-manager-pass"))
+        deleted = client.delete(
+            "/api/users/alice",
+            auth=("manager", "new-manager-pass"),
+        )
+        alice_after_delete = client.get(
+            "/api/session",
+            auth=("alice", "alice-pass"),
+        )
+
+    assert created.status_code == 200
+    assert alice_session.status_code == 200
+    assert alice_session.json()["user"]["role"] == "user"
+    assert changed.status_code == 200
+    assert old_admin.status_code == 401
+    assert new_admin.status_code == 200
+    assert deleted.status_code == 200
+    assert alice_after_delete.status_code == 401
+
+
 def test_fastapi_gui_regular_user_cannot_manage_admin_resources():
     app = create_app(_settings())
 
@@ -127,9 +218,14 @@ def test_fastapi_gui_regular_user_cannot_manage_admin_resources():
             auth=("worker", "worker-pass"),
             json={"remove_all": False},
         )
+        users = client.get(
+            "/api/users",
+            auth=("worker", "worker-pass"),
+        )
 
     assert glossary.status_code == 403
     assert cleanup.status_code == 403
+    assert users.status_code == 403
 
 
 def test_fastapi_gui_admin_can_update_customer_glossary_template(

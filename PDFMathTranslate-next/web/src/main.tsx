@@ -5,14 +5,18 @@ import {
   Brush,
   Download,
   FileText,
+  KeyRound,
   ListChecks,
+  LogOut,
   Loader2,
   Play,
+  Plus,
   RefreshCw,
   RotateCcw,
   Save,
   Settings,
   Shield,
+  Trash2,
   Upload,
   User
 } from "lucide-react";
@@ -79,26 +83,82 @@ type SettingsSnapshot = {
     lang_out: string;
     qps: number;
     pool_max_workers: number | null;
+    term_qps: number | null;
+    term_pool_max_workers: number | null;
+    ignore_cache: boolean;
+    custom_system_prompt: string | null;
+    glossaries: string | null;
+    rpc_doclayout: string | null;
     disable_builtin_fashion_glossary: boolean;
     disable_builtin_fashion_prompt: boolean;
     save_auto_extracted_glossary: boolean;
     no_auto_extract_glossary: boolean;
     min_text_length: number;
+    primary_font_family: string | null;
   };
   pdf: {
     watermark_output_mode: string;
     no_mono: boolean;
     no_dual: boolean;
+    dual_translate_first: boolean;
+    use_alternating_pages_dual: boolean;
     translate_table_text: boolean;
     skip_scanned_detection: boolean;
     max_pages_per_part: number | null;
+    skip_clean: boolean;
+    disable_rich_text_translate: boolean;
+    enhance_compatibility: boolean;
+    split_short_lines: boolean;
+    short_line_split_factor: number;
+    ocr_workaround: boolean;
+    auto_enable_ocr_workaround: boolean;
+    only_include_translated_page: boolean;
+    formular_font_pattern: string | null;
+    formular_char_pattern: string | null;
+    no_merge_alternating_line_numbers: boolean;
+    no_remove_non_formula_lines: boolean;
+    non_formula_line_iou_threshold: number;
+    figure_table_protection_threshold: number;
+    skip_formula_offset_calculation: boolean;
   };
   translate_engine: string | null;
+  translation_engines: TranslationEngineOption[];
 };
 
 type CustomerGlossaryResponse = {
   path: string;
   rows: string[][];
+};
+
+type EngineChoice = {
+  label: string;
+  value: string | number | boolean | null;
+};
+
+type EngineField = {
+  name: string;
+  label: string;
+  input_type: "text" | "password" | "checkbox" | "number";
+  value: string | number | boolean | null;
+  secret: boolean;
+  has_value: boolean;
+  choices: EngineChoice[] | null;
+};
+
+type TranslationEngineOption = {
+  name: string;
+  support_llm: boolean;
+  fields: EngineField[];
+};
+
+type ManagedUser = {
+  username: string;
+  role: "admin" | "user";
+};
+
+type ManagedUsersResponse = {
+  auth_required: boolean;
+  users: ManagedUser[];
 };
 
 type ActiveTab = "translate" | "jobs" | "settings";
@@ -209,6 +269,73 @@ function glossaryTextToRows(text: string) {
     });
 }
 
+function choiceInputValue(value: EngineChoice["value"]) {
+  return value === null || value === undefined ? "" : String(value);
+}
+
+function EngineFieldControl({
+  field,
+  onChange
+}: {
+  field: EngineField;
+  onChange: (value: EngineField["value"]) => void;
+}) {
+  if (field.input_type === "checkbox") {
+    return (
+      <label className="inline-check">
+        <input
+          type="checkbox"
+          checked={Boolean(field.value)}
+          onChange={(event) => onChange(event.target.checked)}
+        />
+        {field.label}
+      </label>
+    );
+  }
+
+  if (field.choices?.length) {
+    return (
+      <label>
+        {field.label}
+        <select
+          value={choiceInputValue(field.value)}
+          onChange={(event) => {
+            const selected = field.choices?.find(
+              (choice) => choiceInputValue(choice.value) === event.target.value
+            );
+            onChange(selected ? selected.value : event.target.value);
+          }}
+        >
+          {field.choices.map((choice) => (
+            <option key={`${field.name}-${choiceInputValue(choice.value)}`} value={choiceInputValue(choice.value)}>
+              {choice.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
+  return (
+    <label>
+      {field.secret && field.has_value
+        ? `${field.label}（已设置，留空不变）`
+        : field.label}
+      <input
+        type={field.input_type === "password" ? "password" : field.input_type}
+        value={field.value === null || field.value === undefined ? "" : String(field.value)}
+        onChange={(event) => {
+          if (field.input_type === "number") {
+            onChange(event.target.value ? Number(event.target.value) : null);
+            return;
+          }
+          onChange(event.target.value);
+        }}
+      />
+    </label>
+  );
+}
+
 function App() {
   const [apiBase, setApiBase] = useState(defaultApiBase);
   const [authHeader, setAuthHeader] = useState<string | null>(null);
@@ -228,8 +355,20 @@ function App() {
   const [settingsSnapshot, setSettingsSnapshot] = useState<SettingsSnapshot | null>(
     null
   );
+  const [managedUsers, setManagedUsers] = useState<ManagedUser[]>([]);
+  const [userStatus, setUserStatus] = useState("");
   const [customerGlossary, setCustomerGlossary] = useState("");
   const [customerGlossaryPath, setCustomerGlossaryPath] = useState("");
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [managedUserForm, setManagedUserForm] = useState({
+    username: "",
+    password: "",
+    role: "user" as "admin" | "user"
+  });
   const [loginForm, setLoginForm] = useState({
     apiBase: defaultApiBase() || "http://127.0.0.1:7860",
     username: "",
@@ -293,17 +432,20 @@ function App() {
     if (!session?.settings_visible) {
       return;
     }
-    const [settingsPayload, glossaryPayload] = await Promise.all([
+    const [settingsPayload, glossaryPayload, usersPayload] = await Promise.all([
       apiRequest<SettingsSnapshot>(apiContext, "/api/settings"),
       apiRequest<CustomerGlossaryResponse>(
         apiContext,
         "/api/glossaries/customer-template"
-      )
+      ),
+      apiRequest<ManagedUsersResponse>(apiContext, "/api/users")
     ]);
     setSettingsSnapshot(settingsPayload);
     setCustomerGlossary(glossaryRowsToText(glossaryPayload.rows));
     setCustomerGlossaryPath(glossaryPayload.path);
+    setManagedUsers(usersPayload.users);
     setSettingsStatus("");
+    setUserStatus("");
   }, [apiContext, session]);
 
   useEffect(() => {
@@ -398,6 +540,24 @@ function App() {
     }
   }
 
+  async function handleLogout() {
+    try {
+      await apiRequest<{ ok: boolean }>(apiContext, "/api/logout", {
+        method: "POST",
+        body: JSON.stringify({})
+      });
+    } catch (_error) {
+      // Local state cleanup below is enough when the session is already gone.
+    }
+    setAuthHeader(null);
+    setSession(null);
+    setNeedsLogin(true);
+    setActiveTab("translate");
+    setJobs([]);
+    setCurrentJob(null);
+    setSettingsSnapshot(null);
+  }
+
   async function submitTranslation(event: FormEvent) {
     event.preventDefault();
     if (!selectedFile) {
@@ -431,6 +591,41 @@ function App() {
     }
   }
 
+  function selectedEngine(snapshot: SettingsSnapshot) {
+    return snapshot.translation_engines.find(
+      (engine) => engine.name === snapshot.translate_engine
+    );
+  }
+
+  function updateEngineField(engineName: string, fieldName: string, value: EngineField["value"]) {
+    if (!settingsSnapshot) {
+      return;
+    }
+    setSettingsSnapshot({
+      ...settingsSnapshot,
+      translation_engines: settingsSnapshot.translation_engines.map((engine) =>
+        engine.name === engineName
+          ? {
+              ...engine,
+              fields: engine.fields.map((field) =>
+                field.name === fieldName ? { ...field, value } : field
+              )
+            }
+          : engine
+      )
+    });
+  }
+
+  function selectedEngineSettings(snapshot: SettingsSnapshot) {
+    const engine = selectedEngine(snapshot);
+    if (!engine) {
+      return {};
+    }
+    return Object.fromEntries(
+      engine.fields.map((field) => [field.name, field.value])
+    );
+  }
+
   async function saveSettings(event: FormEvent) {
     event.preventDefault();
     if (!settingsSnapshot) {
@@ -453,6 +648,13 @@ function App() {
         lang_out: settingsSnapshot.translation.lang_out,
         qps: settingsSnapshot.translation.qps,
         pool_max_workers: settingsSnapshot.translation.pool_max_workers,
+        term_qps: settingsSnapshot.translation.term_qps,
+        term_pool_max_workers:
+          settingsSnapshot.translation.term_pool_max_workers,
+        ignore_cache: settingsSnapshot.translation.ignore_cache,
+        custom_system_prompt: settingsSnapshot.translation.custom_system_prompt,
+        glossaries: settingsSnapshot.translation.glossaries,
+        rpc_doclayout: settingsSnapshot.translation.rpc_doclayout,
         disable_builtin_fashion_glossary:
           settingsSnapshot.translation.disable_builtin_fashion_glossary,
         disable_builtin_fashion_prompt:
@@ -461,16 +663,44 @@ function App() {
           settingsSnapshot.translation.save_auto_extracted_glossary,
         no_auto_extract_glossary:
           settingsSnapshot.translation.no_auto_extract_glossary,
-        min_text_length: settingsSnapshot.translation.min_text_length
+        min_text_length: settingsSnapshot.translation.min_text_length,
+        primary_font_family: settingsSnapshot.translation.primary_font_family
       },
       pdf: {
         watermark_output_mode: settingsSnapshot.pdf.watermark_output_mode,
         no_mono: settingsSnapshot.pdf.no_mono,
         no_dual: settingsSnapshot.pdf.no_dual,
+        dual_translate_first: settingsSnapshot.pdf.dual_translate_first,
+        use_alternating_pages_dual:
+          settingsSnapshot.pdf.use_alternating_pages_dual,
         translate_table_text: settingsSnapshot.pdf.translate_table_text,
         skip_scanned_detection: settingsSnapshot.pdf.skip_scanned_detection,
-        max_pages_per_part: settingsSnapshot.pdf.max_pages_per_part
-      }
+        max_pages_per_part: settingsSnapshot.pdf.max_pages_per_part,
+        skip_clean: settingsSnapshot.pdf.skip_clean,
+        disable_rich_text_translate:
+          settingsSnapshot.pdf.disable_rich_text_translate,
+        enhance_compatibility: settingsSnapshot.pdf.enhance_compatibility,
+        split_short_lines: settingsSnapshot.pdf.split_short_lines,
+        short_line_split_factor: settingsSnapshot.pdf.short_line_split_factor,
+        ocr_workaround: settingsSnapshot.pdf.ocr_workaround,
+        auto_enable_ocr_workaround: settingsSnapshot.pdf.auto_enable_ocr_workaround,
+        only_include_translated_page:
+          settingsSnapshot.pdf.only_include_translated_page,
+        formular_font_pattern: settingsSnapshot.pdf.formular_font_pattern,
+        formular_char_pattern: settingsSnapshot.pdf.formular_char_pattern,
+        no_merge_alternating_line_numbers:
+          settingsSnapshot.pdf.no_merge_alternating_line_numbers,
+        no_remove_non_formula_lines:
+          settingsSnapshot.pdf.no_remove_non_formula_lines,
+        non_formula_line_iou_threshold:
+          settingsSnapshot.pdf.non_formula_line_iou_threshold,
+        figure_table_protection_threshold:
+          settingsSnapshot.pdf.figure_table_protection_threshold,
+        skip_formula_offset_calculation:
+          settingsSnapshot.pdf.skip_formula_offset_calculation
+      },
+      translate_engine: settingsSnapshot.translate_engine,
+      translate_engine_settings: selectedEngineSettings(settingsSnapshot)
     };
 
     try {
@@ -484,7 +714,11 @@ function App() {
       );
       setSettingsSnapshot(updated);
       if (session) {
-        setSession({ ...session, brand_name: updated.gui_settings.brand_name });
+        setSession({
+          ...session,
+          brand_name: updated.gui_settings.brand_name,
+          translate_engine: updated.translate_engine
+        });
       }
       setSettingsStatus("已保存运行设置");
     } catch (error) {
@@ -541,6 +775,70 @@ function App() {
       setCleanupStatus(`已删除 ${result.deleted} 个历史目录`);
     } catch (error) {
       setCleanupStatus((error as Error).message);
+    }
+  }
+
+  async function changePassword(event: FormEvent) {
+    event.preventDefault();
+    if (!passwordForm.newPassword) {
+      setUserStatus("请输入新密码");
+      return;
+    }
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setUserStatus("两次输入的新密码不一致");
+      return;
+    }
+    try {
+      await apiRequest<{ user: ApiUser }>(apiContext, "/api/users/change-password", {
+        method: "POST",
+        body: JSON.stringify({
+          current_password: passwordForm.currentPassword,
+          new_password: passwordForm.newPassword
+        })
+      });
+      if (session?.user.username) {
+        setAuthHeader(makeBasicAuth(session.user.username, passwordForm.newPassword));
+      }
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+      });
+      setUserStatus("管理员密码已修改");
+    } catch (error) {
+      setUserStatus((error as Error).message);
+    }
+  }
+
+  async function saveManagedUser(event: FormEvent) {
+    event.preventDefault();
+    try {
+      const payload = await apiRequest<ManagedUsersResponse>(apiContext, "/api/users", {
+        method: "POST",
+        body: JSON.stringify(managedUserForm)
+      });
+      setManagedUsers(payload.users);
+      setManagedUserForm({ username: "", password: "", role: "user" });
+      setUserStatus("用户已保存");
+    } catch (error) {
+      setUserStatus((error as Error).message);
+    }
+  }
+
+  async function deleteManagedUser(username: string) {
+    if (!window.confirm(`删除用户 ${username}？`)) {
+      return;
+    }
+    try {
+      const payload = await apiRequest<ManagedUsersResponse>(
+        apiContext,
+        `/api/users/${encodeURIComponent(username)}`,
+        { method: "DELETE" }
+      );
+      setManagedUsers(payload.users);
+      setUserStatus("用户已删除");
+    } catch (error) {
+      setUserStatus((error as Error).message);
     }
   }
 
@@ -653,6 +951,10 @@ function App() {
             {session.user.role}
           </span>
           <span>{session.user.username || "local admin"}</span>
+          <button className="session-action" onClick={() => void handleLogout()} type="button">
+            <LogOut size={15} />
+            退出登录
+          </button>
         </div>
       </aside>
 
@@ -826,180 +1128,690 @@ function App() {
               </button>
             </header>
             {settingsSnapshot ? (
-              <form className="panel settings-panel" onSubmit={saveSettings}>
-                <div className="form-grid">
-                  <label>
-                    品牌名称
-                    <input
-                      value={settingsSnapshot.gui_settings.brand_name}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          gui_settings: {
-                            ...settingsSnapshot.gui_settings,
-                            brand_name: event.target.value
+              <>
+                <form className="panel settings-panel" onSubmit={saveSettings}>
+                  <header className="sub-toolbar">
+                    <h3>运行与翻译</h3>
+                    <span className="status-text">{settingsStatus}</span>
+                  </header>
+                  <div className="form-grid settings-grid">
+                    <label>
+                      品牌名称
+                      <input
+                        value={settingsSnapshot.gui_settings.brand_name}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            gui_settings: {
+                              ...settingsSnapshot.gui_settings,
+                              brand_name: event.target.value
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      源语言
+                      <input
+                        value={settingsSnapshot.translation.lang_in}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              lang_in: event.target.value
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      目标语言
+                      <input
+                        value={settingsSnapshot.translation.lang_out}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              lang_out: event.target.value
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      QPS
+                      <input
+                        min={1}
+                        type="number"
+                        value={settingsSnapshot.translation.qps}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              qps: Number(event.target.value || 1)
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Worker
+                      <input
+                        min={0}
+                        type="number"
+                        value={settingsSnapshot.translation.pool_max_workers ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              pool_max_workers: event.target.value
+                                ? Number(event.target.value)
+                                : null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      术语 QPS
+                      <input
+                        min={0}
+                        type="number"
+                        value={settingsSnapshot.translation.term_qps ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              term_qps: event.target.value
+                                ? Number(event.target.value)
+                                : null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      术语 Worker
+                      <input
+                        min={0}
+                        type="number"
+                        value={
+                          settingsSnapshot.translation.term_pool_max_workers ?? ""
+                        }
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              term_pool_max_workers: event.target.value
+                                ? Number(event.target.value)
+                                : null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      并发任务
+                      <input
+                        min={1}
+                        type="number"
+                        value={settingsSnapshot.gui_settings.max_concurrent_jobs}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            gui_settings: {
+                              ...settingsSnapshot.gui_settings,
+                              max_concurrent_jobs: Number(event.target.value || 1)
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      队列上限
+                      <input
+                        min={1}
+                        type="number"
+                        value={settingsSnapshot.gui_settings.max_queue_size ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            gui_settings: {
+                              ...settingsSnapshot.gui_settings,
+                              max_queue_size: event.target.value
+                                ? Number(event.target.value)
+                                : null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      历史保留天数
+                      <input
+                        min={1}
+                        type="number"
+                        value={
+                          settingsSnapshot.gui_settings.output_history_retention_days
+                        }
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            gui_settings: {
+                              ...settingsSnapshot.gui_settings,
+                              output_history_retention_days: Number(
+                                event.target.value || 1
+                              )
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      最小文本长度
+                      <input
+                        min={0}
+                        type="number"
+                        value={settingsSnapshot.translation.min_text_length}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              min_text_length: Number(event.target.value || 0)
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      分段页数
+                      <input
+                        min={1}
+                        type="number"
+                        value={settingsSnapshot.pdf.max_pages_per_part ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            pdf: {
+                              ...settingsSnapshot.pdf,
+                              max_pages_per_part: event.target.value
+                                ? Number(event.target.value)
+                                : null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label className="wide-field">
+                      额外术语表
+                      <input
+                        value={settingsSnapshot.translation.glossaries ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              glossaries: event.target.value || null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label className="wide-field">
+                      文档布局 RPC
+                      <input
+                        value={settingsSnapshot.translation.rpc_doclayout ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              rpc_doclayout: event.target.value || null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                    <label className="wide-field">
+                      自定义系统提示词
+                      <textarea
+                        className="compact-textarea"
+                        value={settingsSnapshot.translation.custom_system_prompt ?? ""}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              custom_system_prompt: event.target.value || null
+                            }
+                          })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <div className="check-row">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={
+                          !settingsSnapshot.translation.disable_builtin_fashion_glossary
+                        }
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              disable_builtin_fashion_glossary:
+                                !event.target.checked
+                            }
+                          })
+                        }
+                      />
+                      启用内置服装术语库
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={
+                          !settingsSnapshot.translation.disable_builtin_fashion_prompt
+                        }
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              disable_builtin_fashion_prompt: !event.target.checked
+                            }
+                          })
+                        }
+                      />
+                      启用服装翻译提示词
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!settingsSnapshot.translation.no_auto_extract_glossary}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              no_auto_extract_glossary: !event.target.checked
+                            }
+                          })
+                        }
+                      />
+                      自动抽取术语
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={settingsSnapshot.translation.ignore_cache}
+                        onChange={(event) =>
+                          setSettingsSnapshot({
+                            ...settingsSnapshot,
+                            translation: {
+                              ...settingsSnapshot.translation,
+                              ignore_cache: event.target.checked
+                            }
+                          })
+                        }
+                      />
+                      忽略翻译缓存
+                    </label>
+                  </div>
+
+                  <section className="settings-section">
+                    <header className="sub-toolbar">
+                      <h3>AI 模型服务商</h3>
+                      <span className="status-text">
+                        {selectedEngine(settingsSnapshot)?.support_llm
+                          ? "LLM"
+                          : "翻译接口"}
+                      </span>
+                    </header>
+                    <div className="form-grid engine-grid">
+                      <label>
+                        服务商
+                        <select
+                          value={settingsSnapshot.translate_engine ?? ""}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              translate_engine: event.target.value
+                            })
                           }
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    QPS
-                    <input
-                      min={1}
-                      type="number"
-                      value={settingsSnapshot.translation.qps}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          translation: {
-                            ...settingsSnapshot.translation,
-                            qps: Number(event.target.value || 1)
-                          }
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Worker
-                    <input
-                      min={0}
-                      type="number"
-                      value={settingsSnapshot.translation.pool_max_workers ?? ""}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          translation: {
-                            ...settingsSnapshot.translation,
-                            pool_max_workers: event.target.value
-                              ? Number(event.target.value)
-                              : null
-                          }
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    并发任务
-                    <input
-                      min={1}
-                      type="number"
-                      value={settingsSnapshot.gui_settings.max_concurrent_jobs}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          gui_settings: {
-                            ...settingsSnapshot.gui_settings,
-                            max_concurrent_jobs: Number(event.target.value || 1)
-                          }
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    队列上限
-                    <input
-                      min={1}
-                      type="number"
-                      value={settingsSnapshot.gui_settings.max_queue_size ?? ""}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          gui_settings: {
-                            ...settingsSnapshot.gui_settings,
-                            max_queue_size: event.target.value
-                              ? Number(event.target.value)
-                              : null
-                          }
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    历史保留天数
-                    <input
-                      min={1}
-                      type="number"
-                      value={settingsSnapshot.gui_settings.output_history_retention_days}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          gui_settings: {
-                            ...settingsSnapshot.gui_settings,
-                            output_history_retention_days: Number(
-                              event.target.value || 1
+                        >
+                          {settingsSnapshot.translation_engines.map((engine) => (
+                            <option key={engine.name} value={engine.name}>
+                              {engine.name}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      {selectedEngine(settingsSnapshot)?.fields.map((field) => (
+                        <EngineFieldControl
+                          field={field}
+                          key={`${settingsSnapshot.translate_engine}-${field.name}`}
+                          onChange={(value) =>
+                            updateEngineField(
+                              settingsSnapshot.translate_engine || "",
+                              field.name,
+                              value
                             )
                           }
-                        })
-                      }
-                    />
-                  </label>
-                </div>
+                        />
+                      ))}
+                    </div>
+                  </section>
 
-                <div className="check-row">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={
-                        !settingsSnapshot.translation.disable_builtin_fashion_glossary
-                      }
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          translation: {
-                            ...settingsSnapshot.translation,
-                            disable_builtin_fashion_glossary:
-                              !event.target.checked
+                  <section className="settings-section">
+                    <header className="sub-toolbar">
+                      <h3>PDF 输出</h3>
+                    </header>
+                    <div className="form-grid settings-grid">
+                      <label>
+                        水印模式
+                        <select
+                          value={settingsSnapshot.pdf.watermark_output_mode}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                watermark_output_mode: event.target.value
+                              }
+                            })
                           }
-                        })
-                      }
-                    />
-                    启用内置服装术语库
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={
-                        !settingsSnapshot.translation.disable_builtin_fashion_prompt
-                      }
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          translation: {
-                            ...settingsSnapshot.translation,
-                            disable_builtin_fashion_prompt: !event.target.checked
+                        >
+                          <option value="no_watermark">no_watermark</option>
+                          <option value="watermarked">watermarked</option>
+                          <option value="both">both</option>
+                        </select>
+                      </label>
+                      <label>
+                        短行拆分系数
+                        <input
+                          step="0.1"
+                          type="number"
+                          value={settingsSnapshot.pdf.short_line_split_factor}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                short_line_split_factor: Number(
+                                  event.target.value || 0
+                                )
+                              }
+                            })
                           }
-                        })
-                      }
-                    />
-                    启用服装翻译提示词
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={settingsSnapshot.pdf.translate_table_text}
-                      onChange={(event) =>
-                        setSettingsSnapshot({
-                          ...settingsSnapshot,
-                          pdf: {
-                            ...settingsSnapshot.pdf,
-                            translate_table_text: event.target.checked
+                        />
+                      </label>
+                      <label>
+                        非公式线阈值
+                        <input
+                          step="0.01"
+                          type="number"
+                          value={settingsSnapshot.pdf.non_formula_line_iou_threshold}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                non_formula_line_iou_threshold: Number(
+                                  event.target.value || 0
+                                )
+                              }
+                            })
                           }
-                        })
-                      }
-                    />
-                    翻译表格文本
-                  </label>
-                </div>
+                        />
+                      </label>
+                      <label>
+                        图表保护阈值
+                        <input
+                          step="0.01"
+                          type="number"
+                          value={
+                            settingsSnapshot.pdf.figure_table_protection_threshold
+                          }
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                figure_table_protection_threshold: Number(
+                                  event.target.value || 0
+                                )
+                              }
+                            })
+                          }
+                        />
+                      </label>
+                      <label className="wide-field">
+                        公式字体模式
+                        <input
+                          value={settingsSnapshot.pdf.formular_font_pattern ?? ""}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                formular_font_pattern: event.target.value || null
+                              }
+                            })
+                          }
+                        />
+                      </label>
+                      <label className="wide-field">
+                        公式字符模式
+                        <input
+                          value={settingsSnapshot.pdf.formular_char_pattern ?? ""}
+                          onChange={(event) =>
+                            setSettingsSnapshot({
+                              ...settingsSnapshot,
+                              pdf: {
+                                ...settingsSnapshot.pdf,
+                                formular_char_pattern: event.target.value || null
+                              }
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    <div className="check-row">
+                      {[
+                        ["no_mono", "不输出单语 PDF"],
+                        ["no_dual", "不输出双语 PDF"],
+                        ["dual_translate_first", "双语译文在前"],
+                        ["use_alternating_pages_dual", "交替页双语"],
+                        ["translate_table_text", "翻译表格文本"],
+                        ["skip_scanned_detection", "跳过扫描检测"],
+                        ["skip_clean", "跳过 PDF 清理"],
+                        ["disable_rich_text_translate", "禁用富文本翻译"],
+                        ["enhance_compatibility", "增强兼容性"],
+                        ["split_short_lines", "拆分短行"],
+                        ["ocr_workaround", "OCR 黑字白底"],
+                        ["auto_enable_ocr_workaround", "自动 OCR 处理"],
+                        ["only_include_translated_page", "仅输出翻译页"],
+                        ["no_merge_alternating_line_numbers", "保留交替行号"],
+                        ["no_remove_non_formula_lines", "保留非公式线"],
+                        ["skip_formula_offset_calculation", "跳过公式偏移"]
+                      ].map(([fieldName, label]) => (
+                        <label key={fieldName}>
+                          <input
+                            type="checkbox"
+                            checked={Boolean(
+                              settingsSnapshot.pdf[
+                                fieldName as keyof SettingsSnapshot["pdf"]
+                              ]
+                            )}
+                            onChange={(event) =>
+                              setSettingsSnapshot({
+                                ...settingsSnapshot,
+                                pdf: {
+                                  ...settingsSnapshot.pdf,
+                                  [fieldName]: event.target.checked
+                                }
+                              })
+                            }
+                          />
+                          {label}
+                        </label>
+                      ))}
+                    </div>
+                  </section>
 
-                <div className="actions">
-                  <button className="primary-btn" type="submit">
-                    <Save size={16} />
-                    保存设置
-                  </button>
-                  <span className="status-text">{settingsStatus}</span>
-                </div>
-              </form>
+                  <div className="actions">
+                    <button className="primary-btn" type="submit">
+                      <Save size={16} />
+                      保存设置
+                    </button>
+                  </div>
+                </form>
+
+                <section className="panel settings-panel">
+                  <header className="sub-toolbar">
+                    <h3>账号与用户</h3>
+                    <span className="status-text">{userStatus}</span>
+                  </header>
+                  <form className="form-grid account-grid" onSubmit={changePassword}>
+                    <label>
+                      当前密码
+                      <input
+                        type="password"
+                        value={passwordForm.currentPassword}
+                        onChange={(event) =>
+                          setPasswordForm({
+                            ...passwordForm,
+                            currentPassword: event.target.value
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      新密码
+                      <input
+                        type="password"
+                        value={passwordForm.newPassword}
+                        onChange={(event) =>
+                          setPasswordForm({
+                            ...passwordForm,
+                            newPassword: event.target.value
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      确认新密码
+                      <input
+                        type="password"
+                        value={passwordForm.confirmPassword}
+                        onChange={(event) =>
+                          setPasswordForm({
+                            ...passwordForm,
+                            confirmPassword: event.target.value
+                          })
+                        }
+                      />
+                    </label>
+                    <button className="secondary-btn" type="submit">
+                      <KeyRound size={16} />
+                      修改密码
+                    </button>
+                  </form>
+
+                  <form className="form-grid account-grid" onSubmit={saveManagedUser}>
+                    <label>
+                      用户名
+                      <input
+                        value={managedUserForm.username}
+                        onChange={(event) =>
+                          setManagedUserForm({
+                            ...managedUserForm,
+                            username: event.target.value
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      密码
+                      <input
+                        type="password"
+                        value={managedUserForm.password}
+                        onChange={(event) =>
+                          setManagedUserForm({
+                            ...managedUserForm,
+                            password: event.target.value
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      角色
+                      <select
+                        value={managedUserForm.role}
+                        onChange={(event) =>
+                          setManagedUserForm({
+                            ...managedUserForm,
+                            role: event.target.value as "admin" | "user"
+                          })
+                        }
+                      >
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                      </select>
+                    </label>
+                    <button className="primary-btn" type="submit">
+                      <Plus size={16} />
+                      保存用户
+                    </button>
+                  </form>
+
+                  <div className="users-list">
+                    {managedUsers.map((managedUser) => (
+                      <div className="user-row" key={managedUser.username}>
+                        <span>
+                          <strong>{managedUser.username}</strong>
+                          <small>{managedUser.role}</small>
+                        </span>
+                        <div className="button-row">
+                          <button
+                            className="secondary-btn"
+                            onClick={() =>
+                              setManagedUserForm({
+                                username: managedUser.username,
+                                password: "",
+                                role: managedUser.role
+                              })
+                            }
+                            type="button"
+                          >
+                            <User size={16} />
+                            编辑
+                          </button>
+                          <button
+                            className="danger-btn"
+                            onClick={() => void deleteManagedUser(managedUser.username)}
+                            type="button"
+                          >
+                            <Trash2 size={16} />
+                            删除
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </>
             ) : (
               <div className="empty-state">正在读取设置</div>
             )}

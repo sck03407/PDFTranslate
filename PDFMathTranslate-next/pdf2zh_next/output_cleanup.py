@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import shutil
 import uuid
 from dataclasses import dataclass
@@ -12,7 +13,8 @@ from typing import Iterable
 
 logger = logging.getLogger(__name__)
 
-GUI_OUTPUT_ROOT_DIR = Path("pdf2zh_files")
+GUI_OUTPUT_DIR_ENV = "PDF2ZH_OUTPUT_DIR"
+RUNTIME_DIR_ENV = "PDF2ZH_RUNTIME_DIR"
 
 
 @dataclass(slots=True)
@@ -25,7 +27,15 @@ class CleanupResult:
 
 
 def get_gui_output_root_dir() -> Path:
-    return GUI_OUTPUT_ROOT_DIR
+    output_dir = os.getenv(GUI_OUTPUT_DIR_ENV)
+    if output_dir:
+        return Path(output_dir).expanduser()
+
+    runtime_dir = os.getenv(RUNTIME_DIR_ENV)
+    if runtime_dir:
+        return Path(runtime_dir).expanduser() / "pdf2zh_files"
+
+    return Path.cwd() / "pdf2zh_files"
 
 
 def is_session_output_dir(path: Path) -> bool:

@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from pdf2zh_next.output_cleanup import cleanup_session_output_dirs
+from pdf2zh_next.output_cleanup import get_gui_output_root_dir
 from pdf2zh_next.output_cleanup import is_session_output_dir
 
 
@@ -73,3 +74,17 @@ def test_cleanup_session_output_dirs_rejects_invalid_retention_days(tmp_path: Pa
         ValueError, match="older_than_days must be greater than or equal to 1"
     ):
         cleanup_session_output_dirs(base_dir=tmp_path, older_than_days=0)
+
+
+def test_gui_output_root_prefers_runtime_directory(tmp_path: Path, monkeypatch):
+    monkeypatch.delenv("PDF2ZH_OUTPUT_DIR", raising=False)
+    monkeypatch.setenv("PDF2ZH_RUNTIME_DIR", str(tmp_path))
+
+    assert get_gui_output_root_dir() == tmp_path / "pdf2zh_files"
+
+
+def test_gui_output_root_can_be_overridden(tmp_path: Path, monkeypatch):
+    output_dir = tmp_path / "outputs"
+    monkeypatch.setenv("PDF2ZH_OUTPUT_DIR", str(output_dir))
+
+    assert get_gui_output_root_dir() == output_dir
