@@ -113,7 +113,7 @@ http://localhost:7860/
 >
 > - For a local Docker build that stays on your stable BabelDOC line, run `script/build_fashion_docker.ps1`.
 > - To build from the latest upstream `funstory-ai/BabelDOC` source, run `script/build_fashion_docker.ps1 -BabelDOCSource github-latest`.
-> - To publish a Docker image, Windows portable zip, and Tauri desktop bundles from GitHub Actions, use the root-level `.github/workflows/fashion-release.yml`.
+> - To publish a Docker image, Windows portable zip, and shell-only Tauri desktop bundles from GitHub Actions, use the root-level `.github/workflows/fashion-release.yml`. Current Tauri artifacts do not include the Python backend; add a backend sidecar/resource packaging step before treating them as self-contained installers.
 <!--
 If you later publish official cloud deployment templates for this repository,
 replace this comment block with your own Heroku/Render/Zeabur/Koyeb links.

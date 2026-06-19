@@ -28,7 +28,9 @@ There are several methods to open the WebUI interface. If you are using **Window
 
 By default, the WebUI uses a `Python/FastAPI backend + React/Vite frontend`. It reuses the existing PDFMathTranslate-next / BabelDOC translation core and does not modify the BabelDOC layer, so upstream BabelDOC updates remain easier to sync. The Tauri desktop app and Docker container use the same frontend build.
 
-The optional Tauri desktop shell starts a local FastAPI backend from `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` on the system `PATH`. Use the Windows portable package when you need a self-contained offline Windows distribution.
+The optional Tauri desktop shell starts a local FastAPI backend from `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` on the system `PATH`. Current Tauri bundles are not self-contained Python-backend installers. Use the Windows portable package when you need a self-contained offline Windows distribution.
+
+If you later need a "single Tauri installer with everything included", package the same Python/FastAPI backend as a Tauri sidecar or bundled resource and let the desktop shell launch it locally. This is a distribution-layer change; it should not require changes inside BabelDOC's PDF parsing, layout, or reconstruction logic. As long as the packaging scripts keep the current BabelDOC source-selection model, stable local builds, latest upstream source builds, and specific upstream refs can still be synced and upgraded.
 
 The default interface is regular-user focused and shows PDF upload, translation status, and download. Docker administrators see the settings entry after login; local runs without account login behave as single-user administrator sessions.
 

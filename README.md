@@ -5,7 +5,7 @@
 这个工作区由两层组成：
 
 - `PDFMathTranslate-next/`
-  - 应用层，负责 CLI、Gradio WebUI、配置、术语表、Windows 便携打包，以及对 BabelDOC 的调用。
+  - 应用层，负责 CLI、FastAPI/React WebUI、可选 Tauri 桌面壳、配置、术语表、Windows 便携打包、Docker 分发，以及对 BabelDOC 的调用。
 - `BabelDOC/`
   - 底层 PDF 解析、翻译、排版重建引擎源码。
 
@@ -19,6 +19,8 @@
   - 当 `7860` 端口被占用时，自动回退到下一个可用本地端口。
 - 对外项目名统一使用 `PDFTranslate`。
 - Windows 便携版与 Docker 部署默认隐藏设置入口，普通用户只看到上传 PDF、翻译、预览和下载首页；管理员优先修改 `config/distribution.toml` 来打开设置入口、设置密码、限制局域网并发和队列。
+- 当前 Tauri 桌面包是“桌面壳 + 本地后端启动器”：它通过 `PDFTRANSLATE_BACKEND_BIN` 或系统 `PATH` 中的 `pdf2zh` 启动 FastAPI 后端，本身还不是内置 Python 后端的一体安装包。
+- 如需给普通用户发放无需安装 Python/后端的离线桌面版，当前优先使用 Windows 便携包；未来也可以把同一套便携后端作为 Tauri sidecar/resource 打进安装包，这属于分发层调整，不需要改 BabelDOC 内部。
 - GitHub 仓库级配置已收口到根目录 `.github/`，当前仅保留手动发布工作流 `.github/workflows/fashion-release.yml`。
 - `2026-06-07` 首发前最终清理已完成：
   - 已移除 `PDFMathTranslate-next/.git` 与 `BabelDOC/.git`；
@@ -27,7 +29,7 @@
   - 已清理全仓 `__pycache__` 等 Python 缓存目录。
 - 两个嵌套 Git 仓库的原始历史已备份到仓库根目录外：
   - `E:\PDFMathTranslate-preclean-backup-20260607-1\`
-- 当前 `E:\PDFMathTranslate` 仍未执行 `git init`，可以直接作为新的 GitHub 根仓库继续初始化并上传。
+- 当前 `E:\PDFTranslate` 已作为新的 Git 工作区继续整理和发布。
 
 ## 命名说明
 
@@ -42,10 +44,10 @@
 
 ## 建议阅读顺序
 
-1. [PDFTranslate-GitHub-First-Commit-Checklist.md](/E:/PDFMathTranslate/PDFTranslate-GitHub-First-Commit-Checklist.md)
-2. [PDFMathTranslate-fashion-translation-plan.md](/E:/PDFMathTranslate/PDFMathTranslate-fashion-translation-plan.md)
-3. [PDFMathTranslate-next/README.md](/E:/PDFMathTranslate/PDFMathTranslate-next/README.md)
-4. [PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md](/E:/PDFMathTranslate/PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md)
+1. [PDFTranslate-GitHub-First-Commit-Checklist.md](/E:/PDFTranslate/PDFTranslate-GitHub-First-Commit-Checklist.md)
+2. [PDFMathTranslate-fashion-translation-plan.md](/E:/PDFTranslate/PDFMathTranslate-fashion-translation-plan.md)
+3. [PDFMathTranslate-next/README.md](/E:/PDFTranslate/PDFMathTranslate-next/README.md)
+4. [PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md](/E:/PDFTranslate/PDFMathTranslate-next/docs/zh/SAFE_CLEANUP_CHECKLIST_2026-06-07.md)
 
 ## 输出目录清理
 

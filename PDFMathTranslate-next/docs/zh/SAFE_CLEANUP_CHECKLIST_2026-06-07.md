@@ -58,8 +58,8 @@
 
 ## 当前发布策略
 
-- 当前 `E:\PDFMathTranslate` 外层目录还未初始化为 Git 仓库。
-- 当前目录状态已经适合直接作为新的 `PDFTranslate` 根仓库上传到 GitHub。
+- 历史说明：执行清理时，原 `E:\PDFMathTranslate` 外层目录尚未初始化为 Git 仓库。
+- 当前请以根目录 `README.md` 为准：工作区已迁移到 `E:\PDFTranslate`，并作为新的 `PDFTranslate` 根仓库继续整理和发布。
 
 - 本地 Windows 便携包默认优先使用同级 `../BabelDOC/` 稳定源码。
 - 如需直接切到上游最新源码：

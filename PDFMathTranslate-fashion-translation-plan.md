@@ -7,14 +7,14 @@
 > 首发前最终清理状态（2026-06-07）：
 > 已移除 `PDFMathTranslate-next/.git`、`BabelDOC/.git`、`PDFMathTranslate-next/dist`、`PDFMathTranslate-next/.verify_env` 等不应进入首发仓库的本地产物；
 > 已移除两个子项目内部不再生效的上游 `.github` 配置，并将当前保留的手动发布工作流收口到根目录 `.github/workflows/fashion-release.yml`；
-> 当前 `E:\PDFMathTranslate` 已整理为新的根仓库候选目录，可直接用于后续 `git init` 或手动上传 GitHub。
+> 当前 `E:\PDFTranslate` 已整理为新的根 Git 工作区，可继续用于后续发布。
 
 日期：2026-06-06  
-工作目录：`E:\PDFMathTranslate`  
+工作目录：`E:\PDFTranslate`
 参考源码：
 
-- `E:\PDFMathTranslate\PDFMathTranslate-next`
-- `E:\PDFMathTranslate\BabelDOC`
+- `E:\PDFTranslate\PDFMathTranslate-next`
+- `E:\PDFTranslate\BabelDOC`
 
 ## 1. 背景与目标
 
@@ -45,9 +45,9 @@
 
 本地源码依据：
 
-- `E:\PDFMathTranslate\PDFMathTranslate-next\README.md` 写明：该项目基于 BabelDOC，并且是调用 BabelDOC 进行 PDF 翻译的官方参考实现。
-- `E:\PDFMathTranslate\PDFMathTranslate-next\pyproject.toml` 中依赖 `babeldoc>=0.6.2,<0.7.0`。
-- `E:\PDFMathTranslate\PDFMathTranslate-next\pdf2zh_next\high_level.py` 中通过 `create_babeldoc_config()` 把 PDFMathTranslate-next 的设置转换成 BabelDOC 的 `TranslationConfig`。
+- `E:\PDFTranslate\PDFMathTranslate-next\README.md` 写明：该项目基于 BabelDOC，并且是调用 BabelDOC 进行 PDF 翻译的官方参考实现。
+- `E:\PDFTranslate\PDFMathTranslate-next\pyproject.toml` 中依赖 `babeldoc>=0.6.3,<0.7.0`。
+- `E:\PDFTranslate\PDFMathTranslate-next\pdf2zh_next\high_level.py` 中通过 `create_babeldoc_config()` 把 PDFMathTranslate-next 的设置转换成 BabelDOC 的 `TranslationConfig`。
 
 ### 2.2 BabelDOC 的定位
 
@@ -61,9 +61,9 @@
 
 本地源码依据：
 
-- `E:\PDFMathTranslate\BabelDOC\pyproject.toml` 当前版本为 `0.6.3`。
-- `E:\PDFMathTranslate\BabelDOC\babeldoc\format\pdf\translation_config.py` 定义 `WatermarkOutputMode`、`glossaries`、`auto_extract_glossary` 等能力。
-- `E:\PDFMathTranslate\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py` 中 `add_watermark()` 负责插入上述首页水印文字。
+- `E:\PDFTranslate\BabelDOC\pyproject.toml` 当前版本为 `0.6.3`。
+- `E:\PDFTranslate\BabelDOC\babeldoc\format\pdf\translation_config.py` 定义 `WatermarkOutputMode`、`glossaries`、`auto_extract_glossary` 等能力。
+- `E:\PDFTranslate\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py` 中 `add_watermark()` 负责插入上述首页水印文字。
 
 ### 2.3 关系结论
 
@@ -188,6 +188,7 @@ Python 程序
 - 核心保持 Python；
 - 单机版可用“内置 Python 运行环境 + 启动器”打包；
 - 桌面体验需要更好时，用 Tauri/Electron/.NET 做外壳，调用本地 Python HTTP 服务或 CLI；
+- 如需“一体 Tauri 安装包”，优先把现有便携版后端作为 Tauri sidecar 或资源文件随安装包分发，再由桌面壳启动本地 FastAPI 服务；这属于分发层调整，不应改动 BabelDOC 的 PDF 解析、排版和重建核心；
 - 服务器版使用同一个 Python 核心，对外提供 WebUI 或 REST API；
 - 真正需要性能优化时，优先优化缓存、并发、模型推理服务、PDF 预处理，而不是换语言。
 
@@ -242,7 +243,7 @@ Python 程序
 
 BabelDOC 的水印逻辑位于：
 
-`E:\PDFMathTranslate\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py`
+`E:\PDFTranslate\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py`
 
 关键逻辑：
 
@@ -253,7 +254,7 @@ BabelDOC 的水印逻辑位于：
 
 PDFMathTranslate-next 的默认配置位于：
 
-`E:\PDFMathTranslate\PDFMathTranslate-next\pdf2zh_next\config\model.py`
+`E:\PDFTranslate\PDFMathTranslate-next\pdf2zh_next\config\model.py`
 
 当前 `PDFSettings.watermark_output_mode` 默认值为：
 
@@ -263,7 +264,7 @@ default="watermarked"
 
 并在：
 
-`E:\PDFMathTranslate\PDFMathTranslate-next\pdf2zh_next\high_level.py`
+`E:\PDFTranslate\PDFMathTranslate-next\pdf2zh_next\high_level.py`
 
 映射到 BabelDOC 的：
 
@@ -597,10 +598,15 @@ api_key = ""
    使用 React/Vite 做 Web 前端，实现上传、任务列表、进度、下载、管理员设置、客户术语模板维护、输出历史清理和角色权限。Docker、浏览器和 Tauri 桌面端复用同一套构建产物。
 
 3. 桌面跨平台壳
-   使用 Tauri 包一层本地 Web 前端，启动或连接本地 Python/FastAPI 服务。这样核心翻译逻辑不重写，桌面端体验和多平台分发比 Gradio 更可控。
+   使用 Tauri 包一层本地 Web 前端，启动或连接本地 Python/FastAPI 服务。当前 Tauri 桌面包会通过 `PDFTRANSLATE_BACKEND_BIN` 或系统 `PATH` 中的 `pdf2zh` 启动后端，因此是“桌面壳 + 外部/已安装后端”的形态，还不是内置 Python 后端的一体包。这样核心翻译逻辑不重写，桌面端体验和多平台分发比 Gradio 更可控。
+
+   如果未来需要“一个 Tauri 安装包全带齐”，建议复用 Windows 便携版后端，把嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 资源、配置模板和启动脚本作为 Tauri sidecar/resource 打包。Tauri 只负责定位资源、启动本地 FastAPI 服务和打开前端，不直接嵌入或重写 BabelDOC 逻辑。
 
 4. GitHub 分发
-   GitHub Actions 同时构建 Windows 便携包、Tauri 桌面包和 Docker 镜像；Docker 镜像默认启用普通用户/管理员登录，管理员才能进入设置页。
+   GitHub Actions 同时构建 Windows 便携包、Tauri 桌面壳包和 Docker 镜像；Docker 镜像默认启用普通用户/管理员登录，管理员才能进入设置页。当前对普通用户真正“免安装 Python/后端”的离线桌面分发仍以 Windows 便携包为准；Tauri 若要作为同等自包含分发物，需要增加后端 sidecar 打包步骤。
+
+5. BabelDOC 同步升级影响
+   一体 Tauri 安装包不应影响 BabelDOC 的同步升级边界。只要 BabelDOC 仍作为 Python 依赖或源码 checkout 被打进后端运行环境，升级时依旧通过 `build_fashion_portable.ps1` / Docker 构建脚本选择本地稳定 `..\BabelDOC`、上游最新源码或指定 ref。需要维护的是打包脚本和资源路径，不是 BabelDOC 核心代码 fork。
 
 当前决策是不再保留 Gradio 兼容入口，避免维护两套 GUI 造成长期升级负担。
 

@@ -67,7 +67,8 @@ This repository includes a fashion-document customization that keeps the existin
 - `SiliconFlowFree` remains available as a free online relay option, alongside the paid `SiliconFlow` API workflow.
 - `pdf2zh --gui` starts a FastAPI backend with a React/Vite frontend. The old Gradio runtime path has been removed.
 - The same WebUI build is used by local runs, Docker, and the Tauri desktop shell.
-- The optional Tauri desktop shell starts a local backend from `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` on `PATH`; the Windows portable package remains the self-contained offline desktop distribution.
+- The optional Tauri desktop shell starts a local backend from `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` on `PATH`. Current Tauri bundles are shell-only unless a backend sidecar is added.
+- The Windows portable package remains the self-contained offline desktop distribution for users who should not install Python or the backend separately.
 - Administrators can clean `pdf2zh_files` history from the Settings page, and startup can automatically remove session folders older than a configurable number of days.
 - Docker enables username/password login by default: regular users only see translation and download workflows, while administrators can see the Settings page and tune LAN queue / QPS limits.
 - Portable builds now tolerate `UTF-8 BOM` in `config.v3.toml`.
@@ -103,6 +104,12 @@ The portable folder now includes:
 - `README-Fashion-Portable.txt`
 - `BABELDOC-BUILD-INFO.txt`
 
+Desktop packaging note:
+
+- A future "single Tauri installer with backend included" should package the same Python/FastAPI backend as a Tauri sidecar or bundled resource, then launch that local backend from the shell.
+- That change is packaging-only: BabelDOC should remain a Python dependency/source checkout selected by the portable builder, so the PDF parsing and layout reconstruction layer does not need to be forked for desktop packaging.
+- BabelDOC syncs stay manageable as long as the packaging scripts keep the current source-selection model: stable local `..\BabelDOC`, latest upstream source, or a specific upstream ref.
+
 For container builds, this branch also includes:
 
 ```powershell
@@ -129,7 +136,7 @@ docker run -d `
   pdfmathtranslate-fashion:local
 ```
 
-And a root-level GitHub Actions manual workflow at `../.github/workflows/fashion-release.yml` that can build a Windows portable zip, Tauri desktop bundles for Windows/macOS/Linux, and a GHCR Docker image from either the local-stable BabelDOC line or the latest `funstory-ai/BabelDOC` source.
+And a root-level GitHub Actions manual workflow at `../.github/workflows/fashion-release.yml` that can build a Windows portable zip, shell-only Tauri desktop bundles for Windows/macOS/Linux, and a GHCR Docker image from either the local-stable BabelDOC line or the latest `funstory-ai/BabelDOC` source. Add a backend sidecar packaging step before treating the Tauri artifact as a self-contained desktop installer.
 
 <h2 id="usage">Advanced Options</h2>
 

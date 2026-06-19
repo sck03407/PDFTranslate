@@ -67,5 +67,6 @@
 >   - `README-Fashion-Portable.txt`: quick-start notes for desktop users
 >   - `BABELDOC-BUILD-INFO.txt`: records which BabelDOC source and version were packaged
 > - This portable folder defaults to the `PDFTranslate` GUI brand. Without account login it behaves as a single-user administrator session; after account login is enabled, regular users only see PDF upload, translation status, and download, while administrators see the Settings page.
+> - This portable folder is the current offline desktop distribution for users who should not install Python or the backend separately. A future self-contained Tauri installer should reuse this backend as a sidecar/resource instead of rewriting BabelDOC.
 > - To enable account login or tune LAN concurrency, queue size, QPS, and worker counts, edit `config\\distribution.toml` first. Set `require_gui_login = true`, configure regular-user and administrator passwords, then restart the program.
 > - `distribution.toml` overrides GUI auto-saved `config.v3.toml`, so it is the better fixed-policy file for distribution.

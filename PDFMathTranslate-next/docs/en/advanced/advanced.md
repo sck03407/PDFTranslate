@@ -140,7 +140,8 @@ Notes:
 - See [Fashion Glossary Sources](./FASHION_GLOSSARY_SOURCES.md) for the built-in glossary-pack structure and public reference sources.
 - For Windows portable delivery, run `script/build_fashion_portable.ps1`. It defaults to the sibling local `..\BabelDOC` checkout so you can keep packaging on stable `v0.6.3`, and it also supports `-BabelDOCSource github-latest` or `-BabelDOCSource github-ref -BabelDOCGitRef <ref>` when you want a newer upstream source build.
 - For Docker delivery, run `script/build_fashion_docker.ps1`. The Docker image uses the same BabelDOC source-selection modes.
-- For GitHub releases, use the root-level `.github/workflows/fashion-release.yml`. It can publish a portable zip, Tauri desktop bundles, and a GHCR Docker image from either the stable local line or the latest upstream `funstory-ai/BabelDOC` source.
+- For GitHub releases, use the root-level `.github/workflows/fashion-release.yml`. It can publish a portable zip, shell-only Tauri desktop bundles, and a GHCR Docker image from either the stable local line or the latest upstream `funstory-ai/BabelDOC` source. Current Tauri bundles launch `PDFTRANSLATE_BACKEND_BIN` or `pdf2zh` from the system `PATH`; they are not self-contained Python-backend installers.
+- If you later need a self-contained Tauri installer, reuse the Windows portable backend and package the embedded Python runtime, `pdf2zh_next`, dependencies, assets, and config as a Tauri sidecar/resource. That should not require changes inside BabelDOC; BabelDOC upgrades still flow through the packaging scripts by selecting a stable local checkout, latest upstream source, or a specific upstream ref.
 
 [⬆️ Back to top](#toc)
 
