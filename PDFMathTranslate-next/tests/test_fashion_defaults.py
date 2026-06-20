@@ -1,6 +1,8 @@
 from pathlib import Path
 
 from pdf2zh_next.config.cli_env_model import CLIEnvSettingsModel
+from pdf2zh_next.fashion_defaults import BUILTIN_FASHION_GLOSSARY_FILENAMES
+from pdf2zh_next.fashion_defaults import CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
 from pdf2zh_next.fashion_defaults import FASHION_SYSTEM_PROMPT
 from pdf2zh_next.fashion_defaults import get_bundled_customer_glossary_template_path
 from pdf2zh_next.fashion_defaults import get_builtin_fashion_glossary_path
@@ -132,6 +134,34 @@ def test_bundled_customer_glossary_template_exists():
 
     assert glossary_path.exists()
     assert glossary_path.name == "fashion-customer-glossary-template.csv"
+
+
+def test_runtime_builtin_fashion_glossary_dir_is_preferred(
+    tmp_path: Path,
+    monkeypatch,
+):
+    runtime_glossary_dir = tmp_path / "config" / "glossaries"
+    runtime_glossary_dir.mkdir(parents=True)
+    for filename in BUILTIN_FASHION_GLOSSARY_FILENAMES:
+        (runtime_glossary_dir / filename).write_text(
+            "source,target,tgt_lng\nmock term,模拟术语,zh\n",
+            encoding="utf-8",
+        )
+    (runtime_glossary_dir / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME).write_text(
+        "source,target,tgt_lng\ncustomer term,客户术语,zh\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setenv(
+        "PDF2ZH_BUILTIN_FASHION_GLOSSARY_DIR",
+        str(runtime_glossary_dir),
+    )
+
+    glossary_paths = get_builtin_fashion_glossary_paths()
+
+    assert glossary_paths
+    assert all(path.parent == runtime_glossary_dir for path in glossary_paths)
+    assert get_bundled_customer_glossary_template_path().parent == runtime_glossary_dir
 
 
 def test_write_glossary_rows_uses_utf8_bom(tmp_path: Path):

@@ -292,8 +292,11 @@ finally {
 }
 
 Write-Host "==> Copying profile configs"
+$GlossaryDir = Join-Path $ConfigDir "glossaries"
+New-Item -ItemType Directory -Path $GlossaryDir -Force | Out-Null
 Copy-Item -Path (Join-Path $RepoRoot "examples\fashion-online-high-quality.toml") -Destination (Join-Path $ConfigDir "fashion-online-high-quality.toml") -Force
 Copy-Item -Path (Join-Path $RepoRoot "examples\fashion-customer-glossary-template.csv") -Destination (Join-Path $ConfigDir "fashion-customer-glossary-template.csv") -Force
+Copy-Item -Path (Join-Path $RepoRoot "pdf2zh_next\assets\glossaries\*.csv") -Destination $GlossaryDir -Force
 Copy-Item -Path (Join-Path $RepoRoot "config\distribution.toml") -Destination (Join-Path $ConfigDir "distribution.toml") -Force
 Copy-Item -Path (Join-Path $RepoRoot "script\fashion_portable_quickstart.txt") -Destination (Join-Path $OutputDir "README-Fashion-Portable.txt") -Force
 
@@ -349,6 +352,7 @@ set "PDF2ZH_DATA_DIR=%~dp0data"
 set "PDF2ZH_CONFIG_DIR=%~dp0config"
 set "PDF2ZH_OUTPUT_DIR=%~dp0pdf2zh_files"
 set "PDF2ZH_CUSTOMER_GLOSSARY_DIR=%~dp0config"
+set "PDF2ZH_BUILTIN_FASHION_GLOSSARY_DIR=%~dp0config\glossaries"
 set "BABELDOC_CACHE_DIR=%~dp0data\babeldoc-cache"
 set "HOME=%~dp0data\home"
 set "USERPROFILE=%~dp0data\home"

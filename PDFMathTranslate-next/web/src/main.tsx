@@ -427,18 +427,20 @@ function App() {
     if (!session?.settings_visible) {
       return;
     }
-    const [settingsPayload, glossaryPayload, usersPayload] = await Promise.all([
+    const [settingsPayload, glossaryPayload] = await Promise.all([
       apiRequest<SettingsSnapshot>(apiContext, "/api/settings"),
       apiRequest<CustomerGlossaryResponse>(
         apiContext,
         "/api/glossaries/customer-template"
-      ),
-      apiRequest<ManagedUsersResponse>(apiContext, "/api/users")
+      )
     ]);
+    const usersPayload = session.auth_required
+      ? await apiRequest<ManagedUsersResponse>(apiContext, "/api/users")
+      : null;
     setSettingsSnapshot(settingsPayload);
     setCustomerGlossary(glossaryRowsToText(glossaryPayload.rows));
     setCustomerGlossaryPath(glossaryPayload.path);
-    setManagedUsers(usersPayload.users);
+    setManagedUsers(usersPayload?.users ?? []);
     setSettingsStatus("");
     setUserStatus("");
   }, [apiContext, session]);
@@ -954,15 +956,21 @@ function App() {
           ) : null}
         </nav>
         <div className="session-box">
-          <span className="role-badge">
-            <User size={14} />
-            {session.user.role}
-          </span>
-          <span>{session.user.username || "local admin"}</span>
-          <button className="session-action" onClick={() => void handleLogout()} type="button">
-            <LogOut size={15} />
-            退出登录
-          </button>
+          {session.auth_required ? (
+            <>
+              <span className="role-badge">
+                <User size={14} />
+                {session.user.role}
+              </span>
+              <span>{session.user.username}</span>
+              <button className="session-action" onClick={() => void handleLogout()} type="button">
+                <LogOut size={15} />
+                退出登录
+              </button>
+            </>
+          ) : (
+            <span className="local-session-label">本机管理员模式</span>
+          )}
         </div>
       </aside>
 
@@ -1686,139 +1694,141 @@ function App() {
                   </div>
                 </form>
 
-                <section className="panel settings-panel">
-                  <header className="sub-toolbar">
-                    <h3>账号与用户</h3>
-                    <span className="status-text">{userStatus}</span>
-                  </header>
-                  <form className="form-grid account-grid" onSubmit={changePassword}>
-                    <label>
-                      当前密码
-                      <input
-                        type="password"
-                        value={passwordForm.currentPassword}
-                        onChange={(event) =>
-                          setPasswordForm({
-                            ...passwordForm,
-                            currentPassword: event.target.value
-                          })
-                        }
-                      />
-                    </label>
-                    <label>
-                      新密码
-                      <input
-                        type="password"
-                        value={passwordForm.newPassword}
-                        onChange={(event) =>
-                          setPasswordForm({
-                            ...passwordForm,
-                            newPassword: event.target.value
-                          })
-                        }
-                      />
-                    </label>
-                    <label>
-                      确认新密码
-                      <input
-                        type="password"
-                        value={passwordForm.confirmPassword}
-                        onChange={(event) =>
-                          setPasswordForm({
-                            ...passwordForm,
-                            confirmPassword: event.target.value
-                          })
-                        }
-                      />
-                    </label>
-                    <button className="secondary-btn" type="submit">
-                      <KeyRound size={16} />
-                      修改密码
-                    </button>
-                  </form>
+                {session.auth_required ? (
+                  <section className="panel settings-panel">
+                    <header className="sub-toolbar">
+                      <h3>账号与用户</h3>
+                      <span className="status-text">{userStatus}</span>
+                    </header>
+                    <form className="form-grid account-grid" onSubmit={changePassword}>
+                      <label>
+                        当前密码
+                        <input
+                          type="password"
+                          value={passwordForm.currentPassword}
+                          onChange={(event) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              currentPassword: event.target.value
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        新密码
+                        <input
+                          type="password"
+                          value={passwordForm.newPassword}
+                          onChange={(event) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              newPassword: event.target.value
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        确认新密码
+                        <input
+                          type="password"
+                          value={passwordForm.confirmPassword}
+                          onChange={(event) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              confirmPassword: event.target.value
+                            })
+                          }
+                        />
+                      </label>
+                      <button className="secondary-btn" type="submit">
+                        <KeyRound size={16} />
+                        修改密码
+                      </button>
+                    </form>
 
-                  <form className="form-grid account-grid" onSubmit={saveManagedUser}>
-                    <label>
-                      用户名
-                      <input
-                        value={managedUserForm.username}
-                        onChange={(event) =>
-                          setManagedUserForm({
-                            ...managedUserForm,
-                            username: event.target.value
-                          })
-                        }
-                      />
-                    </label>
-                    <label>
-                      密码
-                      <input
-                        type="password"
-                        value={managedUserForm.password}
-                        onChange={(event) =>
-                          setManagedUserForm({
-                            ...managedUserForm,
-                            password: event.target.value
-                          })
-                        }
-                      />
-                    </label>
-                    <label>
-                      角色
-                      <select
-                        value={managedUserForm.role}
-                        onChange={(event) =>
-                          setManagedUserForm({
-                            ...managedUserForm,
-                            role: event.target.value as "admin" | "user"
-                          })
-                        }
-                      >
-                        <option value="user">user</option>
-                        <option value="admin">admin</option>
-                      </select>
-                    </label>
-                    <button className="primary-btn" type="submit">
-                      <Plus size={16} />
-                      保存用户
-                    </button>
-                  </form>
+                    <form className="form-grid account-grid" onSubmit={saveManagedUser}>
+                      <label>
+                        用户名
+                        <input
+                          value={managedUserForm.username}
+                          onChange={(event) =>
+                            setManagedUserForm({
+                              ...managedUserForm,
+                              username: event.target.value
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        密码
+                        <input
+                          type="password"
+                          value={managedUserForm.password}
+                          onChange={(event) =>
+                            setManagedUserForm({
+                              ...managedUserForm,
+                              password: event.target.value
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        角色
+                        <select
+                          value={managedUserForm.role}
+                          onChange={(event) =>
+                            setManagedUserForm({
+                              ...managedUserForm,
+                              role: event.target.value as "admin" | "user"
+                            })
+                          }
+                        >
+                          <option value="user">user</option>
+                          <option value="admin">admin</option>
+                        </select>
+                      </label>
+                      <button className="primary-btn" type="submit">
+                        <Plus size={16} />
+                        保存用户
+                      </button>
+                    </form>
 
-                  <div className="users-list">
-                    {managedUsers.map((managedUser) => (
-                      <div className="user-row" key={managedUser.username}>
-                        <span>
-                          <strong>{managedUser.username}</strong>
-                          <small>{managedUser.role}</small>
-                        </span>
-                        <div className="button-row">
-                          <button
-                            className="secondary-btn"
-                            onClick={() =>
-                              setManagedUserForm({
-                                username: managedUser.username,
-                                password: "",
-                                role: managedUser.role
-                              })
-                            }
-                            type="button"
-                          >
-                            <User size={16} />
-                            编辑
-                          </button>
-                          <button
-                            className="danger-btn"
-                            onClick={() => void deleteManagedUser(managedUser.username)}
-                            type="button"
-                          >
-                            <Trash2 size={16} />
-                            删除
-                          </button>
+                    <div className="users-list">
+                      {managedUsers.map((managedUser) => (
+                        <div className="user-row" key={managedUser.username}>
+                          <span>
+                            <strong>{managedUser.username}</strong>
+                            <small>{managedUser.role}</small>
+                          </span>
+                          <div className="button-row">
+                            <button
+                              className="secondary-btn"
+                              onClick={() =>
+                                setManagedUserForm({
+                                  username: managedUser.username,
+                                  password: "",
+                                  role: managedUser.role
+                                })
+                              }
+                              type="button"
+                            >
+                              <User size={16} />
+                              编辑
+                            </button>
+                            <button
+                              className="danger-btn"
+                              onClick={() => void deleteManagedUser(managedUser.username)}
+                              type="button"
+                            >
+                              <Trash2 size={16} />
+                              删除
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
               </>
             ) : (
               <div className="empty-state">正在读取设置</div>

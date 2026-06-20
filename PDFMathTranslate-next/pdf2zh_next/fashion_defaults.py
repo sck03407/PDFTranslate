@@ -25,6 +25,7 @@ CUSTOMER_GLOSSARY_TEMPLATE_FILENAME = "fashion-customer-glossary-template.csv"
 CUSTOMER_GLOSSARY_HEADERS = ("source", "target", "tgt_lng")
 DEFAULT_CUSTOMER_GLOSSARY_TARGET_LANGUAGE = "zh"
 CUSTOMER_GLOSSARY_DIR_ENV = "PDF2ZH_CUSTOMER_GLOSSARY_DIR"
+BUILTIN_FASHION_GLOSSARY_DIR_ENV = "PDF2ZH_BUILTIN_FASHION_GLOSSARY_DIR"
 
 
 FASHION_SYSTEM_PROMPT = """
@@ -39,8 +40,42 @@ Follow all rules strictly:
 6. If a term can be translated literally or professionally, prefer the professional garment-industry translation.
 """.strip()
 
-def get_builtin_fashion_glossary_dir() -> Path:
+def get_packaged_fashion_glossary_dir() -> Path:
     return Path(__file__).resolve().parent / "assets" / "glossaries"
+
+
+def _has_builtin_fashion_glossary_pack(glossary_dir: Path) -> bool:
+    return all(
+        (glossary_dir / filename).exists()
+        for filename in BUILTIN_FASHION_GLOSSARY_FILENAMES
+    )
+
+
+def _runtime_glossary_dir_candidates() -> list[Path]:
+    candidates: list[Path] = []
+
+    glossary_dir = os.getenv(BUILTIN_FASHION_GLOSSARY_DIR_ENV)
+    if glossary_dir:
+        candidates.append(Path(glossary_dir).expanduser())
+
+    config_dir = os.getenv("PDF2ZH_CONFIG_DIR")
+    if config_dir:
+        candidates.append(Path(config_dir).expanduser() / "glossaries")
+
+    runtime_dir = os.getenv("PDF2ZH_RUNTIME_DIR")
+    if runtime_dir:
+        candidates.append(Path(runtime_dir).expanduser() / "config" / "glossaries")
+
+    candidates.append((Path.cwd() / "config" / "glossaries").resolve())
+    return candidates
+
+
+def get_builtin_fashion_glossary_dir() -> Path:
+    for glossary_dir in _runtime_glossary_dir_candidates():
+        if _has_builtin_fashion_glossary_pack(glossary_dir):
+            return glossary_dir
+
+    return get_packaged_fashion_glossary_dir()
 
 
 def get_builtin_fashion_glossary_paths() -> list[Path]:
@@ -63,7 +98,10 @@ def get_builtin_fashion_glossary_path() -> Path:
 
 
 def get_bundled_customer_glossary_template_path() -> Path:
-    return get_builtin_fashion_glossary_dir() / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
+    runtime_template = get_builtin_fashion_glossary_dir() / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
+    if runtime_template.exists():
+        return runtime_template
+    return get_packaged_fashion_glossary_dir() / CUSTOMER_GLOSSARY_TEMPLATE_FILENAME
 
 
 def get_customer_glossary_dir() -> Path:

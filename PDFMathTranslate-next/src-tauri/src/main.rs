@@ -41,16 +41,14 @@ fn exe_dir() -> Result<PathBuf, String> {
         .unwrap_or_else(|| PathBuf::from(".")))
 }
 
-fn desktop_runtime_dir(app: &AppHandle) -> Result<PathBuf, String> {
+fn desktop_runtime_dir(_app: &AppHandle) -> Result<PathBuf, String> {
     if let Ok(runtime_dir) = std::env::var("PDFTRANSLATE_RUNTIME_DIR") {
         return Ok(PathBuf::from(runtime_dir));
     }
     if let Ok(runtime_dir) = std::env::var("PDF2ZH_RUNTIME_DIR") {
         return Ok(PathBuf::from(runtime_dir));
     }
-    app.path()
-        .app_data_dir()
-        .map_err(|error| format!("Unable to resolve app data directory: {error}"))
+    exe_dir()
 }
 
 fn bundled_backend_dir(app: &AppHandle) -> Option<PathBuf> {
@@ -134,9 +132,38 @@ fn copy_missing_file(source: PathBuf, destination: PathBuf) -> Result<(), String
     Ok(())
 }
 
+fn bundled_glossary_dir(bundled_dir: &PathBuf) -> Option<PathBuf> {
+    [
+        bundled_dir.join("config").join("glossaries"),
+        bundled_dir
+            .join("runtime")
+            .join("Lib")
+            .join("site-packages")
+            .join("pdf2zh_next")
+            .join("assets")
+            .join("glossaries"),
+        bundled_dir
+            .join("runtime")
+            .join("lib")
+            .join("site-packages")
+            .join("pdf2zh_next")
+            .join("assets")
+            .join("glossaries"),
+        bundled_dir
+            .join("pdf2zh_next")
+            .join("assets")
+            .join("glossaries"),
+    ]
+    .into_iter()
+    .find(|candidate| candidate.join("fashion-01-garment-parts.csv").exists())
+}
+
 fn seed_writable_runtime(bundled_dir: &PathBuf, runtime_dir: &PathBuf) -> Result<(), String> {
     copy_missing_tree(bundled_dir.join("config"), runtime_dir.join("config"))?;
     copy_missing_tree(bundled_dir.join("data"), runtime_dir.join("data"))?;
+    if let Some(glossary_dir) = bundled_glossary_dir(bundled_dir) {
+        copy_missing_tree(glossary_dir, runtime_dir.join("config").join("glossaries"))?;
+    }
     copy_missing_file(
         bundled_dir.join("BABELDOC-BUILD-INFO.txt"),
         runtime_dir.join("BABELDOC-BUILD-INFO.txt"),
@@ -317,6 +344,7 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
         .env("PDF2ZH_CONFIG_DIR", &config_dir)
         .env("PDF2ZH_OUTPUT_DIR", &output_dir)
         .env("PDF2ZH_CUSTOMER_GLOSSARY_DIR", &config_dir)
+        .env("PDF2ZH_BUILTIN_FASHION_GLOSSARY_DIR", config_dir.join("glossaries"))
         .env("BABELDOC_CACHE_DIR", &babeldoc_cache_dir)
         .env("HOME", &home_dir)
         .env("USERPROFILE", &home_dir)

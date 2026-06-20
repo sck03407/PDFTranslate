@@ -162,6 +162,10 @@ button {
   font-size: 13px;
 }
 
+.local-session-label {
+  color: #97a8ba;
+}
+
 .session-action {
   min-height: 34px;
   display: inline-flex;
