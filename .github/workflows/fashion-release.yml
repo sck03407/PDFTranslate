@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: "Optional release tag or label used in artifact names"
-        required: false
-        default: ""
+        description: "Release tag used in artifact names and desktop installer version, for example V2.0.5"
+        required: true
         type: string
       babeldoc_source:
         description: "Which BabelDOC source to build from"
@@ -79,10 +78,9 @@ jobs:
         id: meta
         shell: pwsh
         run: |
-          if ("${{ github.event.inputs.release_tag }}") {
-            $label = "${{ github.event.inputs.release_tag }}"
-          } else {
-            $label = "manual-${{ github.run_number }}"
+          $label = "${{ github.event.inputs.release_tag }}".Trim()
+          if (-not $label) {
+            Write-Error "release_tag is required. Use a tag like V2.0.5 so all release artifacts share the same version."
           }
           $artifactName = "fashion-portable-$label"
           $zipName = "pdftranslate-fashion-$label.zip"
@@ -207,7 +205,22 @@ jobs:
 
       - name: Build Tauri desktop app
         working-directory: ./PDFMathTranslate-next
+        shell: pwsh
         run: |
+          $rawVersion = "${{ needs.build-portable.outputs.release_label }}"
+          $desktopVersion = $rawVersion -replace '^[vV]', ''
+          if ($desktopVersion -match '^\d+\.\d+\.\d+([+-][0-9A-Za-z.-]+)?$') {
+            Write-Host "Syncing Tauri desktop version to $desktopVersion"
+            (Get-Content -LiteralPath ".\src-tauri\tauri.conf.json" -Raw) `
+              -replace '"version"\s*:\s*"[^"]+"', """version"": ""$desktopVersion""" |
+              Set-Content -LiteralPath ".\src-tauri\tauri.conf.json" -Encoding utf8
+            (Get-Content -LiteralPath ".\src-tauri\Cargo.toml" -Raw) `
+              -replace '(?m)^version = "[^"]+"', "version = ""$desktopVersion""" |
+              Set-Content -LiteralPath ".\src-tauri\Cargo.toml" -Encoding utf8
+            npm version $desktopVersion --prefix ./web --no-git-tag-version --allow-same-version
+          } else {
+            Write-Error "release_tag '$rawVersion' is not a semantic version. Use a tag like V2.0.5 or 2.0.5 so the Tauri installer version matches the portable release."
+          }
           npm ci --prefix ./web
           npm run --prefix ./web build
           npm exec --prefix ./web -- tauri build

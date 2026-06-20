@@ -108,6 +108,33 @@ def test_fastapi_gui_serves_react_frontend_assets():
     assert missing_api.status_code == 404
 
 
+def test_desktop_shutdown_endpoint_requires_runtime_token(monkeypatch):
+    monkeypatch.delenv("PDFTRANSLATE_SHUTDOWN_TOKEN", raising=False)
+    app_without_token = create_app(CLIEnvSettingsModel().to_settings_model_for_gui())
+
+    with TestClient(app_without_token) as client:
+        unavailable = client.post("/api/desktop/shutdown")
+
+    assert unavailable.status_code == 404
+
+    monkeypatch.setenv("PDFTRANSLATE_SHUTDOWN_TOKEN", "desktop-secret")
+    app = create_app(CLIEnvSettingsModel().to_settings_model_for_gui())
+
+    with TestClient(app) as client:
+        denied = client.post(
+            "/api/desktop/shutdown",
+            headers={"x-pdftranslate-shutdown-token": "wrong"},
+        )
+        accepted = client.post(
+            "/api/desktop/shutdown",
+            headers={"x-pdftranslate-shutdown-token": "desktop-secret"},
+        )
+
+    assert denied.status_code == 403
+    assert accepted.status_code == 200
+    assert app.state.shutdown_requested is True
+
+
 def test_fastapi_gui_admin_can_patch_runtime_settings():
     app = create_app(_settings())
 

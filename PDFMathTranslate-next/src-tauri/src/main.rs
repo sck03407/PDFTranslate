@@ -1,12 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs;
+use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::path::PathBuf;
 use std::process::{Child, Command, Stdio};
 use std::sync::Mutex;
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use tauri::{AppHandle, Manager, State};
 
 #[cfg(windows)]
@@ -20,15 +21,12 @@ const DEFAULT_BACKEND_PORT: u16 = 7860;
 struct BackendState {
     child: Mutex<Option<Child>>,
     backend_url: Mutex<Option<String>>,
+    shutdown_token: Mutex<Option<String>>,
 }
 
 impl Drop for BackendState {
     fn drop(&mut self) {
-        if let Ok(mut child_guard) = self.child.lock() {
-            if let Some(child) = child_guard.as_mut() {
-                let _ = child.kill();
-            }
-        }
+        stop_backend(self);
     }
 }
 
@@ -183,6 +181,115 @@ fn parse_backend_port(backend_url: &str) -> Option<u16> {
         .and_then(|port| port.parse::<u16>().ok())
 }
 
+fn generate_shutdown_token() -> String {
+    format!(
+        "{}-{}",
+        std::process::id(),
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|duration| duration.as_nanos())
+            .unwrap_or_default()
+    )
+}
+
+fn send_backend_shutdown_request(backend_url: &str, shutdown_token: &str) -> Result<(), String> {
+    let port = parse_backend_port(backend_url)
+        .ok_or_else(|| format!("Unable to parse backend shutdown port from {backend_url}"))?;
+    let mut stream = TcpStream::connect(("127.0.0.1", port))
+        .map_err(|error| format!("Unable to connect to backend shutdown endpoint: {error}"))?;
+    stream
+        .set_read_timeout(Some(Duration::from_secs(2)))
+        .map_err(|error| format!("Unable to set backend shutdown read timeout: {error}"))?;
+    stream
+        .set_write_timeout(Some(Duration::from_secs(2)))
+        .map_err(|error| format!("Unable to set backend shutdown write timeout: {error}"))?;
+
+    let request = format!(
+        "POST /api/desktop/shutdown HTTP/1.1\r\n\
+         Host: 127.0.0.1:{port}\r\n\
+         Connection: close\r\n\
+         Content-Length: 0\r\n\
+         X-PDFTranslate-Shutdown-Token: {shutdown_token}\r\n\
+         \r\n"
+    );
+    stream
+        .write_all(request.as_bytes())
+        .map_err(|error| format!("Unable to write backend shutdown request: {error}"))?;
+
+    let mut response = String::new();
+    stream
+        .read_to_string(&mut response)
+        .map_err(|error| format!("Unable to read backend shutdown response: {error}"))?;
+    if response.starts_with("HTTP/1.1 200") || response.starts_with("HTTP/1.0 200") {
+        Ok(())
+    } else {
+        Err(format!("Backend shutdown endpoint returned: {response}"))
+    }
+}
+
+fn terminate_backend_process_tree(child: &mut Child) {
+    #[cfg(windows)]
+    {
+        let pid = child.id().to_string();
+        let mut command = Command::new("taskkill");
+        configure_hidden_process(&mut command);
+        let _ = command
+            .args(["/PID", &pid, "/T", "/F"])
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+    }
+
+    let _ = child.kill();
+}
+
+fn stop_backend(state: &BackendState) {
+    let backend_url = state
+        .backend_url
+        .lock()
+        .ok()
+        .and_then(|guard| guard.clone());
+    let shutdown_token = state
+        .shutdown_token
+        .lock()
+        .ok()
+        .and_then(|guard| guard.clone());
+
+    let Ok(mut child_guard) = state.child.lock() else {
+        return;
+    };
+    let Some(child) = child_guard.as_mut() else {
+        return;
+    };
+
+    if child.try_wait().ok().flatten().is_none() {
+        if let (Some(url), Some(token)) = (&backend_url, &shutdown_token) {
+            let _ = send_backend_shutdown_request(url, token);
+            let deadline = Instant::now() + Duration::from_secs(6);
+            while Instant::now() < deadline {
+                if child.try_wait().ok().flatten().is_some() {
+                    break;
+                }
+                thread::sleep(Duration::from_millis(200));
+            }
+        }
+    }
+
+    if child.try_wait().ok().flatten().is_none() {
+        terminate_backend_process_tree(child);
+        let _ = child.wait();
+    }
+
+    *child_guard = None;
+    if let Ok(mut url_guard) = state.backend_url.lock() {
+        *url_guard = None;
+    }
+    if let Ok(mut token_guard) = state.shutdown_token.lock() {
+        *token_guard = None;
+    }
+}
+
 fn can_bind(host: &str, port: u16) -> bool {
     TcpListener::bind((host, port)).is_ok()
 }
@@ -262,6 +369,7 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
     let backend_port = resolve_backend_port();
     let backend_url = std::env::var("PDFTRANSLATE_BACKEND_URL")
         .unwrap_or_else(|_| format!("http://127.0.0.1:{backend_port}"));
+    let shutdown_token = generate_shutdown_token();
 
     let bundled_backend = bundled_backend_dir(&app);
     let runtime_dir = desktop_runtime_dir(&app)?;
@@ -353,6 +461,7 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
         .env("XDG_CONFIG_HOME", &xdg_config_dir)
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env("PYTHONUTF8", "1")
+        .env("PDFTRANSLATE_SHUTDOWN_TOKEN", &shutdown_token)
         .stdin(Stdio::null())
         .stdout(Stdio::from(stdout_file))
         .stderr(Stdio::from(stderr_file))
@@ -370,17 +479,29 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
         .backend_url
         .lock()
         .map_err(|_| "Backend URL lock failed".to_string())? = Some(backend_url.clone());
+    *state
+        .shutdown_token
+        .lock()
+        .map_err(|_| "Backend shutdown token lock failed".to_string())? = Some(shutdown_token);
     *guard = Some(child);
     Ok(backend_url)
 }
 
 fn main() {
-    tauri::Builder::default()
+    let app = tauri::Builder::default()
         .manage(BackendState {
             child: Mutex::new(None),
             backend_url: Mutex::new(None),
+            shutdown_token: Mutex::new(None),
         })
         .invoke_handler(tauri::generate_handler![start_backend])
-        .run(tauri::generate_context!())
+        .build(tauri::generate_context!())
         .expect("error while running PDFTranslate desktop app");
+
+    app.run(|app_handle, event| {
+        if let tauri::RunEvent::ExitRequested { .. } = event {
+            let state = app_handle.state::<BackendState>();
+            stop_backend(state.inner());
+        }
+    });
 }

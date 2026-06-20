@@ -4,6 +4,7 @@ import asyncio
 import csv
 import json
 import logging
+import os
 import secrets
 import socket
 import time
@@ -57,6 +58,8 @@ WEB_FRONTEND_DIR = Path(__file__).resolve().parent / "web_frontend"
 INDEX_HTML = WEB_FRONTEND_DIR / "index.html"
 SESSION_COOKIE_NAME = "pdftranslate_session"
 GUI_USERS_FILENAME = "gui-users.csv"
+DESKTOP_SHUTDOWN_TOKEN_ENV = "PDFTRANSLATE_SHUTDOWN_TOKEN"
+DESKTOP_SHUTDOWN_TOKEN_HEADER = "x-pdftranslate-shutdown-token"
 
 security = HTTPBasic(auto_error=False)
 
@@ -928,6 +931,14 @@ def _apply_runtime_settings_update(
     )
 
 
+def _request_server_shutdown(app: FastAPI) -> None:
+    server = getattr(app.state, "uvicorn_server", None)
+    if server is None:
+        app.state.shutdown_requested = True
+        return
+    server.should_exit = True
+
+
 def create_app(
     settings: SettingsModel,
     *,
@@ -954,6 +965,9 @@ def create_app(
     app.state.startup_cleanup = (
         _run_startup_output_history_cleanup(settings) if run_startup_cleanup else None
     )
+    app.state.shutdown_token = os.environ.get(DESKTOP_SHUTDOWN_TOKEN_ENV)
+    app.state.shutdown_requested = False
+    app.state.uvicorn_server = None
 
     @app.get("/", response_class=HTMLResponse)
     async def index():
@@ -998,6 +1012,19 @@ def create_app(
         if session_token:
             current_user.sessions.pop(session_token, None)
         response.delete_cookie(SESSION_COOKIE_NAME)
+        return {"ok": True}
+
+    @app.post("/api/desktop/shutdown")
+    async def desktop_shutdown(request: Request):
+        shutdown_token = getattr(app.state, "shutdown_token", None)
+        if not shutdown_token:
+            raise HTTPException(status_code=404, detail="Not found")
+
+        provided_token = request.headers.get(DESKTOP_SHUTDOWN_TOKEN_HEADER, "")
+        if not secrets.compare_digest(provided_token, shutdown_token):
+            raise HTTPException(status_code=403, detail="Invalid shutdown token")
+
+        _request_server_shutdown(app)
         return {"ok": True}
 
     @app.get("/api/session")
@@ -1333,4 +1360,5 @@ async def setup_fastapi_gui(
         log_level="info",
     )
     server = uvicorn.Server(config)
+    app.state.uvicorn_server = server
     await server.serve()
