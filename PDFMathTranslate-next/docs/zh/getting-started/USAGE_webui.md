@@ -26,11 +26,13 @@
 
     选择 `PDF` 文件并点击开始翻译。
 
-默认 WebUI 使用 `Python/FastAPI 后端 + React/Vite 前端`。它复用现有 PDFMathTranslate-next / BabelDOC 翻译核心，不改 BabelDOC 底层，方便后续继续同步上游。Tauri 桌面端和 Docker 容器版使用同一套前端构建产物。
+默认 WebUI 使用 `Python/FastAPI 后端 + React/Vite 前端`。它复用现有 PDFMathTranslate-next / BabelDOC 翻译核心，不改 BabelDOC 底层，方便后续继续同步上游。Docker、Windows 便携包和 Tauri 桌面端使用同一套前端构建产物。
 
-可选 Tauri 桌面壳会通过 `PDFTRANSLATE_BACKEND_BIN` 或系统 `PATH` 中的 `pdf2zh` 启动本地 FastAPI 后端。当前 Tauri 桌面包还不是内置 Python 后端的一体包；需要完整离线 Windows 分发时，仍优先使用 Windows 便携包。
+发布工作流产出的 Windows Tauri 安装包会把同一套便携后端作为 Tauri resource 打进去：嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 离线资源和配置模板。Tauri 只负责定位资源、启动本地 FastAPI 后端、等待端口可用并打开前端。
 
-如果后续需要“一个 Tauri 安装包全带齐”，建议把同一套 Python/FastAPI 后端作为 Tauri sidecar 或资源文件打进安装包，再由桌面壳启动它。这只改变分发层，不需要修改 BabelDOC 的 PDF 解析、排版和重建逻辑；只要继续保留便携包脚本里的 BabelDOC 选源方式，本地稳定版本、上游最新源码或指定提交仍然可以正常同步升级。
+本地 Tauri 开发构建仍支持通过 `PDFTRANSLATE_BACKEND_BIN`、`PDFTRANSLATE_RUNTIME_DIR` 或系统 `PATH` 中的 `pdf2zh` 覆盖后端。这只改变分发层，不需要修改 BabelDOC 的 PDF 解析、排版和重建逻辑；只要继续保留便携包脚本里的 BabelDOC 选源方式，本地稳定版本、上游最新源码或指定提交仍然可以正常同步升级。
+
+Docker、便携包和 Tauri 的登录页与管理员设置页都是同一套 React 页面。Docker 默认启用登录；便携包和 Tauri 只有在配置了 `require_gui_login` 或认证文件后，才会显示居中的登录框。
 
 默认界面面向普通用户，首页只保留上传 PDF、翻译、任务状态和下载流程。Docker 登录为管理员后会显示设置入口；本地不启用账号登录时默认按单机管理员使用。
 

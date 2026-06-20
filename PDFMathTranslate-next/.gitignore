@@ -141,6 +141,8 @@ pdf2zh-dev/
 .build_fashion_env/
 .build_fashion_python.zip
 .doctemp/
+src-tauri/resources/backend/**
+!src-tauri/resources/backend/.gitkeep
 
 # Spyder project settings
 .spyderproject

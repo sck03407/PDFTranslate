@@ -147,8 +147,9 @@ pdf2zh_next --config-file examples/fashion-online-high-quality.toml example.pdf
 - GUI 默认品牌名为 `PDFTranslate`，管理员可在设置页或配置文件中通过 `brand_name` / `brand_url` 自定义。
 - 如需生成 Windows 绿色便携目录，可执行 `script/build_fashion_portable.ps1`。它默认优先使用本地同级 `..\BabelDOC` 稳定源码，可继续固定在 `v0.6.3`；如需直接使用上游最新源码，可加 `-BabelDOCSource github-latest`，如需指定某个分支 / 标签 / 提交，可加 `-BabelDOCSource github-ref -BabelDOCGitRef <ref>`。
 - 如需生成 Docker 容器，可执行 `script/build_fashion_docker.ps1`，容器构建也支持同样的 BabelDOC 选源方式。
-- 如需在 GitHub 上自动发布 Windows 便携包、Tauri 桌面壳包和 GHCR Docker 镜像，可使用仓库根目录的 `.github/workflows/fashion-release.yml` 手动触发工作流。当前 Tauri 包会启动 `PDFTRANSLATE_BACKEND_BIN` 或系统 `PATH` 中的 `pdf2zh`，还不是内置 Python 后端的一体安装包。
-- 如果后续要做“一体 Tauri 安装包”，建议复用 Windows 便携后端，把嵌入式 Python、`pdf2zh_next`、依赖、资源和配置作为 Tauri sidecar/resource 一起打包。这不会要求修改 BabelDOC 内部逻辑；升级 BabelDOC 时仍通过打包脚本选择本地稳定源码、上游最新源码或指定 ref。
+- 如需在 GitHub 上自动发布 Windows 便携包、Windows 一体 Tauri 安装包、macOS/Linux Tauri 壳包和 GHCR Docker 镜像，可使用仓库根目录的 `.github/workflows/fashion-release.yml` 手动触发工作流。
+- Windows Tauri 后端资源来自同一个便携包构建脚本，因此会包含嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 离线资源和配置模板。这不会要求修改 BabelDOC 内部逻辑；升级 BabelDOC 时仍通过打包脚本选择本地稳定源码、上游最新源码或指定 ref。
+- Docker、便携包和 Tauri 使用同一套 React 登录页和设置页。是否显示居中的登录框由 `require_gui_login` 或认证文件决定；Docker 默认启用登录。
 
 [⬆️ 返回顶部](#toc)
 

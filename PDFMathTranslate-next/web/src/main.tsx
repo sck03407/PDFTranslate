@@ -470,8 +470,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (isTauriRuntime() && backendStatus) {
+      return;
+    }
     void loadSession();
-  }, [loadSession]);
+  }, [backendStatus, loadSession]);
 
   useEffect(() => {
     if (!session) {

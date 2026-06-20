@@ -113,7 +113,7 @@ http://localhost:7860/
 >
 > - 如果你希望在本地构建并继续保持稳定的 BabelDOC 版本线，可执行 `script/build_fashion_docker.ps1`。
 > - 如果你希望直接基于 `funstory-ai/BabelDOC` 最新源码构建 Docker 镜像，可执行 `script/build_fashion_docker.ps1 -BabelDOCSource github-latest`。
-> - 如果你希望通过 GitHub Actions 同时发布 Docker 镜像、Windows 便携包和 Tauri 桌面壳包，可使用仓库根目录的 `.github/workflows/fashion-release.yml`。当前 Tauri 产物不会内置 Python 后端；如需一体安装包，需要额外增加后端 sidecar/resource 打包步骤。
+> - 如果你希望通过 GitHub Actions 同时发布 Docker 镜像、Windows 便携包和 Tauri 桌面包，可使用仓库根目录的 `.github/workflows/fashion-release.yml`。Windows Tauri 安装包会把同一套便携后端作为 bundled resource 打进去；macOS/Linux Tauri 包如需同等离线一体分发，还需要补充对应平台后端资源。
 <!--
 如果你后续为当前仓库提供官方云部署模板，再把这里替换成你自己的
 Heroku / Render / Zeabur / Koyeb 链接，不要继续指回上游仓库。

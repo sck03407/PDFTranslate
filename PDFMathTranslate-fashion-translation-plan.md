@@ -188,7 +188,7 @@ Python 程序
 - 核心保持 Python；
 - 单机版可用“内置 Python 运行环境 + 启动器”打包；
 - 桌面体验需要更好时，用 Tauri/Electron/.NET 做外壳，调用本地 Python HTTP 服务或 CLI；
-- 如需“一体 Tauri 安装包”，优先把现有便携版后端作为 Tauri sidecar 或资源文件随安装包分发，再由桌面壳启动本地 FastAPI 服务；这属于分发层调整，不应改动 BabelDOC 的 PDF 解析、排版和重建核心；
+- Windows 一体 Tauri 安装包复用现有便携版后端，把嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 资源和配置模板作为 Tauri resource 随安装包分发，再由桌面壳启动本地 FastAPI 服务；这属于分发层调整，不应改动 BabelDOC 的 PDF 解析、排版和重建核心；
 - 服务器版使用同一个 Python 核心，对外提供 WebUI 或 REST API；
 - 真正需要性能优化时，优先优化缓存、并发、模型推理服务、PDF 预处理，而不是换语言。
 
@@ -598,12 +598,14 @@ api_key = ""
    使用 React/Vite 做 Web 前端，实现上传、任务列表、进度、下载、管理员设置、客户术语模板维护、输出历史清理和角色权限。Docker、浏览器和 Tauri 桌面端复用同一套构建产物。
 
 3. 桌面跨平台壳
-   使用 Tauri 包一层本地 Web 前端，启动或连接本地 Python/FastAPI 服务。当前 Tauri 桌面包会通过 `PDFTRANSLATE_BACKEND_BIN` 或系统 `PATH` 中的 `pdf2zh` 启动后端，因此是“桌面壳 + 外部/已安装后端”的形态，还不是内置 Python 后端的一体包。这样核心翻译逻辑不重写，桌面端体验和多平台分发比 Gradio 更可控。
+   使用 Tauri 包一层本地 Web 前端，启动或连接本地 Python/FastAPI 服务。当前发布设计已经把 Windows 便携版后端作为 Tauri bundled resource 接入：安装包内包含嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 离线资源和配置模板；Tauri 只负责定位资源、把配置和资源种子复制到可写数据目录、启动本地 FastAPI 服务、等待端口可用并打开前端。
 
-   如果未来需要“一个 Tauri 安装包全带齐”，建议复用 Windows 便携版后端，把嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 资源、配置模板和启动脚本作为 Tauri sidecar/resource 打包。Tauri 只负责定位资源、启动本地 FastAPI 服务和打开前端，不直接嵌入或重写 BabelDOC 逻辑。
+   本地开发和排障仍保留覆盖入口：`PDFTRANSLATE_BACKEND_BIN`、`PDFTRANSLATE_RUNTIME_DIR` 或系统 `PATH` 中的 `pdf2zh`。这样核心翻译逻辑不重写，桌面端体验和多平台分发比 Gradio 更可控。macOS/Linux Tauri 产物目前仍是壳包形态，若要同等离线一体分发，需要补充对应平台的后端资源构建。
 
 4. GitHub 分发
-   GitHub Actions 同时构建 Windows 便携包、Tauri 桌面壳包和 Docker 镜像；Docker 镜像默认启用普通用户/管理员登录，管理员才能进入设置页。当前对普通用户真正“免安装 Python/后端”的离线桌面分发仍以 Windows 便携包为准；Tauri 若要作为同等自包含分发物，需要增加后端 sidecar 打包步骤。
+   GitHub Actions 同时构建 Windows 便携包、Windows 一体 Tauri 安装包、macOS/Linux Tauri 壳包和 Docker 镜像；Docker 镜像默认启用普通用户/管理员登录，管理员才能进入设置页。Windows Tauri job 会下载同一次构建生成的便携后端 artifact，复制到 `src-tauri/resources/backend` 后再打包，发布 job 会把便携 zip 和 Tauri 安装包一起上传到 GitHub Release。
+
+   Docker、便携包和 Tauri 使用同一套 React 登录页和管理员设置页。Docker 默认启用登录；便携包和 Tauri 是否显示居中的登录框由 `require_gui_login` 或认证文件决定。
 
 5. BabelDOC 同步升级影响
    一体 Tauri 安装包不应影响 BabelDOC 的同步升级边界。只要 BabelDOC 仍作为 Python 依赖或源码 checkout 被打进后端运行环境，升级时依旧通过 `build_fashion_portable.ps1` / Docker 构建脚本选择本地稳定 `..\BabelDOC`、上游最新源码或指定 ref。需要维护的是打包脚本和资源路径，不是 BabelDOC 核心代码 fork。

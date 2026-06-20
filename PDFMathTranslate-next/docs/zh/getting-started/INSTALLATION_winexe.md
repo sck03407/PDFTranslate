@@ -73,7 +73,8 @@
 > - 便携版打包时会预恢复 BabelDOC 离线资源，最终桌面文件夹里不再额外保留 `offline_assets_*.zip` 压缩包。
 > - 当前便携版已经兼容 `UTF-8` 与 `UTF-8 BOM` 两种 `config.v3.toml` 写法，不会再因为首行 BOM 导致配置解析失败。
 > - 这套便携目录默认显示 `PDFTranslate`。未启用账号登录时按单机管理员使用；启用账号登录后，普通用户只会看到上传 PDF、翻译状态和下载首页，管理员登录后才看到设置页。
-> - 这套便携目录是当前无需用户额外安装 Python 或后端的主要离线桌面分发形态。若后续要做一体 Tauri 安装包，应复用这套后端作为 sidecar/resource，而不是改写 BabelDOC。
+> - 这套便携目录也是 GitHub Actions 生成 Windows Tauri 安装包时使用的后端来源。Tauri 安装包会把同一套嵌入式 Python、`pdf2zh_next`、依赖、BabelDOC 资源和配置模板作为 resource 打进去，而不是改写 BabelDOC。
+> - Docker、便携包和 Tauri 使用同一套 React 登录页和管理员设置页。启用账号登录后，用户名和密码登录框会显示在页面中间。
 > - 如需启用账号登录或调整局域网并发、队列、QPS、worker 数，请优先编辑 `config\\distribution.toml`，设置 `require_gui_login = true` 并填写普通用户和管理员密码后重启程序。
 > - `distribution.toml` 会覆盖 GUI 自动保存的 `config.v3.toml`，所以它更适合做发给别人的固定策略文件。
 
