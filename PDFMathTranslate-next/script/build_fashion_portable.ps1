@@ -235,6 +235,14 @@ Set-Content -Path $PthFile -Value $PthContent -Encoding Ascii
 Write-Host "==> Copying site-packages"
 Copy-Item -Path (Join-Path $BuildEnv "Lib\site-packages") -Destination (Join-Path $RuntimeDir "site-packages") -Recurse -Force
 
+$SklearnLibDir = Join-Path $RuntimeDir "site-packages\sklearn\.libs"
+foreach ($RequiredDll in @("vcomp140.dll", "msvcp140.dll")) {
+    $RequiredDllPath = Join-Path $SklearnLibDir $RequiredDll
+    if (-not (Test-Path -LiteralPath $RequiredDllPath)) {
+        throw "Portable runtime is missing sklearn\.libs\$RequiredDll. The Windows package would fail before the WebUI starts."
+    }
+}
+
 Write-Host "==> Generating BabelDOC offline assets"
 & $BuildPython -m babeldoc.main --generate-offline-assets $AssetsDir
 

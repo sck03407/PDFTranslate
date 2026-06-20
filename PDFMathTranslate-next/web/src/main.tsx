@@ -199,13 +199,8 @@ async function startDesktopBackend() {
   if (!isTauriRuntime()) {
     return null;
   }
-  try {
-    const { invoke } = await import("@tauri-apps/api/core");
-    return await invoke<string>("start_backend");
-  } catch (error) {
-    console.warn("Unable to start bundled backend", error);
-    return null;
-  }
+  const { invoke } = await import("@tauri-apps/api/core");
+  return await invoke<string>("start_backend");
 }
 
 async function apiRequest<T>(
@@ -451,17 +446,27 @@ function App() {
   useEffect(() => {
     let cancelled = false;
     async function bootDesktopBackend() {
-      const backendUrl = await startDesktopBackend();
-      if (cancelled) {
-        return;
+      try {
+        const backendUrl = await startDesktopBackend();
+        if (cancelled) {
+          return;
+        }
+        if (backendUrl) {
+          const normalizedUrl = backendUrl.replace(/\/$/, "");
+          window.localStorage.setItem("pdftranslate.apiBase", normalizedUrl);
+          setApiBase(normalizedUrl);
+          setLoginForm((current) => ({ ...current, apiBase: normalizedUrl }));
+        }
+        setBackendStatus("");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn("Unable to start bundled backend", error);
+        if (!cancelled) {
+          const status = `本地后端启动失败：${message}`;
+          setBackendStatus(status);
+          setSessionError(status);
+        }
       }
-      if (backendUrl) {
-        const normalizedUrl = backendUrl.replace(/\/$/, "");
-        window.localStorage.setItem("pdftranslate.apiBase", normalizedUrl);
-        setApiBase(normalizedUrl);
-        setLoginForm((current) => ({ ...current, apiBase: normalizedUrl }));
-      }
-      setBackendStatus("");
     }
     void bootDesktopBackend();
     return () => {

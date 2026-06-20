@@ -124,6 +124,7 @@ jobs:
             ./PDFMathTranslate-next/dist/pdf2zh-fashion-portable
             ./PDFMathTranslate-next/dist/${{ steps.meta.outputs.portable_zip_name }}
           if-no-files-found: error
+          include-hidden-files: true
           compression-level: 1
 
   build-tauri-desktop:
@@ -196,6 +197,12 @@ jobs:
           }
           if (-not (Test-Path -LiteralPath (Join-Path $resourceDir "data\babeldoc-cache"))) {
             Write-Error "Bundled backend resource is missing restored BabelDOC assets."
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $resourceDir "runtime\site-packages\sklearn\.libs\vcomp140.dll"))) {
+            Write-Error "Bundled backend resource is missing sklearn\.libs\vcomp140.dll. Ensure hidden files are preserved in the portable artifact."
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $resourceDir "runtime\site-packages\sklearn\.libs\msvcp140.dll"))) {
+            Write-Error "Bundled backend resource is missing sklearn\.libs\msvcp140.dll. Ensure hidden files are preserved in the portable artifact."
           }
 
       - name: Build Tauri desktop app

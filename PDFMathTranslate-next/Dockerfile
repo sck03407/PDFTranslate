@@ -69,6 +69,7 @@ RUN set -eux; \
     uv pip install --system --no-cache --compile-bytecode "$BABELDOC_INSTALL_TARGET"; \
     uv pip install --system --no-cache .; \
     babeldoc --version
+RUN python -c "import sklearn; import pdf2zh_next.http_api; print('PDFTranslate import smoke check passed')"
 RUN mkdir -p "$PDF2ZH_CONFIG_DIR" "$PDF2ZH_OUTPUT_DIR" "$BABELDOC_CACHE_DIR" "$HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" && \
     babeldoc --warmup
 RUN pdf2zh --version

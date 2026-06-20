@@ -274,13 +274,13 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
     } else if let Some(bundled_dir) = bundled_backend {
         seed_writable_runtime(&bundled_dir, &runtime_dir)?;
         let runtime_bin_dir = bundled_dir.join("runtime");
-        let pythonw = runtime_bin_dir.join("pythonw.exe");
         let python = runtime_bin_dir.join(if cfg!(windows) {
             "python.exe"
         } else {
             "python"
         });
-        let python_bin = if pythonw.exists() { pythonw } else { python };
+        let pythonw = runtime_bin_dir.join("pythonw.exe");
+        let python_bin = if python.exists() { python } else { pythonw };
         let mut command = Command::new(python_bin);
         command
             .arg("-m")
@@ -299,6 +299,16 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
         command
     };
 
+    let log_dir = runtime_dir.join("logs");
+    fs::create_dir_all(&log_dir)
+        .map_err(|error| format!("Unable to create backend log dir {:?}: {error}", log_dir))?;
+    let stdout_log = log_dir.join("backend.stdout.log");
+    let stderr_log = log_dir.join("backend.stderr.log");
+    let stdout_file = fs::File::create(&stdout_log)
+        .map_err(|error| format!("Unable to create backend stdout log {:?}: {error}", stdout_log))?;
+    let stderr_file = fs::File::create(&stderr_log)
+        .map_err(|error| format!("Unable to create backend stderr log {:?}: {error}", stderr_log))?;
+
     configure_hidden_process(&mut command);
     let mut child = command
         .current_dir(&runtime_dir)
@@ -316,12 +326,18 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env("PYTHONUTF8", "1")
         .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
+        .stdout(Stdio::from(stdout_file))
+        .stderr(Stdio::from(stderr_file))
         .spawn()
         .map_err(|error| format!("Unable to start PDFTranslate backend: {error}"))?;
 
-    wait_for_backend(&mut child, backend_port)?;
+    if let Err(error) = wait_for_backend(&mut child, backend_port) {
+        let _ = child.kill();
+        return Err(format!(
+            "{error}. Backend logs: {:?}, {:?}",
+            stdout_log, stderr_log
+        ));
+    }
     *state
         .backend_url
         .lock()
