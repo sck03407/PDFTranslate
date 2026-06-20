@@ -298,14 +298,18 @@ def test_fastapi_gui_translation_endpoint_uses_existing_high_level_stream(
         captured_settings["settings"] = settings
         output_dir = Path(settings.translation.output)
         output_dir.mkdir(parents=True, exist_ok=True)
-        mono_pdf = output_dir / "input-mono.pdf"
-        mono_pdf.write_bytes(b"%PDF-1.4\n")
+        mono_pdf = output_dir / "input-watermarked-mono.pdf"
+        no_watermark_mono_pdf = output_dir / "input-no-watermark-mono.pdf"
+        mono_pdf.write_bytes(b"%PDF-1.4\nwatermarked")
+        no_watermark_mono_pdf.write_bytes(b"%PDF-1.4\nno-watermark")
         yield {"type": "progress", "progress": 30, "message": "working"}
         yield {
             "type": "finish",
             "translate_result": SimpleNamespace(
                 mono_pdf_path=mono_pdf,
                 dual_pdf_path=None,
+                no_watermark_mono_pdf_path=no_watermark_mono_pdf,
+                no_watermark_dual_pdf_path=None,
                 auto_extracted_glossary_path=None,
             ),
             "token_usage": {"main": {"total": 1}},
@@ -351,6 +355,7 @@ def test_fastapi_gui_translation_endpoint_uses_existing_high_level_stream(
         assert job is not None
         assert job["status"] == "finished"
         assert "mono" in job["files"]
+        assert job["files"]["mono"].endswith("input-no-watermark-mono.pdf")
 
         download = client.get(
             f"/api/jobs/{job_id}/files/mono",
@@ -358,6 +363,8 @@ def test_fastapi_gui_translation_endpoint_uses_existing_high_level_stream(
         )
         assert download.status_code == 200
         assert download.content.startswith(b"%PDF")
+        assert b"no-watermark" in download.content
+        assert "attachment" in download.headers["content-disposition"]
         assert str(customer_glossary) in captured_settings[
             "settings"
         ].translation.glossaries

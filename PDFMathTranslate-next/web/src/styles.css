@@ -250,6 +250,13 @@ button {
   text-align: center;
 }
 
+.file-drop.drag-active {
+  border-color: var(--primary);
+  background: #e5f2ef;
+  color: var(--primary);
+  outline: 2px solid var(--focus);
+}
+
 .file-drop input {
   display: none;
 }
@@ -392,6 +399,7 @@ select:focus {
 .download-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   min-height: 36px;
   padding: 0 10px;
@@ -416,7 +424,6 @@ select:focus {
 .job-row,
 .user-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   min-height: 62px;
@@ -424,6 +431,71 @@ select:focus {
   text-align: left;
   background: var(--panel);
   border: 1px solid var(--line);
+}
+
+.job-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.user-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.job-row-main {
+  min-width: 0;
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.job-row-main:hover strong {
+  color: var(--primary);
+}
+
+.job-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.download-menu {
+  position: fixed;
+  z-index: 20;
+  min-width: 190px;
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(16, 32, 51, 0.18);
+}
+
+.download-menu button {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.download-menu button:hover {
+  color: var(--primary);
+  background: #eef6f4;
 }
 
 .job-row strong,
@@ -533,5 +605,14 @@ select:focus {
   .job-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .job-row,
+  .job-row-main {
+    grid-template-columns: 1fr;
+  }
+
+  .job-downloads {
+    justify-content: flex-start;
   }
 }

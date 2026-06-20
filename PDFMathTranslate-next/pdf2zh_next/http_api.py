@@ -334,6 +334,28 @@ def _safe_filename(filename: str | None) -> str:
     return name
 
 
+def _first_existing_result_path(result: Any, *attribute_names: str) -> Path | None:
+    for attribute_name in attribute_names:
+        value = getattr(result, attribute_name, None)
+        if value and Path(value).exists():
+            return Path(value)
+    return None
+
+
+def _translation_result_files(result: Any) -> dict[str, str]:
+    candidates = {
+        "mono": ("no_watermark_mono_pdf_path", "mono_pdf_path"),
+        "dual": ("no_watermark_dual_pdf_path", "dual_pdf_path"),
+        "glossary": ("auto_extracted_glossary_path",),
+    }
+    files: dict[str, str] = {}
+    for key, attribute_names in candidates.items():
+        path = _first_existing_result_path(result, *attribute_names)
+        if path:
+            files[key] = str(path)
+    return files
+
+
 def _selected_engine_name(settings: SettingsModel) -> str | None:
     if settings.translate_engine_settings is None:
         return None
@@ -439,16 +461,7 @@ async def _run_translation_job(app: FastAPI, job: TranslationJob) -> None:
 
                 if event_type == "finish":
                     result = event["translate_result"]
-                    files = {
-                        "mono": result.mono_pdf_path,
-                        "dual": result.dual_pdf_path,
-                        "glossary": result.auto_extracted_glossary_path,
-                    }
-                    job.files = {
-                        key: str(value)
-                        for key, value in files.items()
-                        if value and Path(value).exists()
-                    }
+                    job.files = _translation_result_files(result)
                     job.token_usage = _serialize_value(event.get("token_usage", {}))
                     job.status = "finished"
                     job.progress = 100.0
@@ -955,6 +968,7 @@ def create_app(
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        expose_headers=["Content-Disposition"],
     )
     app.state.settings = settings
     app.state.jobs = {}
@@ -1303,7 +1317,13 @@ def create_app(
         file_path = Path((job.files or {}).get(kind, ""))
         if not file_path.exists():
             raise HTTPException(status_code=404, detail="File not found")
-        return FileResponse(file_path, filename=file_path.name)
+        media_type = "application/pdf" if file_path.suffix.lower() == ".pdf" else None
+        return FileResponse(
+            file_path,
+            media_type=media_type,
+            filename=file_path.name,
+            content_disposition_type="attachment",
+        )
 
     @app.get("/{frontend_path:path}", response_class=HTMLResponse)
     async def frontend_fallback(

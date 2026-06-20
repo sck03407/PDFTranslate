@@ -168,7 +168,18 @@ type ApiContext = {
   authHeader: string | null;
 };
 
+type DownloadMenuState = {
+  job: JobSnapshot;
+  x: number;
+  y: number;
+} | null;
+
 const terminalJobStates = new Set(["finished", "error"]);
+const downloadKindLabels: Record<string, string> = {
+  mono: "单语译文 PDF",
+  dual: "双语对照 PDF",
+  glossary: "自动术语表"
+};
 
 function isTauriRuntime() {
   return Boolean(
@@ -266,6 +277,48 @@ function glossaryTextToRows(text: string) {
 
 function choiceInputValue(value: EngineChoice["value"]) {
   return value === null || value === undefined ? "" : String(value);
+}
+
+function isPdfFile(file: File) {
+  return file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+}
+
+function downloadKindLabel(kind: string) {
+  return downloadKindLabels[kind] || kind;
+}
+
+function jobFileKinds(job: JobSnapshot) {
+  return Object.keys(job.files || {}).filter((kind) => Boolean(job.files[kind]));
+}
+
+function suggestedDownloadName(job: JobSnapshot, kind: string) {
+  const stem = job.filename.replace(/\.pdf$/i, "");
+  if (kind === "mono") {
+    return `${stem}.单语译文.pdf`;
+  }
+  if (kind === "dual") {
+    return `${stem}.双语对照.pdf`;
+  }
+  if (kind === "glossary") {
+    return `${stem}.自动术语表.csv`;
+  }
+  return `${kind}-${job.filename}`;
+}
+
+function filenameFromContentDisposition(header: string | null) {
+  if (!header) {
+    return null;
+  }
+  const utf8Match = header.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf8Match?.[1]) {
+    try {
+      return decodeURIComponent(utf8Match[1]);
+    } catch (_error) {
+      return utf8Match[1];
+    }
+  }
+  const asciiMatch = header.match(/filename="?([^";]+)"?/i);
+  return asciiMatch?.[1] || null;
 }
 
 function EngineFieldControl({
@@ -378,10 +431,38 @@ function App() {
     saveGlossary: false
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [downloadStatus, setDownloadStatus] = useState("");
+  const [downloadMenu, setDownloadMenu] = useState<DownloadMenuState>(null);
 
   const apiContext = useMemo<ApiContext>(
     () => ({ apiBase, authHeader }),
     [apiBase, authHeader]
+  );
+
+  const chooseFile = useCallback((file: File | null) => {
+    if (!file) {
+      return;
+    }
+    if (!isPdfFile(file)) {
+      setSubmitStatus("请上传 PDF 文件");
+      return;
+    }
+    setSelectedFile(file);
+    setSubmitStatus("");
+  }, []);
+
+  const startJobDownload = useCallback(
+    async (job: JobSnapshot, kind: string) => {
+      setDownloadStatus(`正在下载${downloadKindLabel(kind)}`);
+      try {
+        await downloadJobFile(apiContext, job, kind);
+        window.setTimeout(() => setDownloadStatus(""), 1600);
+      } catch (error) {
+        setDownloadStatus((error as Error).message);
+      }
+    },
+    [apiContext]
   );
 
   const loadSession = useCallback(async () => {
@@ -475,6 +556,39 @@ function App() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!isTauriRuntime()) {
+      return;
+    }
+    const preventNativeContextMenu = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select")) {
+        return;
+      }
+      event.preventDefault();
+    };
+    window.addEventListener("contextmenu", preventNativeContextMenu);
+    return () => window.removeEventListener("contextmenu", preventNativeContextMenu);
+  }, []);
+
+  useEffect(() => {
+    if (!downloadMenu) {
+      return;
+    }
+    const closeMenu = () => setDownloadMenu(null);
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    };
+    window.addEventListener("click", closeMenu);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("click", closeMenu);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [downloadMenu]);
 
   useEffect(() => {
     if (isTauriRuntime() && backendStatus) {
@@ -993,16 +1107,38 @@ function App() {
             </header>
 
             <form className="panel upload-panel" onSubmit={submitTranslation}>
-              <label className="file-drop">
+              <label
+                className={`file-drop${isDraggingFile ? " drag-active" : ""}`}
+                onDragEnter={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setIsDraggingFile(true);
+                }}
+                onDragLeave={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setIsDraggingFile(false);
+                }}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  event.dataTransfer.dropEffect = "copy";
+                  setIsDraggingFile(true);
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setIsDraggingFile(false);
+                  chooseFile(event.dataTransfer.files?.[0] || null);
+                }}
+              >
                 <input
                   type="file"
                   accept="application/pdf,.pdf"
-                  onChange={(event) =>
-                    setSelectedFile(event.target.files?.[0] || null)
-                  }
+                  onChange={(event) => chooseFile(event.target.files?.[0] || null)}
                 />
                 <Upload size={22} />
-                <span>{selectedFile ? selectedFile.name : "选择 PDF 文件"}</span>
+                <span>{selectedFile ? selectedFile.name : "点击或拖入 PDF 文件"}</span>
               </label>
 
               <div className="form-grid">
@@ -1107,27 +1243,82 @@ function App() {
                 jobs
                   .slice()
                   .reverse()
-                  .map((job) => (
-                    <button
-                      className="job-row"
-                      key={job.id}
-                      onClick={() => {
-                        setCurrentJob(job);
-                        setActiveTab("translate");
-                      }}
-                      type="button"
-                    >
-                      <span>
-                        <strong>{job.filename}</strong>
-                        <small>{job.message || job.status}</small>
-                      </span>
-                      <span>{Math.round(job.progress || 0)}%</span>
-                    </button>
-                  ))
+                  .map((job) => {
+                    const fileKinds = jobFileKinds(job);
+                    return (
+                      <div
+                        className="job-row"
+                        key={job.id}
+                        onContextMenu={(event) => {
+                          if (!fileKinds.length) {
+                            return;
+                          }
+                          event.preventDefault();
+                          setDownloadMenu({
+                            job,
+                            x: event.clientX,
+                            y: event.clientY
+                          });
+                        }}
+                      >
+                        <button
+                          className="job-row-main"
+                          onClick={() => {
+                            setCurrentJob(job);
+                            setActiveTab("translate");
+                          }}
+                          type="button"
+                        >
+                          <span>
+                            <strong>{job.filename}</strong>
+                            <small>{job.message || job.status}</small>
+                          </span>
+                          <span>{Math.round(job.progress || 0)}%</span>
+                        </button>
+                        {fileKinds.length ? (
+                          <div className="job-downloads">
+                            {fileKinds.map((kind) => (
+                              <button
+                                className="download-btn"
+                                key={`${job.id}-${kind}`}
+                                onClick={() => void startJobDownload(job, kind)}
+                                type="button"
+                              >
+                                <Download size={16} />
+                                下载{downloadKindLabel(kind)}
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })
               ) : (
                 <div className="empty-state">暂无任务</div>
               )}
             </div>
+            {downloadStatus ? <div className="status-text">{downloadStatus}</div> : null}
+            {downloadMenu ? (
+              <div
+                className="download-menu"
+                onClick={(event) => event.stopPropagation()}
+                style={{ left: downloadMenu.x, top: downloadMenu.y }}
+              >
+                {jobFileKinds(downloadMenu.job).map((kind) => (
+                  <button
+                    key={`${downloadMenu.job.id}-menu-${kind}`}
+                    onClick={() => {
+                      setDownloadMenu(null);
+                      void startJobDownload(downloadMenu.job, kind);
+                    }}
+                    type="button"
+                  >
+                    <Download size={15} />
+                    保存{downloadKindLabel(kind)}
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </section>
         ) : null}
 
@@ -1896,17 +2087,20 @@ async function downloadJobFile(
   job: JobSnapshot,
   kind: string
 ) {
+  const fileUrl = joinApiPath(
+    apiContext.apiBase,
+    `/api/jobs/${job.id}/files/${encodeURIComponent(kind)}`
+  );
+  const downloadName = suggestedDownloadName(job, kind);
+
   const headers = new Headers();
   if (apiContext.authHeader) {
     headers.set("Authorization", apiContext.authHeader);
   }
-  const response = await fetch(
-    joinApiPath(apiContext.apiBase, `/api/jobs/${job.id}/files/${kind}`),
-    {
-      credentials: "include",
-      headers
-    }
-  );
+  const response = await fetch(fileUrl, {
+    credentials: "include",
+    headers
+  });
   if (!response.ok) {
     throw new Error(response.statusText || "Download failed");
   }
@@ -1915,11 +2109,15 @@ async function downloadJobFile(
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${kind}-${job.filename}`;
+  link.download =
+    filenameFromContentDisposition(response.headers.get("Content-Disposition")) ||
+    downloadName;
   document.body.appendChild(link);
   link.click();
-  link.remove();
-  window.URL.revokeObjectURL(url);
+  window.setTimeout(() => {
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  }, 30000);
 }
 
 function JobPanel({
@@ -1959,8 +2157,8 @@ function JobPanel({
         />
       </div>
       <div className="download-row">
-        {Object.keys(job.files || {}).length ? (
-          Object.keys(job.files).map((kind) => (
+        {jobFileKinds(job).length ? (
+          jobFileKinds(job).map((kind) => (
             <button
               className="download-btn"
               key={kind}
@@ -1975,7 +2173,7 @@ function JobPanel({
               type="button"
             >
               <Download size={16} />
-              下载 {kind}
+              下载{downloadKindLabel(kind)}
             </button>
           ))
         ) : (
