@@ -498,6 +498,21 @@ select:focus {
   background: #eef6f4;
 }
 
+.download-menu .danger-menu-item {
+  color: var(--danger);
+}
+
+.download-menu .danger-menu-item:hover {
+  color: var(--danger);
+  background: #fff1ef;
+}
+
+.menu-divider {
+  height: 1px;
+  margin: 2px 4px;
+  background: var(--line);
+}
+
 .job-row strong,
 .job-row small,
 .user-row strong,

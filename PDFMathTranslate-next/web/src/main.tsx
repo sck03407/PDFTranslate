@@ -174,6 +174,27 @@ type DownloadMenuState = {
   y: number;
 } | null;
 
+type DownloadResult = "saved" | "started" | "cancelled";
+
+type BrowserSaveWritable = {
+  write: (data: Blob) => Promise<void>;
+  close: () => Promise<void>;
+};
+
+type BrowserSaveHandle = {
+  createWritable: () => Promise<BrowserSaveWritable>;
+};
+
+type WindowWithSavePicker = Window & {
+  showSaveFilePicker?: (options?: {
+    suggestedName?: string;
+    types?: Array<{
+      description: string;
+      accept: Record<string, string[]>;
+    }>;
+  }) => Promise<BrowserSaveHandle>;
+};
+
 const terminalJobStates = new Set(["finished", "error"]);
 const downloadKindLabels: Record<string, string> = {
   mono: "单语译文 PDF",
@@ -321,6 +342,51 @@ function filenameFromContentDisposition(header: string | null) {
   return asciiMatch?.[1] || null;
 }
 
+function fileFromDataTransfer(dataTransfer: DataTransfer) {
+  const itemFile = Array.from(dataTransfer.items || [])
+    .find((item) => item.kind === "file")
+    ?.getAsFile();
+  return itemFile || dataTransfer.files?.[0] || null;
+}
+
+function downloadResultMessage(result: DownloadResult, kind: string) {
+  if (result === "saved") {
+    return `${downloadKindLabel(kind)}已保存`;
+  }
+  if (result === "cancelled") {
+    return "已取消保存";
+  }
+  return `${downloadKindLabel(kind)}已开始下载，请查看浏览器下载栏`;
+}
+
+async function pickBrowserSaveFile(suggestedName: string) {
+  const picker = (window as WindowWithSavePicker).showSaveFilePicker;
+  if (!picker || !window.isSecureContext) {
+    return undefined;
+  }
+  try {
+    const handle = await picker({
+      suggestedName,
+      types: [
+        {
+          description: suggestedName.toLowerCase().endsWith(".csv")
+            ? "CSV 文件"
+            : "PDF 文件",
+          accept: suggestedName.toLowerCase().endsWith(".csv")
+            ? { "text/csv": [".csv"] }
+            : { "application/pdf": [".pdf"] }
+        }
+      ]
+    });
+    return await handle.createWritable();
+  } catch (error) {
+    if ((error as Error).name === "AbortError") {
+      return null;
+    }
+    throw error;
+  }
+}
+
 function EngineFieldControl({
   field,
   onChange
@@ -452,12 +518,45 @@ function App() {
     setSubmitStatus("");
   }, []);
 
+  useEffect(() => {
+    const preventDefaultFileDrop = (event: DragEvent) => {
+      event.preventDefault();
+    };
+    window.addEventListener("dragover", preventDefaultFileDrop);
+    window.addEventListener("drop", preventDefaultFileDrop);
+    return () => {
+      window.removeEventListener("dragover", preventDefaultFileDrop);
+      window.removeEventListener("drop", preventDefaultFileDrop);
+    };
+  }, []);
+
   const startJobDownload = useCallback(
     async (job: JobSnapshot, kind: string) => {
-      setDownloadStatus(`正在下载${downloadKindLabel(kind)}`);
+      setDownloadStatus(`正在保存${downloadKindLabel(kind)}`);
       try {
-        await downloadJobFile(apiContext, job, kind);
-        window.setTimeout(() => setDownloadStatus(""), 1600);
+        const result = await downloadJobFile(apiContext, job, kind);
+        setDownloadStatus(downloadResultMessage(result, kind));
+        window.setTimeout(() => setDownloadStatus(""), 2400);
+      } catch (error) {
+        setDownloadStatus((error as Error).message);
+      }
+    },
+    [apiContext]
+  );
+
+  const deleteJobRecord = useCallback(
+    async (job: JobSnapshot) => {
+      if (!window.confirm(`删除任务记录？\n${job.filename}`)) {
+        return;
+      }
+      try {
+        await apiRequest<{ ok: boolean }>(apiContext, `/api/jobs/${job.id}`, {
+          method: "DELETE"
+        });
+        setJobs((currentJobs) => currentJobs.filter((item) => item.id !== job.id));
+        setCurrentJob((current) => (current?.id === job.id ? null : current));
+        setDownloadStatus("任务记录已删除");
+        window.setTimeout(() => setDownloadStatus(""), 2400);
       } catch (error) {
         setDownloadStatus((error as Error).message);
       }
@@ -1129,7 +1228,7 @@ function App() {
                   event.preventDefault();
                   event.stopPropagation();
                   setIsDraggingFile(false);
-                  chooseFile(event.dataTransfer.files?.[0] || null);
+                  chooseFile(fileFromDataTransfer(event.dataTransfer));
                 }}
               >
                 <input
@@ -1250,9 +1349,6 @@ function App() {
                         className="job-row"
                         key={job.id}
                         onContextMenu={(event) => {
-                          if (!fileKinds.length) {
-                            return;
-                          }
                           event.preventDefault();
                           setDownloadMenu({
                             job,
@@ -1317,6 +1413,19 @@ function App() {
                     保存{downloadKindLabel(kind)}
                   </button>
                 ))}
+                {jobFileKinds(downloadMenu.job).length ? <div className="menu-divider" /> : null}
+                <button
+                  className="danger-menu-item"
+                  onClick={() => {
+                    const menuJob = downloadMenu.job;
+                    setDownloadMenu(null);
+                    void deleteJobRecord(menuJob);
+                  }}
+                  type="button"
+                >
+                  <Trash2 size={15} />
+                  删除任务记录
+                </button>
               </div>
             ) : null}
           </section>
@@ -2086,12 +2195,33 @@ async function downloadJobFile(
   apiContext: ApiContext,
   job: JobSnapshot,
   kind: string
-) {
-  const fileUrl = joinApiPath(
-    apiContext.apiBase,
-    `/api/jobs/${job.id}/files/${encodeURIComponent(kind)}`
-  );
+): Promise<DownloadResult> {
+  const filePath = `/api/jobs/${job.id}/files/${encodeURIComponent(kind)}`;
+  const fileUrl = joinApiPath(apiContext.apiBase, filePath);
   const downloadName = suggestedDownloadName(job, kind);
+
+  if (isTauriRuntime()) {
+    const { invoke } = await import("@tauri-apps/api/core");
+    try {
+      const saved = await invoke<boolean>("save_download_file", {
+        url: fileUrl,
+        authHeader: apiContext.authHeader,
+        suggestedName: downloadName
+      });
+      return saved ? "saved" : "cancelled";
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!message.toLowerCase().includes("save_download_file")) {
+        throw error;
+      }
+      console.warn("Desktop save command is unavailable; falling back to browser download.");
+    }
+  }
+
+  const browserWritable = await pickBrowserSaveFile(downloadName);
+  if (browserWritable === null) {
+    return "cancelled";
+  }
 
   const headers = new Headers();
   if (apiContext.authHeader) {
@@ -2106,6 +2236,12 @@ async function downloadJobFile(
   }
 
   const blob = await response.blob();
+  if (browserWritable) {
+    await browserWritable.write(blob);
+    await browserWritable.close();
+    return "saved";
+  }
+
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -2118,6 +2254,7 @@ async function downloadJobFile(
     link.remove();
     window.URL.revokeObjectURL(url);
   }, 30000);
+  return "started";
 }
 
 function JobPanel({
@@ -2128,6 +2265,7 @@ function JobPanel({
   job: JobSnapshot | null;
 }) {
   const [downloadError, setDownloadError] = useState("");
+  const [downloadMessage, setDownloadMessage] = useState("");
 
   if (!job) {
     return (
@@ -2165,9 +2303,12 @@ function JobPanel({
               onClick={async () => {
                 try {
                   setDownloadError("");
-                  await downloadJobFile(apiContext, job, kind);
+                  setDownloadMessage(`正在保存${downloadKindLabel(kind)}`);
+                  const result = await downloadJobFile(apiContext, job, kind);
+                  setDownloadMessage(downloadResultMessage(result, kind));
                 } catch (error) {
                   setDownloadError((error as Error).message);
+                  setDownloadMessage("");
                 }
               }}
               type="button"
@@ -2180,6 +2321,7 @@ function JobPanel({
           <span>结果生成后会显示下载入口</span>
         )}
       </div>
+      {downloadMessage ? <div className="status-text">{downloadMessage}</div> : null}
       {downloadError ? <div className="error-line">{downloadError}</div> : null}
       {job.error ? <div className="error-line">{job.error}</div> : null}
     </section>

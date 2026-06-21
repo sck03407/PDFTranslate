@@ -1278,6 +1278,19 @@ def create_app(
             raise HTTPException(status_code=404, detail="Job not found")
         return job.snapshot()
 
+    @app.delete("/api/jobs/{job_id}")
+    async def delete_job(job_id: str, _user: ApiUser = Depends(current_user)):
+        job = app.state.jobs.get(job_id)
+        if not job:
+            raise HTTPException(status_code=404, detail="Job not found")
+        if job.status not in {"finished", "error"}:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Only finished or failed job records can be deleted",
+            )
+        del app.state.jobs[job_id]
+        return {"ok": True}
+
     @app.get("/api/jobs/{job_id}/events", name="job_events")
     async def job_events(job_id: str, _user: ApiUser = Depends(current_user)):
         job = app.state.jobs.get(job_id)

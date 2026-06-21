@@ -361,10 +361,20 @@ def test_fastapi_gui_translation_endpoint_uses_existing_high_level_stream(
             f"/api/jobs/{job_id}/files/mono",
             auth=("worker", "worker-pass"),
         )
+        deleted = client.delete(
+            f"/api/jobs/{job_id}",
+            auth=("worker", "worker-pass"),
+        )
+        missing_job = client.get(
+            f"/api/jobs/{job_id}",
+            auth=("worker", "worker-pass"),
+        )
         assert download.status_code == 200
         assert download.content.startswith(b"%PDF")
         assert b"no-watermark" in download.content
         assert "attachment" in download.headers["content-disposition"]
+        assert deleted.status_code == 200
+        assert missing_job.status_code == 404
         assert str(customer_glossary) in captured_settings[
             "settings"
         ].translation.glossaries

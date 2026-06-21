@@ -487,6 +487,41 @@ fn start_backend(app: AppHandle, state: State<'_, BackendState>) -> Result<Strin
     Ok(backend_url)
 }
 
+#[tauri::command]
+fn save_download_file(
+    url: String,
+    auth_header: Option<String>,
+    suggested_name: String,
+) -> Result<bool, String> {
+    let Some(destination) = rfd::FileDialog::new()
+        .set_file_name(suggested_name)
+        .save_file()
+    else {
+        return Ok(false);
+    };
+
+    let mut request = ureq::get(&url);
+    if let Some(auth_header) = auth_header.as_deref() {
+        if !auth_header.trim().is_empty() {
+            request = request.set("Authorization", auth_header);
+        }
+    }
+
+    let response = request.call().map_err(|error| match error {
+        ureq::Error::Status(code, response) => {
+            format!("Download failed with HTTP {code}: {}", response.status_text())
+        }
+        other => format!("Download failed: {other}"),
+    })?;
+
+    let mut reader = response.into_reader();
+    let mut output = fs::File::create(&destination)
+        .map_err(|error| format!("Unable to create {:?}: {error}", destination))?;
+    std::io::copy(&mut reader, &mut output)
+        .map_err(|error| format!("Unable to save {:?}: {error}", destination))?;
+    Ok(true)
+}
+
 fn main() {
     let app = tauri::Builder::default()
         .manage(BackendState {
@@ -494,7 +529,7 @@ fn main() {
             backend_url: Mutex::new(None),
             shutdown_token: Mutex::new(None),
         })
-        .invoke_handler(tauri::generate_handler![start_backend])
+        .invoke_handler(tauri::generate_handler![start_backend, save_download_file])
         .build(tauri::generate_context!())
         .expect("error while running PDFTranslate desktop app");
 
